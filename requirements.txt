@@ -1,0 +1,2 @@
+# No pip dependencies. Python standard library powers the game and local server.
+# The browser runs this same Python gameplay through the bundled Pyodide runtime.
