@@ -1,0 +1,14 @@
+{
+  "name": "neon-clash",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "python3 serve.py",
+    "build": "node scripts/build.mjs",
+    "test": "python3 -m unittest discover -s tests -v",
+    "test:browser": "node tests/browser.mjs"
+  },
+  "dependencies": { "pyodide": "0.27.7" },
+  "devDependencies": { "playwright": "1.51.1" }
+}
