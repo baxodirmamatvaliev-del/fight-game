@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#101211">
+  <meta name="description" content="NEON CLASH — Python bilan yaratilgan neon jangovar o‘yin. Brauzeringizda jangga kiring.">
+  <title>NEON CLASH — Own the night.</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="Neon Clash bosh sahifa"><span class="brand-mark">N<span>↯</span></span> NEON<span class="brand-light">CLASH</span><span class="edition">ARCADE / 01</span></a>
+    <nav aria-label="Asosiy navigatsiya"><a href="#arena" class="nav-active">PLAY <span>↗</span></a><button id="help-button">QANDAY O‘YNALADI</button><button id="settings-button" aria-label="Sozlamalar">SOZLAMALAR <span>⚙</span></button></nav>
+    <button id="sound-button" class="sound-button" aria-label="Ovozni o‘chirish" aria-pressed="false">◖♪ <span>SOUND ON</span></button>
+  </header>
+  <main>
+    <section class="intro"><div><p class="eyebrow"><span class="live-dot"></span> INSERT SKILL. NOT COINS.</p><h1>OWN THE <span>NIGHT.</span></h1><p class="intro-copy">Shahar uxlamaydi. Jang endi boshlanadi.</p></div><div class="intro-aside"><span class="small-label">BUILT FOR THE FIGHT</span><p>3 jangchi. 3 arena.<br>Bitta g‘olib.</p><span class="tag">FREE TO PLAY <span>↗</span></span></div></section>
+    <section id="arena" class="arena-shell" aria-label="Jang maydoni">
+      <div class="arena-topline"><span><i class="live-dot"></i> <span id="arena-label">01 / MIDNIGHT DISTRICT</span></span><span id="mode-label">ARCADE MODE <span class="dim">/</span> PLAYER VS CPU</span></div>
+      <div id="stage" class="stage">
+        <canvas id="game" width="1200" height="640" tabindex="0" aria-label="Neon Clash jang maydoni. Boshqaruv uchun Qanday o‘ynaladi tugmasini bosing."></canvas>
+        <div id="hud" class="hud" hidden></div>
+        <div id="announcement" class="announcement" aria-live="polite"></div>
+        <div id="lobby" class="lobby"><div class="lobby-kicker">THE UNDERGROUND IS CALLING</div><div class="game-logo">NEON<span>CLASH<span class="logo-star">✳</span></span></div><p>O‘z jangchingizni tanlang. Arenani egallang.</p><button id="start-button" class="primary-button" disabled><span id="start-label">PYTHON YUKLANMOQDA…</span><span>↗</span></button><div id="load-status" class="load-status" role="status">Jang dvigateli ishga tushmoqda</div><button id="retry-button" class="text-button" hidden>Qayta yuklash ↻</button></div>
+        <div class="arena-corner left">SEOUL UNDERGROUND<br><span>37°33′ N · 126°58′ E</span></div><div class="arena-corner right">NO LIMITS.<br><span>JUST YOU & THE FIGHT.</span></div>
+        <button id="pause-button" class="stage-button" aria-label="O‘yinni pauza qilish" hidden>Ⅱ</button>
+        <button id="fullscreen-button" class="fullscreen-button" aria-label="To‘liq ekran">⛶</button>
+        <div id="pause-screen" class="screen-overlay" hidden><p class="eyebrow">TAKE A BREATH</p><h2>PAUZA.</h2><button id="resume-button" class="primary-button">DAVOM ETISH <span>→</span></button><button id="quit-button" class="secondary-button">BOSH MENYU</button></div>
+        <div id="result-screen" class="screen-overlay" hidden><p id="result-kicker" class="eyebrow">THE NIGHT IS YOURS</p><h2 id="result-title">G‘ALABA!</h2><p id="result-detail"></p><button id="rematch-button" class="primary-button">YANA JANG <span>↗</span></button><button id="menu-button" class="secondary-button">BOSH MENYU</button></div>
+      </div>
+      <div id="touch-controls" class="touch-controls" hidden aria-label="Mobil boshqaruv"><div class="touch-move"><button data-action="left" aria-label="Chapga">◀</button><button data-action="jump" aria-label="Sakrash">▲</button><button data-action="right" aria-label="O‘ngga">▶</button></div><div class="touch-actions"><button data-action="block">HIMOYA</button><button data-action="punch">MUSHT</button><button data-action="kick">TEPIK</button><button data-action="special" class="touch-special">MAXSUS</button></div></div>
+      <div class="arena-bottomline"><span><span class="keycap">A</span><span class="keycap">D</span> YURISH <span class="keycap">W</span> SAKRASH</span><span><span class="keycap">J</span> MUSHT <span class="keycap">K</span> TEPIK <span class="keycap">L</span> MAXSUS <span class="keycap">S</span> HIMOYA</span><button id="controls-button">BARCHA TUGMALAR ↗</button></div>
+    </section>
+    <section id="setup" class="setup-grid" aria-label="O‘yinni sozlash">
+      <div class="setup-panel"><div class="section-label"><span>01</span><h2>JANGCHINGIZ</h2><span class="dim">CHOOSE YOUR EDGE</span></div><div id="fighter-options" class="fighter-options"></div></div>
+      <div class="setup-panel"><div class="section-label"><span>02</span><h2>JANG REJIMI</h2></div><div class="segmented" id="mode-options"><button data-mode="cpu" class="selected" aria-pressed="true">VS KOMPYUTER</button><button data-mode="local" aria-pressed="false">2 O‘YINCHI</button></div><div class="difficulty-row"><label for="difficulty">QIYINLIK</label><select id="difficulty"><option value="easy">Oson</option><option value="normal" selected>O‘rtacha</option><option value="hard">Qiyin</option></select></div><div class="opponent-row"><label for="opponent">RAQIB</label><select id="opponent"><option value="ember">EMBER</option><option value="ghost">GHOST</option><option value="volt">VOLT</option></select></div></div>
+      <div class="setup-panel"><div class="section-label"><span>03</span><h2>ARENA</h2></div><div class="arena-options" id="arena-options"><button data-arena="city" class="arena-choice selected" aria-pressed="true"><span class="arena-thumb city-thumb"></span><span>Midnight district<small>NEON CITY</small></span><span class="choice-dot"></span></button><button data-arena="temple" class="arena-choice" aria-pressed="false"><span class="arena-thumb temple-thumb"></span><span>Crimson shrine<small>ANCIENT TEMPLE</small></span><span class="choice-dot"></span></button><button data-arena="void" class="arena-choice" aria-pressed="false"><span class="arena-thumb void-thumb"></span><span>Zero gravity<small>ORBITAL STATION</small></span><span class="choice-dot"></span></button></div></div>
+    </section>
+    <section class="bottom-strip"><span class="strip-symbol">✳</span><p>LESS TALK.<br><strong>MORE FIGHT.</strong></p><div class="stat"><b id="stat-matches">00</b><span>JANG</span></div><div class="stat"><b id="stat-wins">00</b><span>G‘ALABA</span></div><div class="strip-note">No downloads. No paywalls.<br>Just a good old-fashioned showdown.</div></section>
+  </main>
+  <footer><a class="footer-brand" href="./">NEON CLASH<span>®</span></a><span>PYTHON POWERED. ARCADE INSPIRED.</span><span>MADE FOR THE LOVE OF THE GAME <span class="lime">↗</span></span></footer>
+  <dialog id="help-dialog"><button class="close-dialog" aria-label="Yopish">×</button><p class="eyebrow">KNOW YOUR MOVES</p><h2>BOSHQARUV</h2><div class="help-grid"><div><h3>1-O‘YINCHI</h3><p><kbd>A / D</kbd> Yurish</p><p><kbd>W</kbd> Sakrash</p><p><kbd>J</kbd> Musht</p><p><kbd>K</kbd> Tepik</p><p><kbd>L</kbd> Maxsus zarba</p><p><kbd>S</kbd> Himoya</p></div><div><h3>2-O‘YINCHI</h3><p><kbd>← / →</kbd> Yurish</p><p><kbd>↑</kbd> Sakrash</p><p><kbd>1</kbd> Musht</p><p><kbd>2</kbd> Tepik</p><p><kbd>3</kbd> Maxsus zarba</p><p><kbd>↓</kbd> Himoya</p></div></div><p class="help-note">2 raund yutgan jangchi g‘olib. Maxsus zarba uchun 35 energiya kerak. Zarba berish va himoyalanish energiya yig‘adi. Har bir zarba uchun tugmani qayta bosing.</p><p class="help-note">P / Esc — pauza · F — to‘liq ekran. Gamepad: strelkalar / chap stik — yurish, A — sakrash, X — musht, Y — tepik, B — maxsus, LB — himoya, Start — pauza. Mobil: ekrandagi tugmalar. Ikki kishilik rejim uchun klaviatura yoki ikkinchi gamepad kerak.</p></dialog>
+  <dialog id="settings-dialog"><button class="close-dialog" aria-label="Yopish">×</button><p class="eyebrow">MAKE IT YOURS</p><h2>SOZLAMALAR</h2><label class="setting-row" for="volume">Ovoz balandligi <input id="volume" type="range" min="0" max="100" value="65"></label><label class="setting-row" for="music">Musiqa <input id="music" type="checkbox" checked></label><label class="setting-row" for="effects">Ekran tebranishi <input id="effects" type="checkbox" checked></label><p class="help-note">Sozlamalar avtomatik saqlanadi. Ovoz brauzer qoidalariga ko‘ra birinchi bosishdan keyin boshlanadi.</p></dialog>
+  <noscript><p class="noscript">O‘ynash uchun brauzeringizda JavaScript’ni yoqing.</p></noscript>
+  <script src="./vendor/pyodide/pyodide.js" defer></script>
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>
