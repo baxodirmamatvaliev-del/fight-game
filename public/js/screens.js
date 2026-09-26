@@ -2,7 +2,7 @@ import {fighters} from './fighters.js';
 const $=s=>document.querySelector(s);
 export class Screens {
   constructor(callbacks){this.callbacks=callbacks;$('#pause-button').addEventListener('click',callbacks.pause);$('#resume-button').addEventListener('click',callbacks.pause);$('#quit-button').addEventListener('click',callbacks.menu);$('#menu-button').addEventListener('click',callbacks.menu);$('#rematch-button').addEventListener('click',callbacks.start);}
-  start(){this.hideOverlays();$('#lobby').hidden=true;$('#pause-button').hidden=false;$('#touch-controls').hidden=!matchMedia('(pointer:coarse)').matches;document.querySelectorAll('.arena-corner').forEach(el=>el.hidden=true);}
+  start(){this.hideOverlays();$('#lobby').hidden=true;$('#pause-button').hidden=false;$('#touch-controls').hidden=!(matchMedia('(pointer:coarse)').matches||navigator.maxTouchPoints>0||document.documentElement.classList.contains('touch-device'));document.querySelectorAll('.arena-corner').forEach(el=>el.hidden=true);}
   hideOverlays(){$('#pause-screen').hidden=true;$('#result-screen').hidden=true;}
   pause(value){$('#pause-screen').hidden=!value;if(value)$('#resume-button').focus({preventScroll:true});}
   menu(){this.hideOverlays();$('#lobby').hidden=false;$('#pause-button').hidden=true;$('#touch-controls').hidden=true;document.querySelectorAll('.arena-corner').forEach(el=>el.hidden=false);}
