@@ -1,1 +1,72 @@
-.touch-controls{display:flex;justify-content:space-between;gap:10px;background:#151d16;padding:12px 10px;border-top:1px solid #38442c;user-select:none;-webkit-user-select:none}.touch-move,.touch-actions{display:flex;align-items:center;gap:5px}.touch-controls button{touch-action:none;background:#293624;border:1px solid #52653b;border-bottom-width:3px;border-radius:5px;min-width:38px;min-height:43px;font-size:9px;font-weight:700;color:#e9f1de;padding:7px}.touch-controls .touch-move button{font-size:17px;min-width:42px}.touch-controls button.pressed{background:var(--lime);color:#101510;border-color:#86bd34;transform:translateY(1px)}.touch-controls .touch-special{color:var(--lime);border-color:#87b74f}.touch-controls .touch-special.pressed{color:#111}.touch-controls button:focus{outline:none}@media(max-width:380px){.touch-controls{padding:9px 6px;gap:5px}.touch-controls button{min-width:32px;min-height:38px;padding:5px;font-size:7px}.touch-controls .touch-move button{min-width:35px;font-size:15px}.touch-move,.touch-actions{gap:4px}}
+.touch-controls {
+  display: grid;
+  grid-template-columns: minmax(0, .85fr) minmax(0, 1.35fr);
+  justify-content: space-between;
+  gap: 10px;
+  background: #151d16;
+  padding: 12px 10px;
+  border-top: 1px solid #38442c;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.touch-move,
+.touch-actions {
+  display: grid;
+  align-items: center;
+  gap: 5px;
+}
+.touch-move { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.touch-actions { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.touch-controls button {
+  touch-action: none;
+  background: #293624;
+  border: 1px solid #52653b;
+  border-bottom-width: 3px;
+  border-radius: 5px;
+  min-width: 0;
+  min-height: 43px;
+  font-size: 7px;
+  font-weight: 700;
+  color: #e9f1de;
+  padding: 7px 3px;
+}
+.touch-controls .touch-move button {
+  font-size: 17px;
+  min-width: 0;
+}
+.touch-controls button.pressed {
+  background: var(--lime);
+  color: #101510;
+  border-color: #86bd34;
+  transform: translateY(1px);
+}
+.touch-controls .touch-special {
+  color: var(--lime);
+  border-color: #87b74f;
+}
+.touch-controls .touch-special.pressed {
+  color: #111;
+}
+.touch-controls button:focus {
+  outline: none;
+}
+@media (max-width: 380px) {
+  .touch-controls {
+    padding: 9px 6px;
+    gap: 5px;
+  }
+  .touch-controls button {
+    min-width: 0;
+    min-height: 38px;
+    padding: 5px;
+    font-size: 7px;
+  }
+  .touch-controls .touch-move button {
+    min-width: 0;
+    font-size: 15px;
+  }
+  .touch-move,
+  .touch-actions {
+    gap: 4px;
+  }
+}

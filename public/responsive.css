@@ -1,6 +1,421 @@
-@media(min-width:1600px){.topbar{padding:0 calc((100vw - 1296px)/2)}main{padding-left:72px;padding-right:72px}footer{padding-left:72px;padding-right:72px}}
-@media(max-width:1000px){.topbar{gap:15px;height:75px}.topbar nav{gap:17px}.edition{display:none}.setup-grid{gap:18px;grid-template-columns:1.25fr .85fr 1fr}.section-label .dim{display:none}.arena-bottomline{font-size:6px;gap:8px}.arena-bottomline button{font-size:6px}.arena-bottomline>span{gap:3px}.fighter-card canvas{height:85px}.fighter-card .fighter-label{padding:7px}.fighter-card small{font-size:5px}.intro{padding-top:30px}}
-@media(max-width:720px){main{padding:0 4%}.topbar{height:65px;padding:0 4%;gap:12px}.brand{font-size:16px}.brand-mark{width:28px;height:28px;font-size:20px;margin-right:8px}.brand-mark span{font-size:25px}.topbar nav{margin-left:auto}.topbar nav a,.topbar nav button:first-of-type{display:none}.topbar nav button:last-child{font-size:8px}.sound-button{padding:6px 8px;font-size:15px}.sound-button span{display:none}.intro{padding:25px 0}.intro h1{font-size:54px}.eyebrow{font-size:7px;letter-spacing:1.6px}.intro-copy{font-size:10px;margin-top:7px}.intro-aside{display:none}.arena-topline{font-size:6px;padding:9px 10px;letter-spacing:.5px}.arena-topline #mode-label{font-size:5px}.stage{aspect-ratio:1200/700}.stage canvas{object-fit:fill}.lobby-kicker{font-size:5px;letter-spacing:2px;margin-bottom:7px}.game-logo{font-size:76px;letter-spacing:-2px}.logo-star{font-size:22px;right:-22px}.lobby>p{font-size:7px;margin:13px 0}.primary-button{min-width:180px;padding:11px 13px;font-size:8px}.primary-button span:last-child{font-size:14px}.load-status{font-size:6px;margin-top:7px}.arena-corner{font-size:5px;bottom:13px;letter-spacing:.5px}.arena-corner span{font-size:4px}.arena-corner.left{left:10px}.arena-corner.right{right:10px}.fullscreen-button{font-size:17px;right:5px;bottom:2px}.arena-bottomline{padding:8px 10px}.arena-bottomline>span:nth-child(2){display:none}.arena-bottomline>span{font-size:6px}.keycap{min-width:14px;font-size:6px;padding:2px}.setup-grid{grid-template-columns:1fr 1fr;gap:24px 16px;margin-top:24px}.setup-panel:first-child{grid-column:1/-1}.section-label{margin-bottom:10px}.section-label h2{font-size:9px}.section-label .dim{display:block}.fighter-card canvas{height:105px}.fighter-card strong{font-size:21px}.fighter-card small{font-size:7px}.fighter-card .fighter-label{padding:10px}.arena-choice{padding:6px;gap:6px;font-size:8px}.arena-choice small{font-size:5px}.arena-thumb{width:35px;height:27px}.segmented button{font-size:6px;padding:13px 4px}.difficulty-row,.opponent-row{font-size:7px;letter-spacing:.4px}.bottom-strip{margin-top:25px;padding:18px 0;gap:15px}.strip-symbol{font-size:32px}.bottom-strip>p{font-size:17px}.stat{padding-left:15px;gap:5px}.stat b{font-size:29px}.stat span{font-size:6px}.strip-note{display:none}footer{padding:20px 4%;font-size:5px;letter-spacing:.5px}footer>span:last-child{display:none}.hud{inset:10px 13px auto;gap:9px;grid-template-columns:1fr 48px 1fr}.hud-name{margin-bottom:3px}.hud-name strong{font-size:16px}.hud-name span{font-size:5px}.health-track{height:9px}.hud-sub{margin-top:4px}.round-dots{gap:4px}.round-dots i{width:5px;height:5px}.hud-round{font-size:5px;letter-spacing:.6px}.hud-timer{font-size:25px}.hud-versus{font-size:11px}.energy-label{font-size:4px;letter-spacing:.5px;margin-top:4px}.combo-label{font-size:18px;top:72px}.announcement{font-size:39px}.announcement small{font-size:6px;letter-spacing:1.4px;margin-bottom:7px}.stage-button{top:67px;right:6px;width:22px;height:22px;font-size:10px}dialog{padding:26px 22px}dialog h2{font-size:32px}.help-grid{gap:12px}.help-grid p{font-size:10px}.help-grid kbd{min-width:44px;font-size:7px;margin-right:5px}.help-note{font-size:10px}}
-@media(max-width:400px){.intro h1{font-size:45px}.game-logo{font-size:62px}.lobby>p{font-size:6px;margin:10px 0}.lobby .primary-button{padding:9px 12px;min-width:155px}.arena-topline #mode-label{display:none}.arena-corner{display:none}.setup-grid{gap:20px 12px}.section-label .dim{font-size:6px}.segmented button{font-size:5px}.arena-choice{font-size:7px}.arena-thumb{width:27px}.choice-dot{width:5px;height:5px}}
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
-.stage:fullscreen{width:100vw;height:100vh;background:#090e22;aspect-ratio:auto;display:grid;place-items:center}.stage:fullscreen canvas{width:100%;height:100%;object-fit:contain}.stage:fullscreen .lobby{background:#090e2299}.stage:fullscreen .hud{max-width:1400px;margin-left:auto;margin-right:auto}.stage:fullscreen .arena-corner{display:none}
+@media (min-width: 1600px) {
+  .topbar {
+    padding: 0 calc((100vw - 1296px) / 2);
+  }
+  main {
+    padding-left: 72px;
+    padding-right: 72px;
+  }
+  footer {
+    padding-left: 72px;
+    padding-right: 72px;
+  }
+}
+@media (max-width: 1000px) {
+  .topbar {
+    gap: 15px;
+    height: 75px;
+  }
+  .topbar nav {
+    gap: 17px;
+  }
+  .edition {
+    display: none;
+  }
+  .setup-grid {
+    gap: 18px;
+    grid-template-columns: 1.25fr 0.85fr 1fr;
+  }
+  .section-label .dim {
+    display: none;
+  }
+  .arena-bottomline {
+    font-size: 6px;
+    gap: 8px;
+  }
+  .arena-bottomline button {
+    font-size: 6px;
+  }
+  .arena-bottomline > span {
+    gap: 3px;
+  }
+  .fighter-card canvas {
+    height: 85px;
+  }
+  .fighter-card .fighter-label {
+    padding: 7px;
+  }
+  .fighter-card small {
+    font-size: 5px;
+  }
+  .intro {
+    padding-top: 30px;
+  }
+}
+@media (max-width: 720px) {
+  main {
+    padding: 0 4%;
+  }
+  .topbar {
+    height: 65px;
+    padding: 0 4%;
+    gap: 12px;
+  }
+  .brand {
+    font-size: 16px;
+  }
+  .brand-mark {
+    width: 28px;
+    height: 28px;
+    font-size: 20px;
+    margin-right: 8px;
+  }
+  .brand-mark span {
+    font-size: 25px;
+  }
+  .topbar nav {
+    margin-left: auto;
+  }
+  .topbar nav a,
+  .topbar nav button:first-of-type {
+    display: none;
+  }
+  .topbar nav button:last-child {
+    font-size: 8px;
+  }
+  .sound-button {
+    padding: 6px 8px;
+    font-size: 15px;
+  }
+  .sound-button span {
+    display: none;
+  }
+  .intro {
+    padding: 25px 0;
+  }
+  .intro h1 {
+    font-size: 54px;
+  }
+  .eyebrow {
+    font-size: 7px;
+    letter-spacing: 1.6px;
+  }
+  .intro-copy {
+    font-size: 10px;
+    margin-top: 7px;
+  }
+  .intro-aside {
+    display: none;
+  }
+  .arena-topline {
+    font-size: 6px;
+    padding: 9px 10px;
+    letter-spacing: 0.5px;
+  }
+  .arena-topline #mode-label {
+    font-size: 5px;
+  }
+  .stage {
+    aspect-ratio: 1200/700;
+  }
+  .stage canvas {
+    object-fit: fill;
+  }
+  .lobby-kicker {
+    font-size: 5px;
+    letter-spacing: 2px;
+    margin-bottom: 7px;
+  }
+  .game-logo {
+    font-size: 76px;
+    letter-spacing: -2px;
+  }
+  .logo-star {
+    font-size: 22px;
+    right: -22px;
+  }
+  .lobby > p {
+    font-size: 7px;
+    margin: 13px 0;
+  }
+  .primary-button {
+    min-width: 180px;
+    padding: 11px 13px;
+    font-size: 8px;
+  }
+  .primary-button span:last-child {
+    font-size: 14px;
+  }
+  .load-status {
+    font-size: 6px;
+    margin-top: 7px;
+  }
+  .arena-corner {
+    font-size: 5px;
+    bottom: 13px;
+    letter-spacing: 0.5px;
+  }
+  .arena-corner span {
+    font-size: 4px;
+  }
+  .arena-corner.left {
+    left: 10px;
+  }
+  .arena-corner.right {
+    right: 10px;
+  }
+  .fullscreen-button {
+    font-size: 17px;
+    right: 5px;
+    bottom: 2px;
+  }
+  .arena-bottomline {
+    padding: 8px 10px;
+  }
+  .arena-bottomline > span:nth-child(2) {
+    display: none;
+  }
+  .arena-bottomline > span {
+    font-size: 6px;
+  }
+  .keycap {
+    min-width: 14px;
+    font-size: 6px;
+    padding: 2px;
+  }
+  .setup-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px 16px;
+    margin-top: 24px;
+  }
+  .setup-panel:first-child {
+    grid-column: 1/-1;
+  }
+  .section-label {
+    margin-bottom: 10px;
+  }
+  .section-label h2 {
+    font-size: 9px;
+  }
+  .section-label .dim {
+    display: block;
+  }
+  .fighter-card canvas {
+    height: 105px;
+  }
+  .fighter-card strong {
+    font-size: 21px;
+  }
+  .fighter-card small {
+    font-size: 7px;
+  }
+  .fighter-card .fighter-label {
+    padding: 10px;
+  }
+  .arena-choice {
+    padding: 6px;
+    gap: 6px;
+    font-size: 8px;
+  }
+  .arena-choice small {
+    font-size: 5px;
+  }
+  .arena-thumb {
+    width: 35px;
+    height: 27px;
+  }
+  .segmented button {
+    font-size: 6px;
+    padding: 13px 4px;
+  }
+  .difficulty-row,
+  .opponent-row {
+    font-size: 7px;
+    letter-spacing: 0.4px;
+  }
+  .bottom-strip {
+    margin-top: 25px;
+    padding: 18px 0;
+    gap: 15px;
+  }
+  .strip-symbol {
+    font-size: 32px;
+  }
+  .bottom-strip > p {
+    font-size: 17px;
+  }
+  .stat {
+    padding-left: 15px;
+    gap: 5px;
+  }
+  .stat b {
+    font-size: 29px;
+  }
+  .stat span {
+    font-size: 6px;
+  }
+  .strip-note {
+    display: none;
+  }
+  footer {
+    padding: 20px 4%;
+    font-size: 5px;
+    letter-spacing: 0.5px;
+  }
+  footer > span:last-child {
+    display: none;
+  }
+  .hud {
+    inset: 10px 13px auto;
+    gap: 9px;
+    grid-template-columns: 1fr 48px 1fr;
+  }
+  .hud-name {
+    margin-bottom: 3px;
+  }
+  .hud-name strong {
+    font-size: 16px;
+  }
+  .hud-name span {
+    font-size: 5px;
+  }
+  .health-track {
+    height: 9px;
+  }
+  .hud-sub {
+    margin-top: 4px;
+  }
+  .round-dots {
+    gap: 4px;
+  }
+  .round-dots i {
+    width: 5px;
+    height: 5px;
+  }
+  .hud-round {
+    font-size: 5px;
+    letter-spacing: 0.6px;
+  }
+  .hud-timer {
+    font-size: 25px;
+  }
+  .hud-versus {
+    font-size: 11px;
+  }
+  .energy-label {
+    font-size: 4px;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+  }
+  .combo-label {
+    font-size: 18px;
+    top: 72px;
+  }
+  .announcement {
+    font-size: 39px;
+  }
+  .announcement small {
+    font-size: 6px;
+    letter-spacing: 1.4px;
+    margin-bottom: 7px;
+  }
+  .stage-button {
+    top: 67px;
+    right: 6px;
+    width: 22px;
+    height: 22px;
+    font-size: 10px;
+  }
+  dialog {
+    padding: 26px 22px;
+  }
+  dialog h2 {
+    font-size: 32px;
+  }
+  .help-grid {
+    gap: 12px;
+  }
+  .help-grid p {
+    font-size: 10px;
+  }
+  .help-grid kbd {
+    min-width: 44px;
+    font-size: 7px;
+    margin-right: 5px;
+  }
+  .help-note {
+    font-size: 10px;
+  }
+}
+@media (max-width: 400px) {
+  .intro h1 {
+    font-size: 45px;
+  }
+  .game-logo {
+    font-size: 62px;
+  }
+  .lobby > p {
+    font-size: 6px;
+    margin: 10px 0;
+  }
+  .lobby .primary-button {
+    padding: 9px 12px;
+    min-width: 155px;
+  }
+  .arena-topline #mode-label {
+    display: none;
+  }
+  .arena-corner {
+    display: none;
+  }
+  .setup-grid {
+    gap: 20px 12px;
+  }
+  .section-label .dim {
+    font-size: 6px;
+  }
+  .segmented button {
+    font-size: 5px;
+  }
+  .arena-choice {
+    font-size: 7px;
+  }
+  .arena-thumb {
+    width: 27px;
+  }
+  .choice-dot {
+    width: 5px;
+    height: 5px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
+.stage:fullscreen {
+  width: 100vw;
+  height: 100vh;
+  background: #090e22;
+  aspect-ratio: auto;
+  display: grid;
+  place-items: center;
+}
+.stage:fullscreen canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.stage:fullscreen .lobby {
+  background: #090e2299;
+}
+.stage:fullscreen .hud {
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.stage:fullscreen .arena-corner {
+  display: none;
+}
