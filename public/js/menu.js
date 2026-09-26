@@ -45,7 +45,7 @@ export function setupMenu({
       button.classList.toggle("selected", chosen);
       button.setAttribute("aria-pressed", String(chosen));
     });
-    $("#difficulty").disabled = options.mode === "local";
+    $("#difficulty").disabled = options.mode !== "cpu";
     $("#difficulty").value = options.difficulty;
     $("#opponent").value = options.p2;
   }

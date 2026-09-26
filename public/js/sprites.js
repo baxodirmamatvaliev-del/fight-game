@@ -48,12 +48,17 @@ export const spriteReady = Promise.all(
                   total += x;
                   count++;
                 }
-      frames.push({
+            frames.push({
               left,
               right,
               top,
               bottom,
-        anchor: frame === 4 ? left + (right-left)*.22 : count ? total / count : (left + right) / 2,
+              anchor:
+                frame === 4
+                  ? left + (right - left) * 0.22
+                  : count
+                    ? total / count
+                    : (left + right) / 2,
             });
           }
           if (frames[0].bottom > frames[0].top)
@@ -94,6 +99,8 @@ export function drawSprite(ctx, f, time, scale = 1, portrait = false) {
   ctx.save();
   ctx.translate(f.x, f.y);
   ctx.scale(scale, scale);
+  if (!portrait && f.y >= 534 && f.action === "idle")
+    ctx.translate(0, Math.sin(time * 2.6) * 1.2);
   if (!portrait) {
     ctx.fillStyle = "#0009";
     ctx.beginPath();

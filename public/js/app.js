@@ -12,6 +12,7 @@ import { setupTouch } from "./touch.js";
 import { Screens } from "./screens.js";
 import { Controls } from "./controls.js";
 import { loadedSprites } from "./sprites.js";
+import { Training } from "./training.js";
 
 const $ = (selector) => document.querySelector(selector);
 const canvas = $("#game"),
@@ -36,7 +37,8 @@ let state = null,
   resultSaved = false,
   accumulator = 0,
   last = 0,
-  visualTime = 0;
+  visualTime = 0,
+  hitStop = 0;
 const options = {
   p1: prefs.p1,
   p2: prefs.p2,
@@ -72,6 +74,7 @@ const screens = new Screens({
   menu: () => menu(),
 });
 const controls = new Controls();
+const training = new Training();
 setupTouch(input);
 function savePreferences() {
   store.savePreferences({
@@ -101,9 +104,11 @@ setupMenu({
     savePreferences();
     $("#arena-label").textContent = arenaNames[options.arena];
     $("#mode-label").textContent =
-      options.mode === "cpu"
-        ? "ARCADE MODE / PLAYER VS CPU"
-        : "LOCAL MODE / PLAYER VS PLAYER";
+      options.mode === "practice"
+        ? "MASHQ / RAQIB HUJUM QILMAYDI"
+        : options.mode === "cpu"
+          ? "ARCADE MODE / PLAYER VS CPU"
+          : "LOCAL MODE / PLAYER VS PLAYER";
   },
   onSelect: () => {
     audio.unlock().then(() => {
@@ -139,6 +144,17 @@ $("#guide-start").addEventListener("click", () => {
   start();
 });
 $("#guide-cancel").addEventListener("click", () => $("#guide-dialog").close());
+$("#guide-practice").addEventListener("click", () => {
+  $("#guide-dialog").close();
+  $('[data-mode="practice"]').click();
+  start();
+});
+$("#training-reset").addEventListener("click", () => start());
+$("#training-fight").addEventListener("click", () => {
+  menu();
+  $('[data-mode="cpu"]').click();
+  controls.guide(options);
+});
 $("#retry-button").addEventListener("click", () => location.reload());
 document.addEventListener("visibilitychange", () => {
   if (document.hidden && running && !paused) pause(true);
@@ -161,13 +177,15 @@ async function start() {
   paused = false;
   resultSaved = false;
   accumulator = 0;
+  hitStop = 0;
   input.enabled = true;
   input.clear();
   particles.clear();
   screens.start();
   hud.show();
   hud.update(state, options);
-  music.intense = true;
+  training.update(state);
+  music.intense = options.mode !== "practice";
   music.start();
   canvas.focus({ preventScroll: true });
   $("#arena").scrollIntoView({
@@ -182,6 +200,8 @@ function menu() {
   input.enabled = false;
   input.clear();
   state = null;
+  hitStop = 0;
+  training.update(null);
   particles.clear();
   hud.hide();
   screens.menu();
@@ -195,6 +215,8 @@ function processEvents() {
     audio.play(event.type);
     if (["hit", "block", "special"].includes(event.type))
       particles.burst(event);
+    if (event.type === "hit" && !particles.reduced)
+      hitStop = event.special ? 0.065 : 0.04;
   }
   if (state.phase === "match_over" && !resultSaved) {
     resultSaved = true;
@@ -207,17 +229,25 @@ function processEvents() {
 function frame(timestamp) {
   const elapsed = last ? Math.min((timestamp - last) / 1000, 0.075) : 0;
   last = timestamp;
-  visualTime += elapsed;
+  if (!running || (!paused && hitStop <= 0)) visualTime += elapsed;
   try {
     if (running && !paused && state.phase !== "match_over") {
-      accumulator += elapsed;
+      if (hitStop > 0) {
+        hitStop = Math.max(0, hitStop - elapsed);
+        accumulator = 0;
+      } else accumulator += elapsed;
       let steps = 0;
       while (accumulator >= 1 / 60 && steps++ < 5) {
         state = engine.tick(1 / 60, input.read());
         processEvents();
         accumulator -= 1 / 60;
+        if (hitStop > 0) {
+          accumulator = 0;
+          break;
+        }
       }
       hud.update(state, options);
+      training.update(state);
     }
     particles.update(paused ? 0 : elapsed);
     ctx.save();

@@ -41,6 +41,10 @@ On touch devices, on-screen controls support simultaneous movement and attacks. 
 
 CPU has easy, normal and hard difficulty. Preferences and CPU match statistics save locally in the browser. No data is uploaded. Audio starts after your first interaction, following browser autoplay rules. Music, volume and screen shake can be adjusted; reduced-motion preferences are respected.
 
+**Mashq rejimi** teaches seven actions with live progress. Choose it in the mode panel or select **Avval mashq qilish** in the initial control guide. The dummy does not attack, time is unlimited, energy refills and the dummy recovers health. The guide in the arena suggests the next action; the checklist below the arena marks actions that the Python game has actually accepted. You can reset the practice or move directly to a CPU match. Practice is excluded from match statistics.
+
+Successful hits briefly freeze the fighters to emphasize impact; idle fighters have subtle breathing motion. Disabling effects or requesting reduced motion disables the impact freeze.
+
 ## Architecture
 
 `public/python/` owns movement, collision, damage, blocking, energy, CPU decisions and rounds. This exact Python source runs in the browser using **Pyodide 0.27.7**. JavaScript handles Canvas graphics, keyboard/touch/gamepad input, Web Audio and menus. `serve.py` is a Python development server, not an online multiplayer backend.
@@ -65,6 +69,7 @@ npm test
 npm run build
 # With the development server running:
 npm run test:browser
+npm run test:practice
 ```
 
 Browser tests use installed Google Chrome on macOS. On other platforms run `npx playwright install chromium`, or set `CHROME_PATH` to your browser executable. Screenshots go to ignored `test-results/`. The browser suite verifies startup, real Python combat, audio activation, fighter/arena selection, dialogs, pause, a complete match, rematch, persistence, mobile layout and touch movement.

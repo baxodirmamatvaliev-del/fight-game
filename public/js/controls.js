@@ -53,6 +53,19 @@ export class Controls {
     );
   }
   render(options) {
+    const practicing = options.mode === "practice";
+    document.querySelector("#controls-tip").innerHTML = practicing
+      ? "<strong>Mashq:</strong> vaqt cheklanmagan, energiya tiklanadi, raqib hujum qilmaydi. Har bir zarba uchun tugmani qayta bosing. <strong>P / Esc:</strong> pauza."
+      : "<strong>G‘alaba:</strong> 2 raund yuting. <strong>Maxsus zarba:</strong> kamida 35 energiya. Har bir zarba uchun tugmani qayta bosing. <strong>P / Esc:</strong> pauza.";
+    document.querySelector("#guide-rules").innerHTML = practicing
+      ? "<span><b>VAQT CHEKLANMAGAN</b> shoshilmasdan o‘rganing</span><span><b>ENERGIYA TIKLANADI</b> maxsus zarbani sinang</span><span><b>RAQIB HUJUM QILMAYDI</b> xavfsiz mashq qiling</span>"
+      : "<span><b>2 RAUND</b> yutgan jangchi g‘olib</span><span><b>35 ENERGIYA</b> maxsus zarba uchun</span><span><b>P / ESC</b> pauza qilish uchun</span>";
+    document.querySelector("#guide-start").innerHTML =
+      options.mode === "practice"
+        ? "MASHQNI BOSHLASH <span>→</span>"
+        : "TUSHUNDIM — JANGGA KIRISH <span>→</span>";
+    document.querySelector("#guide-practice").hidden =
+      options.mode === "practice";
     this.mode = options.mode;
     document.querySelector("#visible-controls").innerHTML = this.markup(
       options.mode,

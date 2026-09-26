@@ -21,7 +21,13 @@ export class HUD {
       el.style.setProperty("--fighter-color", def.color);
       el.querySelector("strong").textContent = def.name;
       el.querySelector(".hud-name span").textContent =
-        i === 0 ? "PLAYER 01" : options.mode === "cpu" ? "CPU" : "PLAYER 02";
+        i === 0
+          ? "PLAYER 01"
+          : options.mode === "practice"
+            ? "MASHQ RAQIBI"
+            : options.mode === "cpu"
+              ? "CPU"
+              : "PLAYER 02";
       const health = el.querySelector(".health-fill");
       health.style.transform = `scaleX(${f.health / 100})`;
       health.classList.toggle("critical", f.health < 25);
@@ -42,10 +48,11 @@ export class HUD {
           : `${Math.floor(f.energy)} / 35 ENERGY`;
     });
     this.element.querySelector(".hud-round").textContent =
-      `ROUND ${state.round}`;
-    this.element.querySelector(".hud-timer").textContent = String(
-      Math.ceil(state.remaining),
-    ).padStart(2, "0");
+      options.mode === "practice" ? "MASHQ" : `ROUND ${state.round}`;
+    this.element.querySelector(".hud-timer").textContent =
+      options.mode === "practice"
+        ? "∞"
+        : String(Math.ceil(state.remaining)).padStart(2, "0");
     const a = this.announcement;
     a.className = "announcement";
     if (state.phase === "countdown") {

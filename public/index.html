@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="./touch.css" />
     <link rel="stylesheet" href="./screens.css" />
     <link rel="stylesheet" href="./refinement.css" />
+    <link rel="stylesheet" href="./training.css" />
   </head>
   <body>
     <header class="topbar">
@@ -80,6 +81,9 @@
           ></canvas>
           <div id="hud" class="hud" hidden></div>
           <div id="announcement" class="announcement" aria-live="polite"></div>
+          <div id="training-cue" class="training-cue" hidden>
+            <span>MASHQ</span><strong id="training-cue-goal"></strong>
+          </div>
           <div id="lobby" class="lobby">
             <div class="lobby-kicker">YEROSTI JANG MAYDONI</div>
             <div class="game-logo">
@@ -178,6 +182,31 @@
         </div>
       </section>
       <section
+        id="training-panel"
+        class="training-panel"
+        hidden
+        aria-label="Mashq natijalari"
+      >
+        <div class="training-title">
+          <p class="eyebrow">MASHQ REJIMI · VAQT CHEKLANMAGAN</p>
+          <span id="training-progress">0 / 7 HARAKAT</span>
+        </div>
+        <h2 id="training-goal" role="status"></h2>
+        <p id="training-hint"></p>
+        <div id="training-checklist" class="training-checklist"></div>
+        <div class="training-buttons">
+          <button id="training-reset" class="secondary-button">
+            MASHQNI QAYTADAN BOSHLASH</button
+          ><button id="training-fight" class="primary-button">
+            KOMPYUTER BILAN JANG →
+          </button>
+        </div>
+        <p class="training-note">
+          Raqib hujum qilmaydi va joni tiklanadi. Mashq natijalari jang
+          statistikasiga qo‘shilmaydi.
+        </p>
+      </section>
+      <section
         class="controls-panel"
         aria-label="Harakatlar va ularning tugmalari"
       >
@@ -191,7 +220,7 @@
           >
         </div>
         <div id="visible-controls"></div>
-        <p class="controls-tip">
+        <p id="controls-tip" class="controls-tip">
           <strong>G‘alaba:</strong> 2 raund yuting.
           <strong>Maxsus zarba:</strong> kamida 35 energiya. Har bir zarba uchun
           tugmani qayta bosing. <strong>P / Esc:</strong> pauza.
@@ -220,6 +249,14 @@
               VS KOMPYUTER</button
             ><button data-mode="local" aria-pressed="false">2 O‘YINCHI</button>
           </div>
+          <button
+            data-mode="practice"
+            class="practice-mode-button"
+            aria-pressed="false"
+          >
+            <strong>MASHQ REJIMI</strong
+            ><span>TUGMALARNI AMALDA O‘RGANING →</span>
+          </button>
           <div class="difficulty-row">
             <label for="difficulty">QIYINLIK</label
             ><select id="difficulty">
@@ -301,7 +338,7 @@
         TELEFONDA: arenaning pastidagi ← / ↑ / →, HIMOYA, MUSHT, TEPIK va MAXSUS
         tugmalarini bosing.
       </p>
-      <div class="guide-rules">
+      <div id="guide-rules" class="guide-rules">
         <span><b>2 RAUND</b> yutgan jangchi g‘olib</span
         ><span><b>35 ENERGIYA</b> maxsus zarba uchun</span
         ><span><b>P / ESC</b> pauza qilish uchun</span>
@@ -313,6 +350,9 @@
       </p>
       <button id="guide-start" class="primary-button">
         TUSHUNDIM — JANGGA KIRISH <span>→</span>
+      </button>
+      <button id="guide-practice" class="secondary-button guide-practice">
+        AVVAL MASHQ QILISH — RAQIB HUJUM QILMAYDI
       </button>
     </dialog>
     <dialog id="help-dialog">

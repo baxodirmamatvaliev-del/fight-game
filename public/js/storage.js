@@ -32,7 +32,7 @@ export class Storage {
     for (const [key, choices] of Object.entries({
       p1: ["volt", "ember", "ghost"],
       p2: ["volt", "ember", "ghost"],
-      mode: ["cpu", "local"],
+      mode: ["cpu", "local", "practice"],
       difficulty: ["easy", "normal", "hard"],
       arena: ["city", "temple", "void"],
     }))

@@ -163,6 +163,50 @@ class GameplayTests(unittest.TestCase):
         self.assertEqual(match.phase, "match_over")
         self.assertIn(match.winner, (0, 1))
 
+    def test_practice_is_untimed_and_dummy_ignores_input(self):
+        match = Match(mode="practice")
+        self.assertEqual(match.phase, "fight")
+        start_x = match.fighters[1].x
+        for _ in range(120):
+            match.tick(1/60, [[], ["left", "punch", "special"]])
+        self.assertEqual(match.remaining, 60)
+        self.assertEqual(match.fighters[1].x, start_x)
+        self.assertEqual(match.fighters[0].health, 100)
+        self.assertFalse(match.projectiles)
+        self.assertEqual(match.snapshot()["training"]["completed"], [])
+
+    def test_practice_tracks_actual_seven_actions(self):
+        match = Match(mode="practice")
+        def run(keys, ticks):
+            for _ in range(ticks):
+                match.tick(1/60, [keys, []])
+        run(["left"], 15)
+        run(["right"], 35)
+        run(["jump"], 1)
+        run([], 70)
+        run(["block"], 5)
+        run([], 1)
+        run(["punch"], 1)
+        run([], 25)
+        run(["kick"], 1)
+        run([], 40)
+        run(["special"], 1)
+        run([], 50)
+        self.assertEqual(set(match.snapshot()["training"]["completed"]),
+                         {"left", "right", "jump", "block", "punch", "kick", "special"})
+        self.assertEqual(match.wins, [0, 0])
+        self.assertEqual(match.phase, "fight")
+
+    def test_practice_recovers_dummy_and_resets_progress(self):
+        match = Match(mode="practice")
+        match.fighters[1].health = 0
+        match.tick(1/60, [[], []])
+        self.assertEqual(match.fighters[1].health, 100)
+        self.assertEqual(match.phase, "fight")
+        match.tick(1/60, [["special"], []])
+        self.assertIn("special", match.completed)
+        self.assertEqual(Match(mode="practice").snapshot()["training"]["completed"], [])
+
 
 if __name__ == "__main__":
     unittest.main()

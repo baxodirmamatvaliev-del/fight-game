@@ -1,0 +1,197 @@
+.practice-mode-button {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+  margin-top: 10px;
+  padding: 13px 10px;
+  background: #262d34;
+  border: 1px solid #6b757f;
+  border-radius: 3px;
+  text-align: left;
+}
+.practice-mode-button strong {
+  font-size: 11px;
+  color: #e0c48c;
+  letter-spacing: 1px;
+}
+.practice-mode-button span {
+  font-size: 8px;
+  color: #c0c6ca;
+  letter-spacing: 0.4px;
+}
+.practice-mode-button.selected {
+  border-color: #c9aa63;
+  background: #3b352a;
+}
+.guide-practice {
+  width: 100%;
+  margin-top: 10px;
+  min-height: 44px;
+  background: #2a3139;
+  border-color: #77828a;
+  color: #ddd9ce;
+  font-size: 11px;
+}
+.training-panel {
+  margin-top: 20px;
+  padding: 22px 24px;
+  border: 1px solid #6b654e;
+  background: linear-gradient(135deg, #272b2b, #1a2025);
+}
+.training-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.training-title .eyebrow {
+  margin: 0;
+  font-size: 10px;
+}
+.training-title > span {
+  font-size: 10px;
+  color: #d1c6a7;
+  letter-spacing: 0.6px;
+}
+.training-panel h2 {
+  font-family: var(--display);
+  font-size: 34px;
+  letter-spacing: 0.6px;
+  margin: 14px 0 8px;
+  font-weight: 700;
+}
+.training-panel > p {
+  font-size: 13px;
+  color: #c4cacf;
+  line-height: 1.7;
+  margin: 0 0 15px;
+}
+.training-checklist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.training-step {
+  font-size: 11px;
+  color: #afb5bc;
+  padding: 8px 10px;
+  border: 1px solid #535c65;
+  background: #252e35;
+}
+.training-step.done {
+  color: #e6ce97;
+  border-color: #9b865a;
+  background: #423b2d;
+}
+.training-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 18px;
+}
+.training-buttons .secondary-button {
+  margin: 0;
+  font-size: 10px;
+  background: #232c34;
+}
+.training-buttons .primary-button {
+  font-size: 11px;
+}
+.training-buttons .primary-button.ready {
+  box-shadow: 0 0 20px #d2b06530;
+  outline: 1px solid #ecd498;
+  outline-offset: 3px;
+}
+.training-panel .training-note {
+  font-size: 10px;
+  margin: 15px 0 0;
+  color: #959fa7;
+}
+.training-cue {
+  position: absolute;
+  top: 118px;
+  left: 30%;
+  right: 30%;
+  z-index: 4;
+  text-align: center;
+  padding: 9px 13px;
+  border: 1px solid #b2a27455;
+  background: #0c131ce0;
+  pointer-events: none;
+}
+.training-cue span {
+  display: block;
+  color: #ad9d76;
+  font-size: 8px;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+.training-cue strong {
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.7px;
+  color: #f0dfb5;
+}
+@media (max-width: 720px) {
+  .training-panel {
+    padding: 18px 13px;
+  }
+  .training-title {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .training-panel h2 {
+    font-size: 28px;
+  }
+  .training-panel > p {
+    font-size: 11px;
+  }
+  .training-title .eyebrow {
+    font-size: 8px;
+  }
+  .training-title > span {
+    font-size: 9px;
+  }
+  .training-step {
+    font-size: 9px;
+    padding: 7px;
+  }
+  .training-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .training-buttons > button {
+    width: 100%;
+    min-width: 0;
+    font-size: 10px;
+  }
+  .guide-practice {
+    font-size: 8px;
+    min-width: 0;
+    padding: 10px;
+  }
+  .training-cue {
+    top: 68px;
+    left: 31%;
+    right: 31%;
+    padding: 5px 4px;
+  }
+  .training-cue span {
+    font-size: 5px;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+  }
+  .training-cue strong {
+    font-size: 12px;
+    letter-spacing: 0;
+  }
+  .practice-mode-button strong {
+    font-size: 9px;
+  }
+  .practice-mode-button span {
+    font-size: 6px;
+  }
+}
