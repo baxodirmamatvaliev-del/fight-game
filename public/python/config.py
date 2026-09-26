@@ -4,9 +4,9 @@ FLOOR = 535
 GRAVITY = 1900
 ROUND_SECONDS = 60
 FIGHTERS = {
-    "volt": {"name": "VOLT", "title": "The storm runner", "color": "#b5ff46", "speed": 305, "power": 1.0, "special": "Thunder bolt"},
-    "ember": {"name": "EMBER", "title": "Born from the fire", "color": "#ff7448", "speed": 275, "power": 1.12, "special": "Solar flare"},
-    "ghost": {"name": "GHOST", "title": "Now you see me", "color": "#ad8aff", "speed": 330, "power": .9, "special": "Phantom pulse"},
+    "volt": {"name": "VOLT", "title": "Muvozanatli jangchi", "color": "#c9aa63", "speed": 305, "power": 1.0, "special": "Thunder bolt"},
+    "ember": {"name": "EMBER", "title": "Kuchli zarbalar", "color": "#c65942", "speed": 275, "power": 1.12, "special": "Solar flare"},
+    "ghost": {"name": "GHOST", "title": "Tezkor harakat", "color": "#87a9bb", "speed": 330, "power": .9, "special": "Phantom pulse"},
 }
 ATTACKS = {
     "punch": {"duration": .32, "active": .10, "end": .21, "reach": 103, "damage": 7, "knock": 24},

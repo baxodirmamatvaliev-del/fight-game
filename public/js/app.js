@@ -10,6 +10,8 @@ import { Storage } from "./storage.js";
 import { setupMenu } from "./menu.js";
 import { setupTouch } from "./touch.js";
 import { Screens } from "./screens.js";
+import { Controls } from "./controls.js";
+import { loadedSprites } from "./sprites.js";
 
 const $ = (selector) => document.querySelector(selector);
 const canvas = $("#game"),
@@ -45,7 +47,7 @@ const options = {
 async function fullscreen() {
   try {
     if (document.fullscreenElement) await document.exitFullscreen();
-    else await $("#stage").requestFullscreen();
+    else await $("#arena").requestFullscreen();
   } catch {
     $("#load-status").textContent = "Bu brauzer to‘liq ekranni qo‘llamaydi.";
   }
@@ -69,6 +71,7 @@ const screens = new Screens({
   start: () => start(),
   menu: () => menu(),
 });
+const controls = new Controls();
 setupTouch(input);
 function savePreferences() {
   store.savePreferences({
@@ -94,6 +97,7 @@ setupMenu({
   options,
   prefs,
   onChange: () => {
+    controls.render(options);
     savePreferences();
     $("#arena-label").textContent = arenaNames[options.arena];
     $("#mode-label").textContent =
@@ -129,7 +133,12 @@ $("#sound-button").addEventListener("click", async () => {
   if (!paused) music.start();
 });
 $("#fullscreen-button").addEventListener("click", fullscreen);
-$("#start-button").addEventListener("click", () => start());
+$("#start-button").addEventListener("click", () => controls.guide(options));
+$("#guide-start").addEventListener("click", () => {
+  $("#guide-dialog").close();
+  start();
+});
+$("#guide-cancel").addEventListener("click", () => $("#guide-dialog").close());
 $("#retry-button").addEventListener("click", () => location.reload());
 document.addEventListener("visibilitychange", () => {
   if (document.hidden && running && !paused) pause(true);
@@ -271,6 +280,9 @@ engine
   });
 // Read-only inspection hook for automated browser gameplay checks.
 globalThis.neonClash = {
+  get artLoaded() {
+    return loadedSprites();
+  },
   get state() {
     return state;
   },

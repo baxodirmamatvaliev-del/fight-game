@@ -1,6 +1,6 @@
 # NEON CLASH
 
-A Python-powered 2D arcade fighting game. Original neon arenas, three animated fighters, synthesized sound effects and adaptive synthwave music. Play against the CPU or a friend on the same device.
+A Python-powered 2D fighting game. Cinematic foundry environments, three realistic pre-rendered fighters, synthesized sound effects and adaptive music. Play against the CPU or a friend on the same device. Before the fight, a control guide explains every key; the key map also remains visible below the arena and inside the desktop fight view.
 
 ## Play locally
 
@@ -35,9 +35,9 @@ On touch devices, on-screen controls support simultaneous movement and attacks. 
 - **Volt:** balanced fighter, electric green Thunder Bolt.
 - **Ember:** heavier damage, slower movement, orange Solar Flare.
 - **Ghost:** fastest movement, lighter damage, violet Phantom Pulse.
-- **Midnight District:** rainy neon skyline.
-- **Crimson Shrine:** moonlit temple and floating embers.
-- **Zero Gravity:** orbital station and a planet backdrop.
+- **Tungi zavod:** industrial foundry with warm furnace and cool overhead lights.
+- **Qizil pech:** warmer color grade of the foundry environment.
+- **Sovuq sektor:** cool color grade of the foundry environment.
 
 CPU has easy, normal and hard difficulty. Preferences and CPU match statistics save locally in the browser. No data is uploaded. Audio starts after your first interaction, following browser autoplay rules. Music, volume and screen shake can be adjusted; reduced-motion preferences are respected.
 
@@ -45,7 +45,7 @@ CPU has easy, normal and hard difficulty. Preferences and CPU match statistics s
 
 `public/python/` owns movement, collision, damage, blocking, energy, CPU decisions and rounds. This exact Python source runs in the browser using **Pyodide 0.27.7**. JavaScript handles Canvas graphics, keyboard/touch/gamepad input, Web Audio and menus. `serve.py` is a Python development server, not an online multiplayer backend.
 
-The deployed game is static: its Python runtime, fonts and all game assets are bundled locally. Original artwork is drawn procedurally; combat effects and music are synthesized in the browser. There are no Mortal Kombat assets.
+The deployed game is static: its Python runtime, fonts and all game assets are bundled locally. The foundry environment and eight-pose fighter atlases were generated with the built-in imagegen tool; Canvas selects and anchors the appropriate pose. A procedural fighter renderer provides a fallback. Combat effects and music are synthesized in the browser. There are no Mortal Kombat assets. See [docs/ART.md](docs/ART.md) for asset paths and prompts.
 
 ```text
 public/
@@ -77,4 +77,4 @@ The implementation is organized into **30 new commits on `develop`**. See [docs/
 
 ## Asset licenses
 
-Art, music and sound effects were created for this project. Barlow Condensed and DM Sans are distributed under the SIL Open Font License; license files are included in `public/fonts/`. Pyodide is an upstream open-source runtime and remains under its upstream license. See [THIRD_PARTY.md](THIRD_PARTY.md).
+Art, music and sound effects were created for this project, including generated fighter and arena artwork. Barlow Condensed and DM Sans are distributed under the SIL Open Font License; license files are included in `public/fonts/`. Pyodide is an upstream open-source runtime and remains under its upstream license. See [THIRD_PARTY.md](THIRD_PARTY.md).

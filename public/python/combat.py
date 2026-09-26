@@ -14,7 +14,7 @@ def damage(attacker, defender, amount, knock, events, special=False):
         defender.action = "hurt"
         attacker.combo += 1
         attacker.combo_time = 1.25
-    events.append({"type": "block" if blocked else "hit", "x": defender.x, "y": defender.y - 100,
+    events.append({"type": "block" if blocked else "hit", "x": defender.x, "y": defender.y - 155,
                    "color": attacker.stats["color"], "special": special, "combo": attacker.combo, "player": attacker.player})
 
 

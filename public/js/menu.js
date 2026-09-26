@@ -23,6 +23,10 @@ export function setupMenu({
       onChange();
       onSelect();
     });
+    window.addEventListener("fighter-art-ready", (event) => {
+      if (event.detail === kind)
+        drawPortrait(button.querySelector("canvas"), kind);
+    });
   }
   function render() {
     for (const button of container.children) {

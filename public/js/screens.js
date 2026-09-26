@@ -13,6 +13,7 @@ export class Screens {
     this.hideOverlays();
     $("#lobby").hidden = true;
     $("#pause-button").hidden = false;
+    $("#fight-quick-controls").hidden = false;
     $("#touch-controls").hidden = !(
       matchMedia("(pointer:coarse)").matches ||
       navigator.maxTouchPoints > 0 ||
@@ -34,6 +35,7 @@ export class Screens {
     this.hideOverlays();
     $("#lobby").hidden = false;
     $("#pause-button").hidden = true;
+    $("#fight-quick-controls").hidden = true;
     $("#touch-controls").hidden = true;
     document
       .querySelectorAll(".arena-corner")
@@ -43,6 +45,7 @@ export class Screens {
     const winner = fighters[state.fighters[state.winner].kind];
     $("#result-screen").hidden = false;
     $("#pause-button").hidden = true;
+    $("#fight-quick-controls").hidden = true;
     $("#touch-controls").hidden = true;
     $("#result-kicker").textContent =
       state.winner === 0

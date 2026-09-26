@@ -5,4 +5,4 @@
 - **DM Sans** — https://github.com/google/fonts/tree/main/ofl/dmsans — SIL Open Font License 1.1. Included notice: `public/fonts/DM-SANS-LICENSE.txt`.
 - **Playwright** — https://github.com/microsoft/playwright — Apache-2.0. Development and testing only; not shipped in the game.
 
-NEON CLASH's arenas, fighter drawings, music patterns and sound effects are original procedural assets. No copyrighted commercial fighting-game sprites, sounds, music or character names are included.
+NEON CLASH's foundry arena and realistic fighter atlases were generated for this project with the built-in imagegen tool. The procedural fallback fighter drawings, music patterns and sound effects are original code assets. Asset paths and generation prompts are recorded in `docs/ART.md`. No commercial fighting-game sprites, sounds, music or character names are included.

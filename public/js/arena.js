@@ -11,10 +11,12 @@ const palettes = {
   void: ["#080a22", "#29254d", "#ae7cff", "#6debff"],
 };
 export const arenaNames = {
-  city: "01 / MIDNIGHT DISTRICT",
-  temple: "02 / CRIMSON SHRINE",
-  void: "03 / ZERO GRAVITY",
+  city: "01 / TUNGI ZAVOD",
+  temple: "02 / QIZIL PECH",
+  void: "03 / SOVUQ SEKTOR",
 };
+const foundry = new Image();
+foundry.src = new URL("../assets/foundry-arena.png", import.meta.url).href;
 
 function glow(ctx, color, blur, fn) {
   ctx.save();
@@ -239,6 +241,31 @@ function voidArena(ctx, t) {
   });
 }
 export function drawArena(ctx, kind, t, reduced = false) {
+  if (foundry.complete && foundry.naturalWidth) {
+    ctx.save();
+    ctx.filter =
+      kind === "void"
+        ? "saturate(.45) hue-rotate(165deg)"
+        : kind === "temple"
+          ? "saturate(.9) sepia(.25)"
+          : "saturate(.7)";
+    ctx.drawImage(foundry, 0, 0, W, H);
+    ctx.restore();
+    const shade = ctx.createLinearGradient(0, 0, 0, H);
+    shade.addColorStop(0, "#03080dbb");
+    shade.addColorStop(0.45, "#03080d22");
+    shade.addColorStop(1, "#03080d66");
+    ctx.fillStyle = shade;
+    ctx.fillRect(0, 0, W, H);
+    if (!reduced)
+      for (let i = 0; i < 22; i++) {
+        const x = (rand(i + 10) * W + t * (8 + rand(i) * 11)) % W,
+          y = 300 + ((rand(i + 50) * 290 - t * 8) % 290);
+        ctx.fillStyle = kind === "void" ? "#acd0e040" : "#e7ab7440";
+        ctx.fillRect(x, y, 1.5, 1.5);
+      }
+    return;
+  }
   const p = palettes[kind] || palettes.city;
   const sky = ctx.createLinearGradient(0, 0, 0, H);
   sky.addColorStop(0, p[0]);

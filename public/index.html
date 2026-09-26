@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="./responsive.css" />
     <link rel="stylesheet" href="./touch.css" />
     <link rel="stylesheet" href="./screens.css" />
+    <link rel="stylesheet" href="./refinement.css" />
   </head>
   <body>
     <header class="topbar">
@@ -47,22 +48,24 @@
       <section class="intro">
         <div>
           <p class="eyebrow">
-            <span class="live-dot"></span> INSERT SKILL. NOT COINS.
+            <span class="live-dot"></span> YAKKAMA-YAKKA JANG
           </p>
-          <h1>OWN THE <span>NIGHT.</span></h1>
-          <p class="intro-copy">Shahar uxlamaydi. Jang endi boshlanadi.</p>
+          <h1>JANGGA <span>TAYYORMISIZ?</span></h1>
+          <p class="intro-copy">
+            Jangchini tanlang. Tugmalarni o‘rganing. Arenaga kiring.
+          </p>
         </div>
         <div class="intro-aside">
-          <span class="small-label">BUILT FOR THE FIGHT</span>
+          <span class="small-label">OCHIQ ARENA</span>
           <p>3 jangchi. 3 arena.<br />Bitta g‘olib.</p>
-          <span class="tag">FREE TO PLAY <span>↗</span></span>
+          <span class="tag">AKKAUNTSIZ O‘YNANG <span>↗</span></span>
         </div>
       </section>
       <section id="arena" class="arena-shell" aria-label="Jang maydoni">
         <div class="arena-topline">
           <span
             ><i class="live-dot"></i>
-            <span id="arena-label">01 / MIDNIGHT DISTRICT</span></span
+            <span id="arena-label">01 / TUNGI ZAVOD</span></span
           ><span id="mode-label"
             >ARCADE MODE <span class="dim">/</span> PLAYER VS CPU</span
           >
@@ -78,11 +81,11 @@
           <div id="hud" class="hud" hidden></div>
           <div id="announcement" class="announcement" aria-live="polite"></div>
           <div id="lobby" class="lobby">
-            <div class="lobby-kicker">THE UNDERGROUND IS CALLING</div>
+            <div class="lobby-kicker">YEROSTI JANG MAYDONI</div>
             <div class="game-logo">
               NEON<span>CLASH<span class="logo-star">✳</span></span>
             </div>
-            <p>O‘z jangchingizni tanlang. Arenani egallang.</p>
+            <p>Ikki jangchi. Uch raundgacha. Bitta g‘olib.</p>
             <button id="start-button" class="primary-button" disabled>
               <span id="start-label">PYTHON YUKLANMOQDA…</span><span>↗</span>
             </button>
@@ -94,10 +97,10 @@
             </button>
           </div>
           <div class="arena-corner left">
-            SEOUL UNDERGROUND<br /><span>37°33′ N · 126°58′ E</span>
+            TEMIR VA BETON<br /><span>YEROSTI ARENASI</span>
           </div>
           <div class="arena-corner right">
-            NO LIMITS.<br /><span>JUST YOU & THE FIGHT.</span>
+            2 RAUND YUTING<br /><span>G‘ALABA SIZNIKI BO‘LSIN.</span>
           </div>
           <button
             id="pause-button"
@@ -114,6 +117,12 @@
           >
             ⛶
           </button>
+          <div id="fight-quick-controls" class="fight-quick-controls" hidden>
+            <span><kbd>A</kbd><kbd>D</kbd> Yurish</span
+            ><span><kbd>W</kbd> Sakrash</span><span><kbd>S</kbd> Himoya</span
+            ><span><kbd>J</kbd> Musht</span><span><kbd>K</kbd> Tepik</span
+            ><span><kbd>L</kbd> Maxsus</span><span><kbd>P</kbd> Pauza</span>
+          </div>
           <div id="pause-screen" class="screen-overlay" hidden>
             <p class="eyebrow">TAKE A BREATH</p>
             <h2>PAUZA.</h2>
@@ -141,9 +150,13 @@
           aria-label="Mobil boshqaruv"
         >
           <div class="touch-move">
-            <button data-action="left" aria-label="Chapga">◀</button
-            ><button data-action="jump" aria-label="Sakrash">▲</button
-            ><button data-action="right" aria-label="O‘ngga">▶</button>
+            <button data-action="left" aria-label="Chapga">
+              ←<small>CHAP</small></button
+            ><button data-action="jump" aria-label="Sakrash">
+              ↑<small>SAKRASH</small></button
+            ><button data-action="right" aria-label="O‘ngga">
+              →<small>O‘NG</small>
+            </button>
           </div>
           <div class="touch-actions">
             <button data-action="block">HIMOYA</button
@@ -163,6 +176,30 @@
             <span class="keycap">S</span> HIMOYA</span
           ><button id="controls-button">BARCHA TUGMALAR ↗</button>
         </div>
+      </section>
+      <section
+        class="controls-panel"
+        aria-label="Harakatlar va ularning tugmalari"
+      >
+        <div class="controls-heading">
+          <div>
+            <p class="eyebrow">BOSHQARUV</p>
+            <h2>QAYSI TUGMA NIMA QILADI?</h2>
+          </div>
+          <span id="move-feedback" class="move-feedback" role="status"
+            >Klaviaturadagi tugmani bosing</span
+          >
+        </div>
+        <div id="visible-controls"></div>
+        <p class="controls-tip">
+          <strong>G‘alaba:</strong> 2 raund yuting.
+          <strong>Maxsus zarba:</strong> kamida 35 energiya. Har bir zarba uchun
+          tugmani qayta bosing. <strong>P / Esc:</strong> pauza.
+        </p>
+        <p class="controls-mobile-note">
+          Telefonda arenaning pastidagi tugmalarni bosing. Yurish va zarbani bir
+          vaqtda bosish mumkin.
+        </p>
       </section>
       <section id="setup" class="setup-grid" aria-label="O‘yinni sozlash">
         <div class="setup-panel">
@@ -212,7 +249,7 @@
               aria-pressed="true"
             >
               <span class="arena-thumb city-thumb"></span
-              ><span>Midnight district<small>NEON CITY</small></span
+              ><span>Tungi zavod<small>SANOAT ARENASI</small></span
               ><span class="choice-dot"></span></button
             ><button
               data-arena="temple"
@@ -220,7 +257,7 @@
               aria-pressed="false"
             >
               <span class="arena-thumb temple-thumb"></span
-              ><span>Crimson shrine<small>ANCIENT TEMPLE</small></span
+              ><span>Qizil pech<small>ISSIQ SEKTOR</small></span
               ><span class="choice-dot"></span></button
             ><button
               data-arena="void"
@@ -228,7 +265,7 @@
               aria-pressed="false"
             >
               <span class="arena-thumb void-thumb"></span
-              ><span>Zero gravity<small>ORBITAL STATION</small></span
+              ><span>Sovuq sektor<small>TUNGI SMENA</small></span
               ><span class="choice-dot"></span>
             </button>
           </div>
@@ -249,6 +286,35 @@
       ><span>PYTHON POWERED. ARCADE INSPIRED.</span
       ><span>MADE FOR THE LOVE OF THE GAME <span class="lime">↗</span></span>
     </footer>
+    <dialog id="guide-dialog" class="guide-dialog">
+      <button id="guide-cancel" class="close-dialog" aria-label="Orqaga">
+        ×
+      </button>
+      <p class="eyebrow">JANGDAN OLDIN</p>
+      <h2>BOSHQARUVNI BILIB OLING</h2>
+      <p class="guide-intro">
+        Quyidagi tugmalar bilan jangchingizni boshqarasiz. Tayyor bo‘lsangiz,
+        pastdagi tugmani bosing.
+      </p>
+      <div id="guide-controls"></div>
+      <p id="guide-mobile" class="guide-mobile" hidden>
+        TELEFONDA: arenaning pastidagi ← / ↑ / →, HIMOYA, MUSHT, TEPIK va MAXSUS
+        tugmalarini bosing.
+      </p>
+      <div class="guide-rules">
+        <span><b>2 RAUND</b> yutgan jangchi g‘olib</span
+        ><span><b>35 ENERGIYA</b> maxsus zarba uchun</span
+        ><span><b>P / ESC</b> pauza qilish uchun</span>
+      </div>
+      <p class="help-note">
+        Zarba tugmasini ushlab turmang — har bir zarba uchun qayta bosing.
+        Gamepad ham qo‘llanadi: A sakrash, X musht, Y tepik, B maxsus, LB
+        himoya.
+      </p>
+      <button id="guide-start" class="primary-button">
+        TUSHUNDIM — JANGGA KIRISH <span>→</span>
+      </button>
+    </dialog>
     <dialog id="help-dialog">
       <button class="close-dialog" aria-label="Yopish">×</button>
       <p class="eyebrow">KNOW YOUR MOVES</p>

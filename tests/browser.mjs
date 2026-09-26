@@ -23,6 +23,7 @@ try {
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto(base);
   await page.waitForFunction(() => window.neonClash?.ready, { timeout: 90000 });
+  await page.waitForFunction(() => neonClash.artLoaded.length === 3);
   await page.screenshot({
     path: "test-results/desktop-lobby.png",
     fullPage: true,
@@ -46,6 +47,13 @@ try {
   await page.locator('[data-mode="local"]').click();
   await page.locator('[data-fighter="volt"]').click();
   await page.locator("#start-button").click();
+  assert.equal(
+    await page.locator("#guide-dialog").evaluate((d) => d.open),
+    true,
+  );
+  assert.equal(await page.locator("#guide-controls .control-item").count(), 14);
+  await page.screenshot({ path: "test-results/controls-guide.png" });
+  await page.locator("#guide-start").click();
   await page.waitForFunction(() => neonClash.state?.phase === "fight");
   assert.equal(await page.evaluate(() => neonClash.audioState), "running");
   const before = await page.evaluate(() => neonClash.state.fighters[0].x);
@@ -125,6 +133,7 @@ try {
   phone.on("pageerror", (e) => errors.push(e.message));
   await phone.goto(base);
   await phone.waitForFunction(() => neonClash?.ready, { timeout: 90000 });
+  await phone.waitForFunction(() => neonClash.artLoaded.length === 3);
   assert.equal(
     await phone.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
@@ -134,6 +143,11 @@ try {
   );
   await phone.screenshot({ path: "test-results/mobile-lobby.png" });
   await phone.locator("#start-button").tap();
+  assert.equal(
+    await phone.locator("#guide-dialog").evaluate((d) => d.open),
+    true,
+  );
+  await phone.locator("#guide-start").tap();
   await phone.waitForFunction(() => neonClash.state?.phase === "fight");
   assert.equal(
     await phone.locator("#touch-controls").isVisible(),
@@ -159,12 +173,22 @@ try {
     type: "touchEnd",
     touchPoints: [],
   });
-  await phone.waitForFunction(() => document.querySelectorAll('[data-action].pressed').length === 0);
+  await phone.waitForFunction(
+    () => document.querySelectorAll("[data-action].pressed").length === 0,
+  );
   assert.ok((await phone.evaluate(() => neonClash.state.fighters[0].x)) > mb);
-  assert.equal(await phone.evaluate(() => {
-    const edge = document.querySelector('#touch-controls').getBoundingClientRect().right;
-    return [...document.querySelectorAll('[data-action]')].every(button => button.getBoundingClientRect().right <= edge);
-  }), true, 'All mobile attack buttons must fit inside the panel');
+  assert.equal(
+    await phone.evaluate(() => {
+      const edge = document
+        .querySelector("#touch-controls")
+        .getBoundingClientRect().right;
+      return [...document.querySelectorAll("[data-action]")].every(
+        (button) => button.getBoundingClientRect().right <= edge,
+      );
+    }),
+    true,
+    "All mobile attack buttons must fit inside the panel",
+  );
   await phone.screenshot({
     path: "test-results/mobile-fight.png",
     fullPage: true,
