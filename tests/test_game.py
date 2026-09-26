@@ -113,6 +113,37 @@ class GameplayTests(unittest.TestCase):
         a.update(1/60, {"punch"}, b)
         self.assertEqual(a.action, "punch")
 
+    def test_late_attack_press_is_buffered_until_recovery(self):
+        a, b = self.pair()
+        a.action = "punch"
+        from config import ATTACKS
+        a.action_time = ATTACKS["punch"]["duration"] - .08
+        a.update(1/60, {"kick"}, b)
+        self.assertEqual(a.action, "punch")
+        for _ in range(6):
+            a.update(1/60, set(), b)
+        self.assertEqual(a.action, "kick")
+        self.assertIsNone(a.buffered)
+
+    def test_early_buffer_expires_and_does_not_auto_attack(self):
+        a, b = self.pair()
+        a.action = "special"
+        a.update(1/60, {"kick"}, b)
+        for _ in range(70):
+            a.update(1/60, {"kick"}, b)
+        self.assertEqual(a.action, "idle")
+        self.assertIsNone(a.buffered)
+
+    def test_jump_can_be_buffered_before_landing(self):
+        a, b = self.pair()
+        a.y = FLOOR - 2
+        a.vy = 200
+        a.update(1/60, {"jump"}, b)
+        self.assertEqual(a.y, FLOOR)
+        a.update(1/60, set(), b)
+        self.assertLess(a.y, FLOOR)
+        self.assertIsNone(a.buffered)
+
     def test_countdown_freezes_round_timer(self):
         match = Match()
         for _ in range(60):

@@ -19,10 +19,21 @@ class Fighter:
         self.combo = 0
         self.combo_time = 0
         self.previous = set()
+        self.buffered = None
+        self.buffer_time = 0
 
     def update(self, dt, keys, opponent):
         pressed = keys - self.previous
         self.previous = set(keys)
+        self.buffer_time = max(0, self.buffer_time - dt)
+        if not self.buffer_time:
+            self.buffered = None
+        for command in ("special", "kick", "punch", "jump"):
+            if command in pressed:
+                if command != "special" or self.energy >= 35:
+                    self.buffered = command
+                    self.buffer_time = .18
+                break
         self.energy = min(100, self.energy + dt * 4)
         self.stun = max(0, self.stun - dt)
         self.combo_time = max(0, self.combo_time - dt)
@@ -37,6 +48,8 @@ class Fighter:
         grounded = self.y >= FLOOR
         if self.health <= 0:
             self.action = "ko"
+            self.buffered = None
+            self.buffer_time = 0
         elif self.stun:
             self.action = "hurt"
         elif self.action not in ATTACKS:
@@ -46,11 +59,15 @@ class Fighter:
                 self.x += direction * self.stats["speed"] * dt
                 if direction:
                     self.action = "walk"
-                if "jump" in pressed and grounded:
+                if self.buffered == "jump" and grounded:
                     self.vy = -780
+                    self.buffered = None
+                    self.buffer_time = 0
                 for action in ("special", "kick", "punch"):
-                    if action in pressed and (action != "special" or self.energy >= 35):
+                    if action == self.buffered and (action != "special" or self.energy >= 35):
                         self.action = action
+                        self.buffered = None
+                        self.buffer_time = 0
                         self.action_time = 0
                         self.hit_done = False
                         if action == "special":

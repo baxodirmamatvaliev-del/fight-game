@@ -1,6 +1,8 @@
 # 1.0.0 release checks
 
-- 18 Python gameplay tests cover movement, jumping, arena bounds, hit windows, one-hit attacks, frontal/back blocking, airborne evasion, energy cost, projectiles, action edges, countdown, best-of-three, draws, frame clamps, JSON bridge, a CPU-vs-CPU match and practice safety/progress/reset.
+- 21 Python gameplay tests cover movement, jumping, arena bounds, hit windows, one-hit attacks, frontal/back blocking, airborne evasion, energy cost, projectiles, action edges, countdown, best-of-three, draws, frame clamps, JSON bridge, a CPU-vs-CPU match, practice safety/progress/reset and buffered attacks/jumps.
+
+- Attack and jump presses are remembered for 180 ms, allowing late follow-ups and jumps just before landing without automatic repeated attacks.
 - Real Chrome browser verification covers the Python/WebAssembly startup, gameplay damage, menus, all three arenas, sound activation, pause/time freeze, full local match, rematch, saved settings and emulated mobile touch controls.
 - JavaScript modules are syntax-checked with Node.
 - `npm ci` pins dependency versions; bundled Pyodide avoids runtime CDN dependencies.
