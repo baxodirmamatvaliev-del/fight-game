@@ -16,6 +16,8 @@ try{
   await page.locator('#start-button').click();assert.equal(await page.locator('#guide-dialog').evaluate(d=>d.open),true);
   await page.locator('#guide-start').click();await page.waitForFunction(()=>neonClash.state?.phase==='fight',null,{timeout:15000});
   const x=await page.evaluate(()=>neonClash.state.fighters[0].x);await page.keyboard.down('d');await page.waitForTimeout(400);await page.keyboard.up('d');assert.ok(await page.evaluate(()=>neonClash.state.fighters[0].x)>x);
-  assert.equal(await page.locator('#fight-quick-controls').isVisible(),true);await page.keyboard.press('p');assert.equal(await page.evaluate(()=>neonClash.paused),true);
+  assert.equal(await page.locator('#arena-controls').isVisible(),true);
+  assert.equal(await page.locator('#arena-controls .control-item').count(),7);
+  await page.keyboard.press('p');assert.equal(await page.evaluate(()=>neonClash.paused),true);
   assert.deepEqual(errors,[]);console.log('PASS: anonymous public access, all realistic sprites, Python startup, control guide, combat input and pause.');
 }finally{await browser.close();}
