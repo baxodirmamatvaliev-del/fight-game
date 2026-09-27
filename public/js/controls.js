@@ -70,6 +70,7 @@ export class Controls {
     document.querySelector("#visible-controls").innerHTML = this.markup(
       options.mode,
     );
+    document.querySelector("#arena-controls").innerHTML = this.markup(options.mode);
     document.querySelector("#guide-controls").innerHTML = this.markup(
       options.mode,
     );
