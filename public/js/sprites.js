@@ -1,6 +1,8 @@
 // Each original atlas has eight poses in a 4-by-2 grid. Alpha bounds keep the
 // feet on the Python floor despite differences in the exported empty margins.
 const atlases = new Map();
+const motion = new Map();
+import { ease } from "./motion.js";
 export const spriteReady = Promise.all(
   ["volt", "ember", "ghost", "subzero", "scorpion"].map(
     (kind) =>
@@ -80,8 +82,18 @@ export const spriteReady = Promise.all(
 export function drawSprite(ctx, f, time, scale = 1, portrait = false) {
   const atlas = atlases.get(f.kind);
   if (!atlas) return false;
+  const key = `${f.kind}:${f.facing}:${portrait ? "portrait" : (f.id ?? f.player ?? (f.facing > 0 ? "left" : "right"))}`;
+  let pose = motion.get(key);
+  if (!pose || time < pose.time || Math.abs(f.x - pose.x) > 120) {
+    pose = { frame: 0, from: 0, changed: time, phase: 0, x: f.x, time };
+    motion.set(key, pose);
+  }
+  const distance = Math.abs(f.x - pose.x);
+  if (f.action === "walk") pose.phase += distance / 24;
+  pose.x = f.x;
+  pose.time = time;
   let frame = 0;
-  if (f.action === "walk") frame = Math.sin(time * 15) > 0 ? 1 : 2;
+  if (f.action === "walk") frame = Math.sin(pose.phase) > 0 ? 1 : 2;
   else if (f.action === "punch")
     frame = f.action_time > 0.07 && f.action_time < 0.25 ? 3 : 0;
   else if (f.action === "kick")
@@ -89,13 +101,16 @@ export function drawSprite(ctx, f, time, scale = 1, portrait = false) {
   else if (f.action === "block") frame = 5;
   else if (f.action === "special") frame = 7;
   else if (f.y < 534 && !portrait) frame = 6;
-  const bounds = atlas.frames[frame],
-    s = atlas.scale;
+  if (frame !== pose.frame) {
+    pose.from = pose.frame;
+    pose.frame = frame;
+    pose.changed = time;
+  }
+  const mix = portrait ? 1 : ease((time - pose.changed) / 0.065);
+  const s = atlas.scale;
   ctx.save();
   ctx.translate(f.x, f.y);
   ctx.scale(scale, scale);
-  if (!portrait && f.y >= 534 && f.action === "idle")
-    ctx.translate(0, Math.sin(time * 2.6) * 1.2);
   if (!portrait) {
     ctx.fillStyle = "#0009";
     ctx.beginPath();
@@ -103,6 +118,21 @@ export function drawSprite(ctx, f, time, scale = 1, portrait = false) {
     ctx.fill();
   }
   ctx.scale(f.facing || 1, 1);
+  if (!portrait && f.action === "idle") {
+    // Breathing, weight transfer and a small guard sway; feet remain anchored.
+    ctx.translate(Math.sin(time * 1.7) * 1.4, 0);
+    ctx.scale(1 + Math.sin(time * 2.6) * 0.002, 1 + Math.sin(time * 2.6) * 0.006);
+    ctx.rotate(Math.sin(time * 1.7) * 0.004);
+  } else if (!portrait && f.action === "walk") {
+    ctx.scale(1, 1 - Math.abs(Math.sin(pose.phase)) * 0.012);
+    ctx.rotate(Math.sin(pose.phase) * 0.012);
+  } else if (!portrait && ["punch", "kick", "special"].includes(f.action)) {
+    const duration = f.action === "kick" ? 0.48 : f.action === "special" ? 0.6 : 0.32;
+    const progress = Math.min(1, f.action_time / duration);
+    const drive = Math.sin(progress * Math.PI);
+    ctx.translate(drive * 5, 0);
+    ctx.rotate(drive * 0.025);
+  }
   if (f.action === "ko") {
     ctx.translate(-25, -18);
     ctx.rotate(-1.4);
@@ -111,23 +141,29 @@ export function drawSprite(ctx, f, time, scale = 1, portrait = false) {
     ctx.translate(-8, 0);
     ctx.rotate(-0.08);
   }
-  const croppedW = bounds.right - bounds.left + 1,
-    croppedH = bounds.bottom - bounds.top + 1;
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = "high";
   if (f.stun > 0.24)
     ctx.filter = "sepia(.6) hue-rotate(145deg) saturate(1.8) brightness(1.3)";
-  ctx.drawImage(
-    atlas.image,
-    (frame % 4) * atlas.w + bounds.left,
-    Math.floor(frame / 4) * atlas.h + bounds.top,
-    croppedW,
-    croppedH,
-    (bounds.left - bounds.anchor) * s,
-    -croppedH * s,
-    croppedW * s,
-    croppedH * s,
-  );
+  const paint = (index, opacity) => {
+    const bounds = atlas.frames[index];
+    const croppedW = bounds.right - bounds.left + 1;
+    const croppedH = bounds.bottom - bounds.top + 1;
+    ctx.globalAlpha = opacity;
+    ctx.drawImage(
+      atlas.image,
+      (index % 4) * atlas.w + bounds.left,
+      Math.floor(index / 4) * atlas.h + bounds.top,
+      croppedW,
+      croppedH,
+      (bounds.left - bounds.anchor) * s,
+      -croppedH * s,
+      croppedW * s,
+      croppedH * s,
+    );
+  };
+  if (mix < 1 && pose.from !== frame) paint(pose.from, 1 - mix);
+  paint(frame, mix < 1 && pose.from !== frame ? mix : 1);
   ctx.restore();
   return true;
 }

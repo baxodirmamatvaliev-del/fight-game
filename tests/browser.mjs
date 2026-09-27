@@ -116,7 +116,10 @@ try {
   await page.reload();
   await page.waitForFunction(() => neonClash.ready, { timeout: 90000 });
   assert.equal(await page.evaluate(() => neonClash.options.mode), "local");
-  const mobile = await browser.newContext({ ...devices["iPhone 13"] });
+  const mobile = await browser.newContext({
+    ...devices["iPhone 13"],
+    viewport: { width: 844, height: 390 },
+  });
   const phone = await mobile.newPage();
   phone.on("pageerror", (e) => errors.push(e.message));
   await phone.goto(base);
@@ -146,10 +149,10 @@ try {
   );
   const mb = await phone.evaluate(() => neonClash.state.fighters[0].x);
   const touch = await mobile.newCDPSession(phone);
-  const box = await phone.locator('[data-action="right"]').boundingBox();
+  const box = await phone.locator("#move-stick").boundingBox();
   await touch.send("Input.dispatchTouchEvent", {
     type: "touchStart",
-    touchPoints: [{ x: box.x + box.width / 2, y: box.y + box.height / 2 }],
+    touchPoints: [{ x: box.x + box.width * 0.8, y: box.y + box.height / 2 }],
   });
   await phone.waitForTimeout(500);
   await touch.send("Input.dispatchTouchEvent", {

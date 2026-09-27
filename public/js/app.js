@@ -13,6 +13,8 @@ import { Screens } from "./screens.js";
 import { Controls } from "./controls.js";
 import { loadedSprites } from "./sprites.js";
 import { Training } from "./training.js";
+import { MobileArena } from "./mobile-arena.js";
+import { interpolateFighters } from "./motion.js";
 
 const $ = (selector) => document.querySelector(selector);
 const canvas = $("#game"),
@@ -31,8 +33,10 @@ particles.reduced = !prefs.effects || reduced.matches;
 const engine = new PythonEngine(),
   hud = new HUD($("#hud"), $("#announcement"));
 let state = null,
+  previousFighters = null,
   running = false,
   paused = false,
+  orientationBlocked = false,
   ready = false,
   resultSaved = false,
   accumulator = 0,
@@ -76,6 +80,18 @@ const screens = new Screens({
 const controls = new Controls();
 const training = new Training();
 setupTouch(input);
+const mobileArena = new MobileArena((blocked) => {
+  orientationBlocked = blocked;
+  input.enabled = running && !blocked;
+  input.clear();
+  window.dispatchEvent(new Event("combat-input-reset"));
+  accumulator = 0;
+  hitStop = 0;
+  if (blocked) music.stop();
+  else if (running && !paused) music.start();
+});
+$("#rotate-fullscreen").addEventListener("click", () => mobileArena.lockLandscape());
+$("#rotate-menu").addEventListener("click", () => menu());
 function savePreferences() {
   store.savePreferences({
     ...options,
@@ -184,6 +200,7 @@ async function start() {
     console.warn("Audio unavailable", error);
   }
   state = engine.start(options);
+  previousFighters = null;
   running = true;
   paused = false;
   resultSaved = false;
@@ -200,6 +217,7 @@ async function start() {
   music.start();
   canvas.focus({ preventScroll: true });
   document.body.classList.add("in-match");
+  mobileArena.setActive(true);
   $("#arena").scrollIntoView({
     behavior: reduced.matches ? "instant" : "smooth",
     block: "center",
@@ -221,6 +239,7 @@ function menu() {
   music.start();
   $("#setup").classList.remove("locked");
   document.body.classList.remove("in-match");
+  mobileArena.setActive(false);
   $("#start-button").focus({ preventScroll: true });
 }
 function processEvents() {
@@ -241,15 +260,17 @@ function processEvents() {
 function frame(timestamp) {
   const elapsed = last ? Math.min((timestamp - last) / 1000, 0.075) : 0;
   last = timestamp;
-  if (!running || (!paused && hitStop <= 0)) visualTime += elapsed;
+  if (!running || (!paused && !orientationBlocked && hitStop <= 0))
+    visualTime += elapsed;
   try {
-    if (running && !paused && state.phase !== "match_over") {
+    if (running && !paused && !orientationBlocked && state.phase !== "match_over") {
       if (hitStop > 0) {
         hitStop = Math.max(0, hitStop - elapsed);
         accumulator = 0;
       } else accumulator += elapsed;
       let steps = 0;
       while (accumulator >= 1 / 60 && steps++ < 5) {
+        previousFighters = state.fighters.map((fighter) => ({ ...fighter }));
         state = engine.tick(1 / 60, input.read());
         processEvents();
         accumulator -= 1 / 60;
@@ -261,13 +282,21 @@ function frame(timestamp) {
       hud.update(state, options);
       training.update(state);
     }
-    particles.update(paused ? 0 : elapsed);
+    particles.update(paused || orientationBlocked ? 0 : elapsed);
     ctx.save();
     const [sx, sy] = particles.offset();
     ctx.translate(sx, sy);
     drawArena(ctx, options.arena, visualTime, reduced.matches);
     if (state) {
-      for (const f of [...state.fighters].sort((a, b) => a.y - b.y))
+      const presented =
+        paused || orientationBlocked || hitStop > 0
+          ? state.fighters
+          : interpolateFighters(
+              previousFighters,
+              state.fighters,
+              Math.min(1, accumulator * 60),
+            );
+      for (const f of [...presented].sort((a, b) => a.y - b.y))
         drawFighter(ctx, f, visualTime);
       drawProjectiles(ctx, state.projectiles, visualTime);
     } else {
@@ -322,6 +351,9 @@ engine
   });
 // Read-only inspection hook for automated browser gameplay checks.
 globalThis.neonClash = {
+  get orientationBlocked() {
+    return orientationBlocked;
+  },
   get backend() {
     return engine.backend;
   },

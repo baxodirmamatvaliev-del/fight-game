@@ -17,6 +17,16 @@ Open **http://localhost:8000**. The first load starts a bundled Python WebAssemb
 
 ## Controls
 
+On phones, fights use landscape orientation: rotate the device sideways. A portrait
+gate freezes the match while you rotate. The left virtual joystick moves the fighter;
+the right circular buttons punch, kick, block, jump and launch a special. Controls
+overlay the arena instead of taking a separate section below it. Fullscreen and
+orientation lock are best-effort; Safari and in-app browsers may require manual
+rotation or opening the link in the system browser.
+
+The default arena is **Tirik o‘rmon**, an original generated living forest with
+sunbeams, mist, ancient tree faces and a clear fighting ground.
+
 | Action     | Player 1        | Player 2     |
 | ---------- | --------------- | ------------ |
 | Move       | A / D           | Numpad 4 / 6 |

@@ -1,5 +1,13 @@
 # Serious arena revision
 
+## Living forest arena
+
+Saved asset: `public/assets/living-forest.png`. Generated with the built-in imagegen tool. The user's forest-combat screenshot informed the atmosphere; this is an original environment, not a screenshot crop.
+
+Final prompt:
+
+Use case: stylized-concept. Asset type: opaque landscape 2:1 background PNG for a realistic side-view martial-arts fighting game. An original ancient living forest arena: huge gnarled trees on both sides, subtle old face-like bark formations, lush ferns and moss, twisting roots in background, ruined stone details, sunlit misty central clearing. Cinematic photoreal AAA game art, textured bark, golden daylight shafts through green canopy and subtle cool jade wisps. Fixed front-facing camera, horizontal combat ground baseline at 83 percent image height. Lower 17 percent flat unobstructed dirt-and-stone playable foreground. Spacious clear center for fighters later drawn by code. No foreground roots blocking combat. Epic supernatural forest mood, not an exact copy of a screenshot. No people, fighters, UI, text, logos, watermarks, weapons, cartoon style, or browser frame.
+
 ## Fan fighter revision
 
 Built-in imagegen was used for generation and background extraction. Final assets:

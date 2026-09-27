@@ -66,6 +66,7 @@ export class Input {
     this.keyboard.forEach((s) => s.clear());
     this.pending.forEach((s) => s.clear());
     this.touch.clear();
+    window.dispatchEvent(new Event("combat-input-reset"));
   }
   read() {
     const output = this.keyboard.map((s, i) => new Set([...s, ...this.pending[i]]));

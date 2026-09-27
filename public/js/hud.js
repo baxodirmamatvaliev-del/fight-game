@@ -1,10 +1,16 @@
-import { fighters } from "./fighters.js";
+import { fighters, drawPortrait } from "./fighters.js";
 export class HUD {
   constructor(element, announcement) {
     this.element = element;
     this.announcement = announcement;
     element.innerHTML = `<div class="hud-player hud-left"><div class="hud-name"><strong></strong><span></span></div><div class="health-track"><div class="health-fill"></div></div><div class="hud-sub"><div class="energy-track"><div class="energy-fill"></div></div><div class="round-dots"><i></i><i></i></div></div><div class="combo-label"></div><div class="energy-label"></div></div><div class="hud-center"><span class="hud-round"></span><strong class="hud-timer"></strong><span class="hud-versus">VS</span></div><div class="hud-player hud-right"><div class="hud-name"><strong></strong><span></span></div><div class="health-track"><div class="health-fill"></div></div><div class="hud-sub"><div class="energy-track"><div class="energy-fill"></div></div><div class="round-dots"><i></i><i></i></div></div><div class="combo-label"></div><div class="energy-label"></div></div>`;
     this.players = [...element.querySelectorAll(".hud-player")];
+    for (const player of this.players) {
+      const portrait = document.createElement("canvas");
+      portrait.className = "hud-portrait";
+      portrait.setAttribute("aria-hidden", "true");
+      player.append(portrait);
+    }
   }
   show() {
     this.element.hidden = false;
@@ -18,6 +24,11 @@ export class HUD {
     this.players.forEach((el, i) => {
       const f = state.fighters[i],
         def = fighters[f.kind];
+      const portrait = el.querySelector(".hud-portrait");
+      if (portrait.dataset.kind !== f.kind) {
+        drawPortrait(portrait, f.kind);
+        portrait.dataset.kind = f.kind;
+      }
       el.style.setProperty("--fighter-color", def.color);
       el.querySelector("strong").textContent = def.name;
       el.querySelector(".hud-name span").textContent =

@@ -1,0 +1,318 @@
+/* Landscape touch combat: UI sits above the arena, not below it. */
+.move-stick {
+  display: none;
+}
+.rotate-prompt {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #0d1317f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: max(28px, env(safe-area-inset-top)) 24px;
+  gap: 16px;
+  color: #eee4ce;
+}
+.rotate-prompt h2 {
+  font: 800 clamp(25px, 7vw, 38px) var(--display);
+  margin: 0;
+  max-width: 420px;
+}
+.rotate-prompt p {
+  line-height: 1.7;
+  max-width: 420px;
+  margin: 0;
+}
+.rotate-prompt small {
+  max-width: 380px;
+  color: #aab6b5;
+  line-height: 1.7;
+}
+.rotate-prompt button {
+  width: min(360px, 100%);
+  min-width: 0;
+  min-height: 48px;
+  justify-content: center;
+}
+.rotate-phone {
+  width: 95px;
+  height: 54px;
+  border: 3px solid #c5b184;
+  border-radius: 10px;
+  font-size: 36px;
+  line-height: 45px;
+}
+.hud-center .hud-timer {
+  color: #f2d3a3;
+}
+.hud-player {
+  position: relative;
+}
+#arena .hud-portrait {
+  position: absolute;
+  top: 26px;
+  left: 0;
+  width: 43px;
+  height: 43px;
+  border-radius: 50%;
+  border: 2px solid #ba9665;
+  object-fit: cover;
+}
+#arena .hud-right .hud-portrait {
+  left: auto;
+  right: 0;
+}
+.hud-player .health-track,
+.hud-player .hud-sub {
+  margin-left: 52px;
+}
+.hud-right .health-track,
+.hud-right .hud-sub {
+  margin-left: 0;
+  margin-right: 52px;
+}
+.health-fill {
+  background: linear-gradient(90deg, #be925a, #f3dfb3);
+}
+.hud-timer {
+  width: 60px;
+  height: 60px;
+  line-height: 54px;
+  border: 2px solid #a8865a;
+  border-radius: 50%;
+  background: #17211bd9;
+  margin: 5px auto;
+  font-size: 38px;
+}
+.announcement {
+  color: #eab76a;
+  text-shadow:
+    0 3px 2px #591e12,
+    0 0 28px #000;
+}
+.announcement .lime {
+  color: #ff9b52;
+}
+.forest-thumb {
+  background: url("../assets/living-forest.png") center / cover;
+}
+.mobile-battle {
+  overflow: hidden;
+  overscroll-behavior: none;
+  background: #06090b;
+}
+.mobile-battle .topbar,
+.mobile-battle footer,
+.mobile-battle #training-panel,
+.mobile-battle .arena-topline,
+.mobile-battle .arena-bottomline,
+.mobile-battle .combat-controls {
+  display: none !important;
+}
+.mobile-battle main {
+  padding: 0;
+  margin: 0;
+}
+.mobile-battle #arena,
+.mobile-battle #arena:fullscreen {
+  position: fixed;
+  inset: 0;
+  margin: 0;
+  width: 100%;
+  height: 100dvh;
+  border: 0;
+  border-radius: 0;
+  display: block;
+  background: #070b0d;
+}
+.mobile-battle #arena .stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  aspect-ratio: auto;
+  display: block;
+}
+.mobile-battle #arena #game {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.mobile-battle .stage:after {
+  box-shadow: inset 0 0 35px #0005;
+  pointer-events: none;
+}
+.mobile-battle #touch-controls {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: block;
+  background: none;
+  border: none;
+  padding: 0;
+  pointer-events: none;
+}
+.mobile-battle #touch-controls button,
+.mobile-battle .move-stick {
+  pointer-events: auto;
+}
+.mobile-battle .move-stick {
+  display: grid;
+  place-items: center;
+  position: absolute;
+  left: max(26px, env(safe-area-inset-left));
+  bottom: max(24px, env(safe-area-inset-bottom));
+  width: clamp(94px, 18vh, 132px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #101b2380;
+  border: 2px solid #d6dac269;
+  box-shadow: inset 0 0 25px #0007;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.stick-rim {
+  color: #e9e3d899;
+  font-size: 22px;
+  letter-spacing: 8px;
+}
+.stick-thumb {
+  position: absolute;
+  width: 42%;
+  height: 42%;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #d6c59baa, #5a6b71b3);
+  border: 2px solid #f0dfb087;
+  transform: translate(var(--stick-x, 0px), var(--stick-y, 0px));
+  pointer-events: none;
+}
+.mobile-battle .touch-move {
+  display: none;
+}
+.mobile-battle .touch-actions {
+  display: block;
+  position: absolute;
+  right: max(24px, env(safe-area-inset-right));
+  bottom: max(14px, env(safe-area-inset-bottom));
+  width: 228px;
+  height: 162px;
+}
+.mobile-battle .touch-actions button {
+  position: absolute;
+  width: 62px;
+  height: 62px;
+  min-height: 0;
+  border-radius: 50%;
+  padding: 2px;
+  font-size: 10px;
+  color: #fff1db;
+  border: 2px solid #e8d5ac8c;
+  background: #182129a6;
+  box-shadow: 0 3px 12px #0008;
+  text-shadow: 0 1px 3px #000;
+}
+.mobile-battle [data-action="punch"] {
+  right: 0;
+  bottom: 59px;
+}
+.mobile-battle [data-action="kick"] {
+  right: 67px;
+  bottom: 0;
+}
+.mobile-battle [data-action="special"] {
+  right: 66px;
+  bottom: 91px;
+  background: #633023a6 !important;
+}
+.mobile-battle [data-action="block"] {
+  right: 132px;
+  bottom: 50px;
+}
+.mobile-battle [data-action="jump"] {
+  right: 158px;
+  bottom: 104px;
+  width: 48px !important;
+  height: 48px !important;
+  font-size: 20px !important;
+}
+.mobile-battle .touch-actions small {
+  font-size: 7px;
+  margin: 0;
+}
+.mobile-battle .touch-actions button.pressed {
+  background: #ccaa65 !important;
+  color: #12161a;
+}
+.mobile-battle .hud {
+  inset: max(10px, env(safe-area-inset-top)) max(26px, env(safe-area-inset-right)) auto
+    max(26px, env(safe-area-inset-left));
+  gap: 14px;
+  grid-template-columns: 1fr 60px 1fr;
+}
+.mobile-battle .hud-name strong {
+  font-size: 22px;
+}
+.mobile-battle .hud-name span {
+  font-size: 8px;
+}
+.mobile-battle .health-track {
+  height: 12px;
+}
+.mobile-battle .hud-timer {
+  font-size: 35px;
+}
+.mobile-battle .hud-round {
+  font-size: 8px;
+}
+.mobile-battle .combo-label {
+  top: 66px;
+  font-size: 18px;
+}
+.mobile-battle .energy-label {
+  font-size: 7px;
+}
+.mobile-battle .stage-button {
+  top: 80px;
+  right: max(18px, env(safe-area-inset-right));
+  width: 36px;
+  height: 36px;
+  font-size: 15px;
+  z-index: 8;
+}
+.mobile-battle .fullscreen-button {
+  top: 82px;
+  bottom: auto;
+  left: max(18px, env(safe-area-inset-left));
+  right: auto;
+  z-index: 8;
+  font-size: 25px;
+}
+.mobile-battle .screen-overlay {
+  z-index: 9;
+}
+.mobile-battle .training-cue {
+  top: 85px;
+  left: 28%;
+  right: 28%;
+  padding: 6px 10px;
+}
+.mobile-battle .training-cue span {
+  display: none;
+}
+.mobile-battle .training-cue strong {
+  font-size: 13px;
+}
+@media (max-height: 360px) {
+  .mobile-battle .touch-actions {
+    transform: scale(0.85);
+    transform-origin: bottom right;
+  }
+  .mobile-battle .move-stick {
+    bottom: 16px;
+  }
+}

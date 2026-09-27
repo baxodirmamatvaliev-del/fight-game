@@ -4,7 +4,7 @@ const defaults = {
   p2: "scorpion",
   mode: "cpu",
   difficulty: "normal",
-  arena: "city",
+  arena: "forest",
   volume: 0.65,
   muted: false,
   music: true,
@@ -35,9 +35,10 @@ export class Storage {
       p2: Object.keys(fighters),
       mode: ["cpu", "local", "practice"],
       difficulty: ["easy", "normal", "hard"],
-      arena: ["city", "temple", "void"],
+      arena: ["forest", "city", "temple", "void"],
     }))
       if (choices.includes(value[key])) p[key] = value[key];
+    if (value.layoutVersion !== 2 && value.arena === "city") p.arena = "forest";
     if (Number.isFinite(value.volume))
       p.volume = Math.max(0, Math.min(1, value.volume));
     for (const key of ["muted", "music", "effects"])
@@ -45,7 +46,7 @@ export class Storage {
     return p;
   }
   savePreferences(value) {
-    this.write("preferences", value);
+    this.write("preferences", { ...value, layoutVersion: 2 });
   }
   stats() {
     const s = this.read("stats", {});

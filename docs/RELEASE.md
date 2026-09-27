@@ -1,5 +1,13 @@
 # 1.0.0 release checks
 
+## Landscape forest revision
+
+- Original living forest background, gold health bars, portrait badges and central timer.
+- Full-viewport landscape mobile combat with an overlaid left joystick and right action buttons.
+- Portrait gate freezes gameplay, supports manual rotation and returns safely to selection.
+- Multi-touch test covers simultaneous movement and kick, pointer release, all actions and rotation recovery.
+- Browser orientation lock/fullscreen are optional; real iOS/Android hardware and in-app browser restrictions still require physical-device verification.
+
 ## Selection-site revision
 
 - Five playable fighters, including generated Sub-Zero and Scorpion fan art. The full Mortal Kombat roster is not implemented.

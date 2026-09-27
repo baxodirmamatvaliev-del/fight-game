@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="./css/training.css" />
     <link rel="stylesheet" href="./css/combat-theme.css" />
     <link rel="stylesheet" href="./css/tournament.css" />
+    <link rel="stylesheet" href="./css/landscape.css" />
   </head>
   <body>
     <header class="topbar">
@@ -149,8 +150,8 @@
           </div>
           <div id="arena-controls"></div>
           <p class="combat-touch-note">
-            Telefonda pastdagi CHAP, O‘NG, SAKRASH va zarba tugmalarini bosing. Yurish
-            va zarbani birga bosish mumkin.
+            Telefonda yonlama o‘ynang: chapda joystik, o‘ngda zarba tugmalari. Yurish va
+            zarbani birga bosish mumkin.
           </p>
         </aside>
         <div
@@ -159,15 +160,25 @@
           hidden
           aria-label="Mobil boshqaruv"
         >
+          <div
+            id="move-stick"
+            class="move-stick"
+            role="group"
+            aria-label="Virtual joystik: chap yoki o‘ngga suring; yuqoriga surish sakratadi"
+          >
+            <span class="stick-rim" aria-hidden="true">← &nbsp; →</span
+            ><span id="stick-thumb" class="stick-thumb" aria-hidden="true"></span>
+          </div>
           <div class="touch-move">
             <button data-action="left" aria-label="Chapga">←<small>CHAP</small></button
-            ><button data-action="jump" aria-label="Sakrash">
-              ↑<small>SAKRASH</small></button
             ><button data-action="right" aria-label="O‘ngga">
               →<small>O‘NG</small>
             </button>
           </div>
           <div class="touch-actions">
+            <button data-action="jump" class="touch-jump" aria-label="Sakrash">
+              ↑<small>SAKRASH</small>
+            </button>
             <button data-action="block">HIMOYA</button
             ><button data-action="punch">MUSHT</button
             ><button data-action="kick">TEPIK</button
@@ -227,8 +238,8 @@
           qayta bosing. <strong>P / Esc:</strong> pauza.
         </p>
         <p class="controls-mobile-note">
-          Telefonda arenaning pastidagi tugmalarni bosing. Yurish va zarbani bir vaqtda
-          bosish mumkin.
+          Telefonni yon tomonga aylantiring. Chap joystikni surib yuring, o‘ngdagi doira
+          tugmalar bilan zarba bering.
         </p>
       </section>
       <section id="setup" class="setup-grid" aria-label="O‘yinni sozlash">
@@ -302,6 +313,11 @@
             <h2>ARENA</h2>
           </div>
           <div class="arena-options" id="arena-options">
+            <button data-arena="forest" class="arena-choice" aria-pressed="false">
+              <span class="arena-thumb forest-thumb"></span
+              ><span>Tirik o‘rmon<small>QADIMIY RUHLAR</small></span
+              ><span class="choice-dot"></span>
+            </button>
             <button data-arena="city" class="arena-choice selected" aria-pressed="true">
               <span class="arena-thumb city-thumb"></span
               ><span>Tungi zavod<small>SANOAT ARENASI</small></span
@@ -328,6 +344,31 @@
         </div>
       </section>
     </main>
+    <section
+      id="rotate-prompt"
+      class="rotate-prompt"
+      hidden
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="rotate-title"
+    >
+      <div class="rotate-phone" aria-hidden="true">↻</div>
+      <p class="eyebrow">LANDSCAPE JANG REJIMI</p>
+      <h2 id="rotate-title">TELEFONNI YON TOMONGA AYLANG.</h2>
+      <p>
+        Chapda joystik, o‘ngda zarbalar. Telefon tik turganda vaqt va raqib to‘xtaydi.
+      </p>
+      <button id="rotate-fullscreen" class="primary-button">
+        TO‘LIQ EKRANNI SINASH ⛶
+      </button>
+      <button id="rotate-menu" class="secondary-button">
+        QAHRAMON TANLOVIGA QAYTISH
+      </button>
+      <small
+        >Aylanish ishlamasa, telefoningizdagi ekran aylanish qulfini o‘chiring. Telegram
+        kabi ichki brauzerda Chrome yoki Safari orqali oching.</small
+      >
+    </section>
     <footer>
       <a class="footer-brand" href="./">NEON CLASH<span>®</span></a
       ><span>NORASMIY FAN O‘YINI · MORTAL KOMBAT EMAS</span
@@ -343,8 +384,9 @@
       </p>
       <div id="guide-controls"></div>
       <p id="guide-mobile" class="guide-mobile" hidden>
-        TELEFONDA: arenaning pastidagi ← / ↑ / →, HIMOYA, MUSHT, TEPIK va MAXSUS
-        tugmalarini bosing.
+        TELEFONDA: yonlama o‘ynang. Chap joystik — yurish, yuqoriga surish — sakrash.
+        O‘ngdagi doiralar — MUSHT, TEPIK, HIMOYA va MAXSUS. Ikki barmoq bilan birga
+        yurib, zarba bering. Tik holatda jang to‘xtaydi.
       </p>
       <div id="guide-rules" class="guide-rules">
         <span><b>2 RAUND</b> yutgan jangchi g‘olib</span

@@ -77,7 +77,10 @@ try {
   await page.locator("#guide-start").click();
   await page.waitForFunction(() => neonClash.state?.phase === "fight");
   assert.equal(await page.evaluate(() => neonClash.state.training), null);
-  const context = await browser.newContext({ ...devices["iPhone 13"] }),
+  const context = await browser.newContext({
+      ...devices["iPhone 13"],
+      viewport: { width: 844, height: 390 },
+    }),
     phone = await context.newPage();
   phone.on("pageerror", (e) => errors.push(e.message));
   await phone.goto(url);

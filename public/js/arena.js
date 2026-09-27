@@ -11,12 +11,15 @@ const palettes = {
   void: ["#080a22", "#29254d", "#ae7cff", "#6debff"],
 };
 export const arenaNames = {
+  forest: "01 / TIRIK O‘RMON",
   city: "01 / TUNGI ZAVOD",
   temple: "02 / QIZIL PECH",
   void: "03 / SOVUQ SEKTOR",
 };
 const foundry = new Image();
 foundry.src = new URL("../assets/foundry-arena.png", import.meta.url).href;
+const forest = new Image();
+forest.src = new URL("../assets/living-forest.png", import.meta.url).href;
 
 function glow(ctx, color, blur, fn) {
   ctx.save();
@@ -237,6 +240,22 @@ function voidArena(ctx, t) {
   });
 }
 export function drawArena(ctx, kind, t, reduced = false) {
+  if (kind === "forest" && forest.complete && forest.naturalWidth) {
+    ctx.drawImage(forest, 0, 0, W, H);
+    const top = ctx.createLinearGradient(0, 0, 0, 170);
+    top.addColorStop(0, "#07120ab3");
+    top.addColorStop(1, "#07120a00");
+    ctx.fillStyle = top;
+    ctx.fillRect(0, 0, W, 170);
+    if (!reduced)
+      for (let i = 0; i < 20; i++) {
+        const x = (rand(i + 55) * W + t * 12) % W;
+        const y = 200 + Math.sin(t * 0.5 + i) * 40 + rand(i + 75) * 230;
+        ctx.fillStyle = "#ffedac50";
+        ctx.fillRect(x, y, 2, 2);
+      }
+    return;
+  }
   if (foundry.complete && foundry.naturalWidth) {
     ctx.save();
     ctx.filter =

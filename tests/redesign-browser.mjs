@@ -56,7 +56,10 @@ try {
   assert.ok((await page.evaluate(() => neonClash.state.fighters[0].x)) > before);
   await page.screenshot({ path: "test-results/tournament-fight.png", fullPage: true });
   assert.deepEqual(errors, []);
-  const context = await browser.newContext({ ...devices["iPhone 13"] }),
+  const context = await browser.newContext({
+      ...devices["iPhone 13"],
+      viewport: { width: 844, height: 390 },
+    }),
     phone = await context.newPage();
   await phone.route("**/vendor/pyodide/**", (r) => r.abort());
   await phone.goto(url);
