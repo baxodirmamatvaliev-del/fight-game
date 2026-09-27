@@ -4,6 +4,7 @@ from config import ATTACKS, WIDTH
 def damage(attacker, defender, amount, knock, events, special=False):
     blocked = defender.action == "block" and (attacker.x - defender.x) * defender.facing > 0
     dealt = amount * attacker.stats["power"] * (.12 if blocked else 1)
+    actual_damage = min(defender.health, dealt)
     defender.health = max(0, defender.health - dealt)
     direction = 1 if defender.x >= attacker.x else -1
     defender.x = max(65, min(WIDTH - 65, defender.x + knock * direction * (.35 if blocked else 1)))
@@ -15,7 +16,8 @@ def damage(attacker, defender, amount, knock, events, special=False):
         attacker.combo += 1
         attacker.combo_time = 1.25
     events.append({"type": "block" if blocked else "hit", "x": defender.x, "y": defender.y - 155,
-                   "color": attacker.stats["color"], "special": special, "combo": attacker.combo, "player": attacker.player})
+                   "color": attacker.stats["color"], "special": special, "combo": attacker.combo,
+                   "damage": round(actual_damage, 2), "player": attacker.player})
 
 
 def melee(attacker, defender, events):

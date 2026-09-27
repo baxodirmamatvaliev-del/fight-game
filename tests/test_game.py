@@ -47,6 +47,7 @@ class GameplayTests(unittest.TestCase):
         self.assertEqual(b.health, 93)
         self.assertEqual(a.combo, 1)
         self.assertEqual(len(events), 1)
+        self.assertEqual(events[0]["damage"], 7)
 
     def test_block_reduces_front_damage(self):
         a, b = self.pair()
@@ -58,6 +59,7 @@ class GameplayTests(unittest.TestCase):
         melee(a, b, events)
         self.assertAlmostEqual(b.health, 99.16)
         self.assertEqual(events[0]["type"], "block")
+        self.assertEqual(events[0]["damage"], .84)
         self.assertEqual(b.stun, 0)
 
     def test_block_does_not_protect_back(self):

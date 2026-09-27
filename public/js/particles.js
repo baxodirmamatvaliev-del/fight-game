@@ -1,11 +1,24 @@
 export class Particles {
   constructor() {
     this.items = [];
+    this.labels = [];
     this.shake = 0;
     this.flash = 0;
     this.reduced = false;
   }
   burst(event) {
+    if (event.type === "hit" || event.type === "block") {
+      this.labels = this.labels.filter((label) => label.player !== event.player);
+      this.labels.push({
+        player: event.player,
+        x: Math.max(100, Math.min(1100, event.x)),
+        y: Math.max(125, event.y - 85),
+        life: 0.85,
+        blocked: event.type === "block",
+        combo: event.combo || 1,
+        damage: Number(event.damage || 0),
+      });
+    }
     if (this.reduced) return;
     const count = event.type === "block" ? 12 : event.special ? 38 : 23;
     for (let i = 0; i < count; i++) {
@@ -26,6 +39,10 @@ export class Particles {
     this.flash = event.special ? 0.12 : 0.05;
   }
   update(dt) {
+    this.labels = this.labels.filter((label) => {
+      label.life -= dt;
+      return label.life > 0;
+    });
     this.shake = Math.max(0, this.shake - dt * 35);
     this.flash = Math.max(0, this.flash - dt);
     this.items = this.items.filter((p) => {
@@ -52,6 +69,26 @@ export class Particles {
       ctx.fillRect(0, 0, 1200, 640);
       ctx.restore();
     }
+    ctx.save();
+    ctx.textAlign = "center";
+    ctx.lineJoin = "round";
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = "#101116";
+    for (const label of this.labels) {
+      ctx.globalAlpha = Math.min(1, label.life / 0.2);
+      const y = label.y - (this.reduced ? 0 : (0.85 - label.life) * 26);
+      const title = label.blocked ? "BLOK" : label.combo > 1 ? `${label.combo} ZARBA` : "ZARBA";
+      ctx.font = "700 23px Barlow, sans-serif";
+      ctx.fillStyle = label.blocked ? "#a7cbd8" : "#e4c58d";
+      ctx.strokeText(title, label.x, y);
+      ctx.fillText(title, label.x, y);
+      ctx.font = "600 18px Barlow, sans-serif";
+      ctx.fillStyle = "#f3f0e9";
+      const amount = `−${label.damage.toFixed(1).replace(/\.0$/, "")} HP`;
+      ctx.strokeText(amount, label.x, y + 25);
+      ctx.fillText(amount, label.x, y + 25);
+    }
+    ctx.restore();
   }
   offset() {
     return this.reduced
@@ -63,6 +100,7 @@ export class Particles {
   }
   clear() {
     this.items = [];
+    this.labels = [];
     this.shake = 0;
     this.flash = 0;
   }
