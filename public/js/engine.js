@@ -1,3 +1,4 @@
+import { FallbackEngine } from "./fallback-engine.js";
 const modules = [
   "config",
   "fighter",
@@ -9,7 +10,15 @@ const modules = [
 ];
 export class PythonEngine {
   async load(onProgress) {
-    onProgress("Python dvigateli yuklanmoqda…");
+    this.fallback = new FallbackEngine();
+    this.backend = "lightweight";
+    onProgress("O‘yin tayyor. Python fonda yuklanmoqda…");
+    this.loading = this.loadPython().catch(error => {
+      console.warn("Python unavailable; lightweight gameplay remains ready", error);
+    });
+    return this;
+  }
+  async loadPython() {
     const sources = await Promise.all(
       modules.map(async (name) => {
         const response = await fetch(
@@ -26,7 +35,6 @@ export class PythonEngine {
     this.runtime = await globalThis.loadPyodide({
       indexURL: new URL("../vendor/pyodide/", import.meta.url).href,
     });
-    onProgress("Jang tizimi ishga tushmoqda…");
     this.runtime.FS.mkdirTree("/game");
     for (const [name, source] of sources)
       this.runtime.FS.writeFile(`/game/${name}.py`, source);
@@ -38,9 +46,12 @@ export class PythonEngine {
     return this;
   }
   start(options) {
+    this.backend = this.startFn ? "python" : "lightweight";
+    if (this.backend === "lightweight") return this.fallback.start(options);
     return JSON.parse(this.startFn(JSON.stringify(options)));
   }
   tick(dt, inputs) {
+    if (this.backend === "lightweight") return this.fallback.tick(dt, inputs);
     return JSON.parse(this.tickFn(dt, JSON.stringify(inputs)));
   }
 }

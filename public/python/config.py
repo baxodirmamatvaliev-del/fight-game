@@ -4,6 +4,8 @@ FLOOR = 535
 GRAVITY = 1900
 ROUND_SECONDS = 60
 FIGHTERS = {
+    "subzero": {"name": "SUB-ZERO", "title": "Muz jangchisi", "color": "#83daff", "speed": 300, "power": 1.0, "special": "Muz zarbasi", "element": "ice"},
+    "scorpion": {"name": "SCORPION", "title": "Olov ninjasi", "color": "#ffb443", "speed": 285, "power": 1.1, "special": "Olov zarbasi", "element": "fire"},
     "volt": {"name": "VOLT", "title": "Muvozanatli jangchi", "color": "#c9aa63", "speed": 305, "power": 1.0, "special": "Thunder bolt"},
     "ember": {"name": "EMBER", "title": "Kuchli zarbalar", "color": "#c65942", "speed": 275, "power": 1.12, "special": "Solar flare"},
     "ghost": {"name": "GHOST", "title": "Tezkor harakat", "color": "#87a9bb", "speed": 330, "power": .9, "special": "Phantom pulse"},

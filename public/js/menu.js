@@ -9,6 +9,7 @@ export function setupMenu({
   onDialog,
 }) {
   const container = $("#fighter-options");
+  $("#opponent").innerHTML = Object.entries(fighters).map(([kind, f]) => `<option value="${kind}">${f.name}</option>`).join("");
   for (const [kind, f] of Object.entries(fighters)) {
     const button = document.createElement("button");
     button.className = "fighter-card";
@@ -29,6 +30,12 @@ export function setupMenu({
     });
   }
   function render() {
+    const selected = fighters[options.p1];
+    $("#selected-fighter-name").textContent = selected.name;
+    $("#selected-fighter-detail").textContent = `${selected.title} · ${selected.special || "Energiya zarbasi"}`;
+    $("#selection-speed").value = selected.speed;
+    $("#selection-power").value = selected.power;
+    drawPortrait($("#selected-portrait"), options.p1);
     for (const button of container.children) {
       const chosen = button.dataset.fighter === options.p1;
       button.classList.toggle("selected", chosen);
@@ -71,6 +78,7 @@ export function setupMenu({
   });
   $("#opponent").addEventListener("change", (event) => {
     options.p2 = event.target.value;
+    render();
     onChange();
   });
   $("#volume").value = Math.round(prefs.volume * 100);
@@ -105,5 +113,6 @@ export function setupMenu({
     });
   });
   render();
+  window.addEventListener("fighter-art-ready", () => drawPortrait($("#selected-portrait"), options.p1));
   onChange();
 }

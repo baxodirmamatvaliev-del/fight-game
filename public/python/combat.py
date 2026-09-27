@@ -11,13 +11,14 @@ def damage(attacker, defender, amount, knock, events, special=False):
     defender.energy = min(100, defender.energy + (7 if blocked else 5))
     attacker.energy = min(100, attacker.energy + (3 if blocked else 8))
     if not blocked:
-        defender.stun = .23 if special else .17
+        defender.stun = .7 if special and attacker.stats.get("element") == "ice" else .23 if special else .17
         defender.action = "hurt"
         attacker.combo += 1
         attacker.combo_time = 1.25
     events.append({"type": "block" if blocked else "hit", "x": defender.x, "y": defender.y - 155,
                    "color": attacker.stats["color"], "special": special, "combo": attacker.combo,
-                   "damage": round(actual_damage, 2), "player": attacker.player})
+                   "damage": round(actual_damage, 2), "player": attacker.player,
+                   "element": attacker.stats.get("element", "energy")})
 
 
 def melee(attacker, defender, events):

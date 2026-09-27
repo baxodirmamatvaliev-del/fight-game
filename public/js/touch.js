@@ -21,6 +21,7 @@ export function setupTouch(input) {
       event.preventDefault();
       button.setPointerCapture(event.pointerId);
       active.set(event.pointerId, button.dataset.action);
+      input.pending[0].add(button.dataset.action);
       button.classList.add("pressed");
       sync();
     });

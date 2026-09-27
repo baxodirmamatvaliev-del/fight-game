@@ -2,7 +2,7 @@
 // feet on the Python floor despite differences in the exported empty margins.
 const atlases = new Map();
 export const spriteReady = Promise.all(
-  ["volt", "ember", "ghost"].map(
+  ["volt", "ember", "ghost", "subzero", "scorpion"].map(
     (kind) =>
       new Promise((resolve) => {
         const image = new Image();
@@ -120,6 +120,7 @@ export function drawSprite(ctx, f, time, scale = 1, portrait = false) {
     croppedH = bounds.bottom - bounds.top + 1;
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = "high";
+  if (f.stun > .24) ctx.filter = "sepia(.6) hue-rotate(145deg) saturate(1.8) brightness(1.3)";
   ctx.drawImage(
     atlas.image,
     (frame % 4) * atlas.w + bounds.left,

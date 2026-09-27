@@ -1,5 +1,13 @@
 import { drawSprite } from "./sprites.js";
 export const fighters = {
+  subzero: {
+    name: "SUB-ZERO", title: "MUZ JANGCHISI", color: "#83daff", dark: "#153352", skin: "#b69b86",
+    speed: 4, power: 3, moveSpeed: 300, damageScale: 1, element: "ice", special: "Muz zarbasi",
+  },
+  scorpion: {
+    name: "SCORPION", title: "OLOV NINJASI", color: "#ffb443", dark: "#4c3218", skin: "#b78a63",
+    speed: 3, power: 5, moveSpeed: 285, damageScale: 1.1, element: "fire", special: "Olov zarbasi",
+  },
   volt: {
     name: "VOLT",
     title: "MUVOZANATLI JANGCHI",
@@ -8,6 +16,7 @@ export const fighters = {
     skin: "#af8061",
     speed: 4,
     power: 3,
+    moveSpeed: 305, damageScale: 1,
   },
   ember: {
     name: "EMBER",
@@ -17,6 +26,7 @@ export const fighters = {
     skin: "#be8968",
     speed: 3,
     power: 5,
+    moveSpeed: 275, damageScale: 1.12,
   },
   ghost: {
     name: "GHOST",
@@ -26,6 +36,7 @@ export const fighters = {
     skin: "#b59d8c",
     speed: 5,
     power: 2,
+    moveSpeed: 330, damageScale: .9,
   },
 };
 function shape(ctx, points, fill, stroke = "#111519", width = 1.2) {

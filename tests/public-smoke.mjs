@@ -10,7 +10,7 @@ try{
   const context=await browser.newContext({viewport:{width:1440,height:1000}});
   const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
   const response=await page.goto(url,{waitUntil:'domcontentloaded'});assert.equal(response.status(),200,'Public site should return 200 without authentication');
-  await page.waitForFunction(()=>window.neonClash?.ready&&neonClash.artLoaded.length===3,null,{timeout:90000});
+  await page.waitForFunction(()=>window.neonClash?.ready&&neonClash.artLoaded.length===5,null,{timeout:90000});
   assert.equal(await page.locator('#visible-controls .control-item').count(),7);
   await page.screenshot({path:'test-results/public-lobby.png',fullPage:true});
   await page.locator('#start-button').click();assert.equal(await page.locator('#guide-dialog').evaluate(d=>d.open),true);

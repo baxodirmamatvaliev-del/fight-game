@@ -23,12 +23,12 @@ try {
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto(base);
   await page.waitForFunction(() => window.neonClash?.ready, { timeout: 90000 });
-  await page.waitForFunction(() => neonClash.artLoaded.length === 3);
+  await page.waitForFunction(() => neonClash.artLoaded.length === 5);
   await page.screenshot({
     path: "test-results/desktop-lobby.png",
     fullPage: true,
   });
-  assert.equal(await page.locator(".fighter-card").count(), 3);
+  assert.equal(await page.locator(".fighter-card").count(), 5);
   await page.locator('[data-fighter="ghost"]').click();
   assert.equal(await page.evaluate(() => neonClash.options.p1), "ghost");
   for (const arena of ["temple", "void", "city"]) {
@@ -133,7 +133,7 @@ try {
   phone.on("pageerror", (e) => errors.push(e.message));
   await phone.goto(base);
   await phone.waitForFunction(() => neonClash?.ready, { timeout: 90000 });
-  await phone.waitForFunction(() => neonClash.artLoaded.length === 3);
+  await phone.waitForFunction(() => neonClash.artLoaded.length === 5);
   assert.equal(
     await phone.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,

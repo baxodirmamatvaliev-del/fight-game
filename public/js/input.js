@@ -36,7 +36,7 @@ export class Input {
     window.addEventListener("keydown", (e) => {
       if (!this.enabled || document.querySelector("dialog[open]")) return;
       if (
-        ["INPUT", "SELECT", "TEXTAREA", "BUTTON"].includes(
+        ["INPUT", "SELECT", "TEXTAREA"].includes(
           document.activeElement?.tagName,
         )
       )

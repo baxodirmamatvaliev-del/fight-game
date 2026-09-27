@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="./refinement.css" />
     <link rel="stylesheet" href="./training.css" />
     <link rel="stylesheet" href="./combat-theme.css" />
+    <link rel="stylesheet" href="./tournament.css" />
   </head>
   <body>
     <header class="topbar">
@@ -54,12 +55,12 @@
           </p>
           <h1>JANGGA <span>TAYYORMISIZ?</span></h1>
           <p class="intro-copy">
-            Jangchini tanlang. Tugmalarni o‘rganing. Arenaga kiring.
+            Avval qahramonni tanlang. Muz yoki olov bilan jangga kiring.
           </p>
         </div>
         <div class="intro-aside">
           <span class="small-label">OCHIQ ARENA</span>
-          <p>3 jangchi. 3 arena.<br />Bitta g‘olib.</p>
+          <p>Muz va olov.<br />Qahramonni o‘zingiz tanlang.</p>
           <span class="tag">AKKAUNTSIZ O‘YNANG <span>↗</span></span>
         </div>
       </section>
@@ -237,6 +238,13 @@
         </p>
       </section>
       <section id="setup" class="setup-grid" aria-label="O‘yinni sozlash">
+        <div class="selection-banner">
+          <canvas id="selected-portrait" aria-hidden="true"></canvas>
+          <div class="selection-info"><p class="eyebrow">QAHRAMONINGIZ</p><h2 id="selected-fighter-name"></h2><p id="selected-fighter-detail"></p>
+            <div class="selection-stats"><label>TEZLIK <meter id="selection-speed" min="0" max="5"></meter></label><label>KUCH <meter id="selection-power" min="0" max="5"></meter></label></div>
+          </div>
+          <div class="selection-actions"><button id="selection-start" class="primary-button" disabled>JANGGA KIRISH →</button><button id="share-button" class="secondary-button">DO‘STLARGA ULASHISH ↗</button><p id="share-status" role="status">Bepul · Akkauntsiz · Telefon va kompyuter</p></div>
+        </div>
         <div class="setup-panel">
           <div class="section-label">
             <span>01</span>
@@ -326,7 +334,7 @@
     </main>
     <footer>
       <a class="footer-brand" href="./">NEON CLASH<span>®</span></a
-      ><span>PYTHON POWERED. ARCADE INSPIRED.</span
+      ><span>NORASMIY FAN O‘YINI · MORTAL KOMBAT EMAS</span
       ><span>MADE FOR THE LOVE OF THE GAME <span class="lime">↗</span></span>
     </footer>
     <dialog id="guide-dialog" class="guide-dialog">
@@ -370,19 +378,19 @@
           <h3>1-O‘YINCHI</h3>
           <p><kbd>A / D</kbd> Yurish</p>
           <p><kbd>W</kbd> Sakrash</p>
-          <p><kbd>J</kbd> Musht</p>
-          <p><kbd>K</kbd> Tepik</p>
-          <p><kbd>L</kbd> Maxsus zarba</p>
-          <p><kbd>S</kbd> Himoya</p>
+          <p><kbd>← / J</kbd> Musht</p>
+          <p><kbd>→ / K</kbd> Tepik</p>
+          <p><kbd>↑ / L</kbd> Maxsus zarba</p>
+          <p><kbd>↓ / S</kbd> Himoya</p>
         </div>
         <div>
           <h3>2-O‘YINCHI</h3>
-          <p><kbd>← / →</kbd> Yurish</p>
-          <p><kbd>↑</kbd> Sakrash</p>
+          <p><kbd>Num 4 / 6</kbd> Yurish</p>
+          <p><kbd>Num 8</kbd> Sakrash</p>
           <p><kbd>1</kbd> Musht</p>
           <p><kbd>2</kbd> Tepik</p>
           <p><kbd>3</kbd> Maxsus zarba</p>
-          <p><kbd>↓</kbd> Himoya</p>
+          <p><kbd>Num 5</kbd> Himoya</p>
         </div>
       </div>
       <p class="help-note">

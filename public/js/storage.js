@@ -1,6 +1,7 @@
+import { fighters } from "./fighters.js";
 const defaults = {
-  p1: "volt",
-  p2: "ember",
+  p1: "subzero",
+  p2: "scorpion",
   mode: "cpu",
   difficulty: "normal",
   arena: "city",
@@ -30,8 +31,8 @@ export class Storage {
       p = { ...defaults };
     if (!value || typeof value !== "object") return p;
     for (const [key, choices] of Object.entries({
-      p1: ["volt", "ember", "ghost"],
-      p2: ["volt", "ember", "ghost"],
+      p1: Object.keys(fighters),
+      p2: Object.keys(fighters),
       mode: ["cpu", "local", "practice"],
       difficulty: ["easy", "normal", "hard"],
       arena: ["city", "temple", "void"],

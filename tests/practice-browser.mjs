@@ -20,7 +20,7 @@ try {
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto(url);
   await page.waitForFunction(
-    () => window.neonClash?.ready && neonClash.artLoaded.length === 3,
+    () => window.neonClash?.ready && neonClash.artLoaded.length === 5,
     null,
     { timeout: 90000 },
   );

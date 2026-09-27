@@ -9,7 +9,9 @@
     "test": "python3 -m unittest discover -s tests -v",
     "test:browser": "node tests/browser.mjs",
     "package": "node scripts/package.mjs",
-    "test:practice": "node tests/practice-browser.mjs"
+    "test:practice": "node tests/practice-browser.mjs",
+    "test:fallback": "node tests/fallback.mjs",
+    "test:redesign": "node tests/redesign-browser.mjs"
   },
   "dependencies": {
     "pyodide": "0.27.7"

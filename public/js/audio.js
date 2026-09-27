@@ -94,6 +94,11 @@ export class Audio {
       this.noise(0.055, 0.12, 1800);
     }
     if (type === "special") {
+      if (event.color === "#83daff") {
+        this.tone(900, .32, "triangle", .08, 240);
+        this.noise(.24, .13, 2800);
+        return;
+      }
       this.tone(160, 0.4, "sawtooth", 0.09, 960);
       this.tone(80, 0.3, "sine", 0.16, 300);
       this.noise(0.3, 0.1, 1200);

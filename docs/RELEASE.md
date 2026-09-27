@@ -1,5 +1,14 @@
 # 1.0.0 release checks
 
+## Selection-site revision
+
+- Five playable fighters, including generated Sub-Zero and Scorpion fan art. The full Mortal Kombat roster is not implemented.
+- Immediate lightweight startup, with optional Python loading in the background and no backend switching during a match.
+- 22 Python tests plus lightweight engine checks cover gameplay and ice hit stun.
+- Dedicated browser checks block Python downloads and verify selection, all four arrow attacks and real mobile punch/jump taps.
+- Share button uses the native share sheet or clipboard. Public anonymous access is checked after publication.
+- Character selection precedes combat; oversized mobile buttons support multiple simultaneous touches.
+
 - 21 Python gameplay tests cover movement, jumping, arena bounds, hit windows, one-hit attacks, frontal/back blocking, airborne evasion, energy cost, projectiles, action edges, countdown, best-of-three, draws, frame clamps, JSON bridge, a CPU-vs-CPU match, practice safety/progress/reset and buffered attacks/jumps.
 
 - Attack and jump presses are remembered for 180 ms, allowing late follow-ups and jumps just before landing without automatic repeated attacks.

@@ -7,6 +7,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "public/python"))
 from fighter import Fighter
 from match import Match
 from combat import melee
+from combat import damage
 import projectiles
 import bridge
 from opponent import Opponent
@@ -14,6 +15,16 @@ from config import FLOOR
 
 
 class GameplayTests(unittest.TestCase):
+    def test_new_heroes_and_ice_special(self):
+        match = Match(p1="subzero", p2="scorpion", mode="local")
+        self.assertEqual(match.kinds, ["subzero", "scorpion"])
+        a, b = match.fighters
+        events = []
+        damage(a, b, 18, 65, events, special=True)
+        self.assertEqual(b.stun, .7)
+        self.assertEqual(events[0]["element"], "ice")
+        self.assertEqual(b.health, 82)
+
     def pair(self):
         return Fighter("volt", 0), Fighter("ember", 1)
 

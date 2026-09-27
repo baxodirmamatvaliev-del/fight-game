@@ -1,5 +1,27 @@
 # Serious arena revision
 
+## Fan fighter revision
+
+Built-in imagegen was used for generation and background extraction. Final assets:
+
+- `public/assets/subzero-poses.png`
+- `public/assets/scorpion-poses.png`
+
+These are newly generated fan-art sprites, not extracted commercial assets. Only these two Mortal Kombat-inspired characters are currently implemented; the full roster is not included.
+
+### subzero generation prompt
+
+Use case: stylized-concept. Asset type: transparent PNG sprite atlas for a realistic fighting game. Sub-Zero from Mortal Kombat, adult muscular masked cryomancer in blue and black armored ninja clothing. Exactly 4 equal columns and 2 equal rows, eight isolated full-body poses facing RIGHT. Same character, scale, clothing, camera, feet baseline throughout. Top row: fighting idle guard, left-leg walking step, right-leg walking step, extended straight punch. Bottom row: high extended side kick, blocking crossed forearms, airborne tucked jump, hands projecting ice. Each pose fits entirely in its own cell with transparent margins, no overlap, no grid lines. Photoreal cinematic 3D game render, worn textile and metal, realistic adult anatomy, sharp silhouette. Genuine transparent background, no text, logos, watermarks or ground shadow. Not cartoon/chibi.
+
+### scorpion generation prompt
+
+Use case: stylized-concept. Asset type: transparent PNG sprite atlas for a realistic fighting game. Scorpion from Mortal Kombat, adult muscular masked ninja in yellow-gold and black armor and hood. Exactly 4 equal columns and 2 equal rows, eight isolated full-body poses facing RIGHT. Same character, scale, clothing, camera, feet baseline throughout. Top row: fighting idle guard, left-leg walking step, right-leg walking step, extended straight punch. Bottom row: high extended side kick, blocking crossed forearms, airborne tucked jump, hands projecting flame. Each pose fits entirely in its own cell with transparent margins, no overlap, no grid lines. Photoreal cinematic 3D game render, worn textile and metal, realistic adult anatomy, sharp silhouette. Genuine transparent background, no text, logos, watermarks or ground shadow. Not cartoon/chibi.
+
+### Background extraction prompt (both atlases)
+
+Use case: background-extraction. Edit target: supplied fighting-game sprite atlas. Remove ONLY the gray/brown studio background completely, make it genuinely transparent alpha. Keep exactly the same eight fighters in precisely the same 4-column 2-row positions, same image dimensions and poses, every limb, detail, colors, costume and ice/fire effect. No new shadow, no background, no checkerboard pixels. Every empty area between characters must have alpha zero. Preserve sharp realistic character edges. Output transparent PNG.
+
+
 Generated using the built-in imagegen tool, not the API/CLI fallback.
 
 ## Saved assets

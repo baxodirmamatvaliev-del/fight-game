@@ -1,6 +1,8 @@
 # NEON CLASH
 
-A Python-powered 2D fighting game. Cinematic foundry environments, three realistic pre-rendered fighters, synthesized sound effects and adaptive music. Play against the CPU or a friend on the same device. Before the fight, a control guide explains every key; the key map also remains visible below the arena and inside the desktop fight view.
+A browser fighting-game fan prototype with five playable fighters, including newly generated Sub-Zero and Scorpion art. Select a hero before entering the arena; share the public URL using the Share button. This is not an official Mortal Kombat game and does not contain the full Mortal Kombat roster or commercial animations.
+
+Python powers combat when its bundled WebAssembly runtime is available. A lightweight JavaScript equivalent makes the game immediately playable when downloads are slow, blocked or unsupported; the backend never changes mid-match. Large mobile buttons support simultaneous movement and attacks.
 
 ## Play locally
 
@@ -17,12 +19,12 @@ Open **http://localhost:8000**. The first load starts a bundled Python WebAssemb
 
 | Action | Player 1 | Player 2 |
 | --- | --- | --- |
-| Move | A / D | Left / Right arrows |
-| Jump | W | Up arrow |
-| Block | S | Down arrow |
-| Punch | J | 1 |
-| Kick | K | 2 |
-| Special | L | 3 |
+| Move | A / D | Numpad 4 / 6 |
+| Jump | W | Numpad 8 |
+| Block | Down arrow / S | Numpad 5 |
+| Punch | Left arrow / J | 1 |
+| Kick | Right arrow / K | 2 |
+| Special | Up arrow / L | 3 |
 | Pause | P / Escape | P / Escape |
 | Fullscreen | F | F |
 
@@ -47,9 +49,9 @@ Successful hits briefly freeze the fighters to emphasize impact; idle fighters h
 
 ## Architecture
 
-`public/python/` owns movement, collision, damage, blocking, energy, CPU decisions and rounds. This exact Python source runs in the browser using **Pyodide 0.27.7**. JavaScript handles Canvas graphics, keyboard/touch/gamepad input, Web Audio and menus. `serve.py` is a Python development server, not an online multiplayer backend.
+`public/python/` implements movement, collision, damage, blocking, energy, CPU decisions and rounds through **Pyodide 0.27.7**. `public/js/fallback-engine.js` implements the same rules for immediate startup without WebAssembly. JavaScript also handles Canvas graphics, input, Web Audio and menus. `serve.py` is a Python development server, not an online multiplayer backend.
 
-The deployed game is static: its Python runtime, fonts and all game assets are bundled locally. The foundry environment and eight-pose fighter atlases were generated with the built-in imagegen tool; Canvas selects and anchors the appropriate pose. A procedural fighter renderer provides a fallback. Combat effects and music are synthesized in the browser. There are no Mortal Kombat assets. See [docs/ART.md](docs/ART.md) for asset paths and prompts.
+The deployed game is static: its Python runtime, fonts and all game assets are bundled locally. The foundry environment and eight-pose fighter atlases were generated with the built-in imagegen tool; Canvas selects and anchors the appropriate pose. A procedural fighter renderer provides a fallback. Combat effects and music are synthesized in the browser. Sub-Zero and Scorpion are generated fan-art interpretations, not ripped commercial game assets. See [docs/ART.md](docs/ART.md) for asset paths and prompts.
 
 ```text
 public/

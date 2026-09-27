@@ -6,7 +6,8 @@ def spawn(fighter, projectiles, events):
     if fighter.action == "special" and not fighter.hit_done and fighter.action_time >= ATTACKS["special"]["active"]:
         fighter.hit_done = True
         projectiles.append({"x": fighter.x + fighter.facing * 70, "y": fighter.y - 155,
-                            "direction": fighter.facing, "owner": fighter.player, "color": fighter.stats["color"]})
+                            "direction": fighter.facing, "owner": fighter.player, "color": fighter.stats["color"],
+                            "element": fighter.stats.get("element", "energy")})
         events.append({"type": "special", "x": fighter.x, "y": fighter.y - 155, "color": fighter.stats["color"]})
 
 

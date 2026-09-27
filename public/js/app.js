@@ -139,6 +139,16 @@ $("#sound-button").addEventListener("click", async () => {
 });
 $("#fullscreen-button").addEventListener("click", fullscreen);
 $("#start-button").addEventListener("click", () => controls.guide(options));
+$("#selection-start").addEventListener("click", () => controls.guide(options));
+$("#share-button").addEventListener("click", async () => {
+  const url = location.href.split("#")[0];
+  try {
+    if (navigator.share) await navigator.share({ title: "NEON CLASH — jangga kir!", url });
+    else { await navigator.clipboard.writeText(url); $("#share-status").textContent = "Link nusxalandi — do‘stingizga yuboring."; }
+  } catch (error) {
+    if (error.name !== "AbortError") $("#share-status").textContent = url;
+  }
+});
 $("#guide-start").addEventListener("click", () => {
   $("#guide-dialog").close();
   start();
@@ -188,6 +198,7 @@ async function start() {
   music.intense = options.mode !== "practice";
   music.start();
   canvas.focus({ preventScroll: true });
+  document.body.classList.add("in-match");
   $("#arena").scrollIntoView({
     behavior: reduced.matches ? "instant" : "smooth",
     block: "center",
@@ -208,6 +219,7 @@ function menu() {
   music.intense = false;
   music.start();
   $("#setup").classList.remove("locked");
+  document.body.classList.remove("in-match");
   $("#start-button").focus({ preventScroll: true });
 }
 function processEvents() {
@@ -298,8 +310,9 @@ engine
   .then(() => {
     ready = true;
     $("#start-button").disabled = false;
+    $("#selection-start").disabled = false;
     $("#start-label").textContent = "JANGNI BOSHLASH";
-    $("#load-status").textContent = "PYTHON READY · PRESS START";
+    $("#load-status").textContent = "TAYYOR · QAHRAMONNI TANLANG VA BOSHLANG";
   })
   .catch((error) => {
     console.error(error);
@@ -310,6 +323,7 @@ engine
   });
 // Read-only inspection hook for automated browser gameplay checks.
 globalThis.neonClash = {
+  get backend() { return engine.backend; },
   get artLoaded() {
     return loadedSprites();
   },
