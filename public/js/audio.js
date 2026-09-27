@@ -82,10 +82,12 @@ export class Audio {
     n.start(t);
     n.stop(t + duration);
   }
-  play(type) {
+  play(type, event = {}) {
     if (type === "hit") {
-      this.tone(115, 0.16, "sine", 0.3, 32);
-      this.noise(0.11, 0.23, 300);
+      const heavy = event.special || event.damage >= 10;
+      this.tone(heavy ? 82 : 135, heavy ? 0.28 : 0.16, "sine", 0.34, 28);
+      this.noise(heavy ? 0.18 : 0.095, 0.24, heavy ? 180 : 650);
+      this.noise(0.045, 0.13, 2200);
     }
     if (type === "block") {
       this.tone(560, 0.09, "triangle", 0.13, 150);
@@ -97,21 +99,21 @@ export class Audio {
       this.noise(0.3, 0.1, 1200);
     }
     if (type === "fight") {
-      this.tone(220, 0.17, "square", 0.07);
-      this.tone(330, 0.22, "square", 0.07, null, 0.17);
-      this.tone(440, 0.35, "square", 0.08, null, 0.35);
+      this.tone(58, 0.65, "sine", 0.24, 28);
+      this.noise(0.42, 0.13, 230);
+      this.tone(116, 0.45, "triangle", 0.08, 58, 0.1);
     }
     if (type === "ko") {
       this.tone(80, 0.65, "sine", 0.3, 25);
       this.noise(0.4, 0.2, 100);
     }
     if (type === "victory") {
-      [261.63, 329.63, 392, 523.25].forEach((n, i) =>
-        this.tone(n, 0.3, "triangle", 0.12, null, i * 0.13),
+      [73.42, 110, 146.83].forEach((n, i) =>
+        this.tone(n, 0.65, "triangle", 0.1, null, i * 0.18),
       );
     }
     if (type === "select") this.tone(740, 0.06, "triangle", 0.08, 980);
-    if (type === "jump") this.tone(180, 0.12, "sine", 0.06, 380);
+    if (type === "jump") this.noise(0.14, 0.055, 900);
   }
   suspendMusic() {
     this.music?.stop();

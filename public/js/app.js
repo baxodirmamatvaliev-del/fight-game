@@ -212,7 +212,7 @@ function menu() {
 }
 function processEvents() {
   for (const event of state.events) {
-    audio.play(event.type);
+    audio.play(event.type, event);
     if (["hit", "block", "special"].includes(event.type))
       particles.burst(event);
     if (event.type === "hit" && !particles.reduced)

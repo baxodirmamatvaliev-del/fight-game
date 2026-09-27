@@ -25,7 +25,7 @@ export class Music {
       return;
     }
     if (a.ctx.state !== "running") return;
-    const length = 60 / 112 / 4;
+    const length = 60 / 92 / 4;
     const bass = [
       55, 55, 65.41, 55, 49, 49, 65.41, 73.42, 43.65, 43.65, 55, 65.41, 49, 49,
       73.42, 65.41,
@@ -39,14 +39,14 @@ export class Music {
       }
       if (s % 8 === 4)
         a.noise(0.085, this.intense ? 0.055 : 0.027, 1000, delay);
-      if (s % 2 === 0) a.noise(0.025, 0.016, 6500, delay);
+      if (s % 4 === 2) a.noise(0.045, 0.012, 4200, delay);
       if (s % 2 === 0)
         a.tone(bass[(s / 2) | 0], length * 1.5, "triangle", 0.065, null, delay);
-      if (s % 4 === 2) {
+      if (s % 16 === 0) {
         const notes = [220, 261.63, 329.63, 293.66, 196, 261.63, 220, 293.66];
         a.tone(
-          notes[(s / 4) | 0] * (this.intense ? 2 : 1),
-          length * 2.3,
+          notes[(s / 4) | 0] / 2,
+          length * 8,
           "sine",
           0.035,
           null,
