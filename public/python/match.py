@@ -6,7 +6,10 @@ import projectiles
 
 class Match:
     def __init__(self, p1="volt", p2="ember", mode="cpu", difficulty="normal"):
-        self.kinds = [p1 if p1 in FIGHTERS else "volt", p2 if p2 in FIGHTERS else "ember"]
+        self.kinds = [
+            p1 if p1 in FIGHTERS else "volt",
+            p2 if p2 in FIGHTERS else "ember",
+        ]
         self.mode = mode if mode in ("cpu", "local", "practice") else "cpu"
         self.completed = set()
         self.training_hits = 0
@@ -75,10 +78,12 @@ class Match:
                 self.completed.add("jump")
             if a.action in ("block", "punch", "kick", "special"):
                 self.completed.add(a.action)
-            self.training_hits += sum(e["type"] == "hit" and e["player"] == 0 for e in self.events)
+            self.training_hits += sum(
+                e["type"] == "hit" and e["player"] == 0 for e in self.events
+            )
             return
         if min(a.health, b.health) <= 0 or self.remaining <= 0:
-            if abs(a.health - b.health) > .001:
+            if abs(a.health - b.health) > 0.001:
                 self.round_winner = 0 if a.health > b.health else 1
                 self.wins[self.round_winner] += 1
             self.phase = "round_over"
@@ -89,9 +94,20 @@ class Match:
             self.events.append({"type": "ko", "player": self.round_winner})
 
     def snapshot(self):
-        return {"fighters": [f.snapshot() for f in self.fighters], "projectiles": self.projectiles,
-                "phase": self.phase, "phase_time": self.phase_time, "round": self.round,
-                "remaining": self.remaining, "wins": self.wins, "winner": self.winner,
-                "round_winner": self.round_winner, "events": self.events,
-                "training": {"completed": sorted(self.completed), "hits": self.training_hits}
-                if self.mode == "practice" else None}
+        return {
+            "fighters": [f.snapshot() for f in self.fighters],
+            "projectiles": self.projectiles,
+            "phase": self.phase,
+            "phase_time": self.phase_time,
+            "round": self.round,
+            "remaining": self.remaining,
+            "wins": self.wins,
+            "winner": self.winner,
+            "round_winner": self.round_winner,
+            "events": self.events,
+            "training": (
+                {"completed": sorted(self.completed), "hits": self.training_hits}
+                if self.mode == "practice"
+                else None
+            ),
+        }

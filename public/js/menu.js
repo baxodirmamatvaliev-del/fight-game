@@ -9,7 +9,9 @@ export function setupMenu({
   onDialog,
 }) {
   const container = $("#fighter-options");
-  $("#opponent").innerHTML = Object.entries(fighters).map(([kind, f]) => `<option value="${kind}">${f.name}</option>`).join("");
+  $("#opponent").innerHTML = Object.entries(fighters)
+    .map(([kind, f]) => `<option value="${kind}">${f.name}</option>`)
+    .join("");
   for (const [kind, f] of Object.entries(fighters)) {
     const button = document.createElement("button");
     button.className = "fighter-card";
@@ -25,14 +27,14 @@ export function setupMenu({
       onSelect();
     });
     window.addEventListener("fighter-art-ready", (event) => {
-      if (event.detail === kind)
-        drawPortrait(button.querySelector("canvas"), kind);
+      if (event.detail === kind) drawPortrait(button.querySelector("canvas"), kind);
     });
   }
   function render() {
     const selected = fighters[options.p1];
     $("#selected-fighter-name").textContent = selected.name;
-    $("#selected-fighter-detail").textContent = `${selected.title} · ${selected.special || "Energiya zarbasi"}`;
+    $("#selected-fighter-detail").textContent =
+      `${selected.title} · ${selected.special || "Energiya zarbasi"}`;
     $("#selection-speed").value = selected.speed;
     $("#selection-power").value = selected.power;
     drawPortrait($("#selected-portrait"), options.p1);
@@ -113,6 +115,8 @@ export function setupMenu({
     });
   });
   render();
-  window.addEventListener("fighter-art-ready", () => drawPortrait($("#selected-portrait"), options.p1));
+  window.addEventListener("fighter-art-ready", () =>
+    drawPortrait($("#selected-portrait"), options.p1),
+  );
   onChange();
 }

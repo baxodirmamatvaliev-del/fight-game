@@ -1,6 +1,6 @@
 import { PythonEngine } from "./engine.js";
 import { drawArena, arenaNames } from "./arena.js";
-import { drawFighter, fighters } from "./fighters.js";
+import { drawFighter } from "./fighters.js";
 import { Particles, drawProjectiles } from "./particles.js";
 import { Input } from "./input.js";
 import { Audio } from "./audio.js";
@@ -91,10 +91,7 @@ function updateSoundButton() {
     ? "◖♪ <span>SOUND OFF</span>"
     : "◖♪ <span>SOUND ON</span>";
   button.setAttribute("aria-pressed", String(audio.muted));
-  button.setAttribute(
-    "aria-label",
-    audio.muted ? "Ovozni yoqish" : "Ovozni o‘chirish",
-  );
+  button.setAttribute("aria-label", audio.muted ? "Ovozni yoqish" : "Ovozni o‘chirish");
 }
 setupMenu({
   options,
@@ -143,8 +140,12 @@ $("#selection-start").addEventListener("click", () => controls.guide(options));
 $("#share-button").addEventListener("click", async () => {
   const url = location.href.split("#")[0];
   try {
-    if (navigator.share) await navigator.share({ title: "NEON CLASH — jangga kir!", url });
-    else { await navigator.clipboard.writeText(url); $("#share-status").textContent = "Link nusxalandi — do‘stingizga yuboring."; }
+    if (navigator.share)
+      await navigator.share({ title: "NEON CLASH — jangga kir!", url });
+    else {
+      await navigator.clipboard.writeText(url);
+      $("#share-status").textContent = "Link nusxalandi — do‘stingizga yuboring.";
+    }
   } catch (error) {
     if (error.name !== "AbortError") $("#share-status").textContent = url;
   }
@@ -225,8 +226,7 @@ function menu() {
 function processEvents() {
   for (const event of state.events) {
     audio.play(event.type, event);
-    if (["hit", "block", "special"].includes(event.type))
-      particles.burst(event);
+    if (["hit", "block", "special"].includes(event.type)) particles.burst(event);
     if (event.type === "hit" && !particles.reduced)
       hitStop = event.special ? 0.065 : 0.04;
   }
@@ -299,8 +299,7 @@ function frame(timestamp) {
     running = false;
     input.enabled = false;
     music.stop();
-    $("#announcement").textContent =
-      "Xatolik yuz berdi. Sahifani qayta yuklang.";
+    $("#announcement").textContent = "Xatolik yuz berdi. Sahifani qayta yuklang.";
   }
   requestAnimationFrame(frame);
 }
@@ -323,7 +322,9 @@ engine
   });
 // Read-only inspection hook for automated browser gameplay checks.
 globalThis.neonClash = {
-  get backend() { return engine.backend; },
+  get backend() {
+    return engine.backend;
+  },
   get artLoaded() {
     return loadedSprites();
   },

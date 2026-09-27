@@ -36,10 +36,7 @@ try {
     assert.equal(await page.evaluate(() => neonClash.options.arena), arena);
   }
   await page.locator("#help-button").click();
-  assert.equal(
-    await page.locator("#help-dialog").evaluate((d) => d.open),
-    true,
-  );
+  assert.equal(await page.locator("#help-dialog").evaluate((d) => d.open), true);
   await page.locator("#help-dialog .close-dialog").click();
   await page.locator("#settings-button").click();
   await page.locator("#music").uncheck();
@@ -47,10 +44,7 @@ try {
   await page.locator('[data-mode="local"]').click();
   await page.locator('[data-fighter="volt"]').click();
   await page.locator("#start-button").click();
-  assert.equal(
-    await page.locator("#guide-dialog").evaluate((d) => d.open),
-    true,
-  );
+  assert.equal(await page.locator("#guide-dialog").evaluate((d) => d.open), true);
   assert.equal(await page.locator("#guide-controls .control-item").count(), 14);
   await page.screenshot({ path: "test-results/controls-guide.png" });
   await page.locator("#guide-start").click();
@@ -60,9 +54,7 @@ try {
   await page.keyboard.down("d");
   await page.waitForTimeout(1250);
   await page.keyboard.up("d");
-  assert.ok(
-    (await page.evaluate(() => neonClash.state.fighters[0].x)) > before + 150,
-  );
+  assert.ok((await page.evaluate(() => neonClash.state.fighters[0].x)) > before + 150);
   await page.keyboard.down("l");
   await page.waitForTimeout(100);
   await page.keyboard.up("l");
@@ -101,8 +93,7 @@ try {
   await page.locator("#resume-button").click();
   // Exercise a real complete match through physical keyboard presses (no state mutation).
   for (let i = 0; i < 80; i++) {
-    if (await page.evaluate(() => neonClash.state.phase === "match_over"))
-      break;
+    if (await page.evaluate(() => neonClash.state.phase === "match_over")) break;
     const phase = await page.evaluate(() => neonClash.state.phase);
     if (phase === "fight") {
       await page.keyboard.down("d");
@@ -118,10 +109,7 @@ try {
   assert.equal(await page.locator("#result-screen").isVisible(), true);
   await page.screenshot({ path: "test-results/result.png" });
   await page.locator("#rematch-button").click();
-  assert.equal(
-    await page.evaluate(() => neonClash.state.wins.join(",")),
-    "0,0",
-  );
+  assert.equal(await page.evaluate(() => neonClash.state.wins.join(",")), "0,0");
   await page.locator("#pause-button").click();
   await page.locator("#quit-button").click();
   assert.equal(await page.locator("#lobby").isVisible(), true);
@@ -135,18 +123,13 @@ try {
   await phone.waitForFunction(() => neonClash?.ready, { timeout: 90000 });
   await phone.waitForFunction(() => neonClash.artLoaded.length === 5);
   assert.equal(
-    await phone.evaluate(
-      () => document.documentElement.scrollWidth <= innerWidth,
-    ),
+    await phone.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
     true,
     "Mobile layout must not overflow",
   );
   await phone.screenshot({ path: "test-results/mobile-lobby.png" });
   await phone.locator("#start-button").tap();
-  assert.equal(
-    await phone.locator("#guide-dialog").evaluate((d) => d.open),
-    true,
-  );
+  assert.equal(await phone.locator("#guide-dialog").evaluate((d) => d.open), true);
   await phone.locator("#guide-start").tap();
   await phone.waitForFunction(() => neonClash.state?.phase === "fight");
   assert.equal(

@@ -50,8 +50,7 @@ export class Storage {
   stats() {
     const s = this.read("stats", {});
     return {
-      matches:
-        Number.isSafeInteger(s?.matches) && s.matches >= 0 ? s.matches : 0,
+      matches: Number.isSafeInteger(s?.matches) && s.matches >= 0 ? s.matches : 0,
       wins: Number.isSafeInteger(s?.wins) && s.wins >= 0 ? s.wins : 0,
     };
   }
@@ -64,12 +63,10 @@ export class Storage {
   }
   renderStats() {
     const s = this.stats();
-    document.querySelector("#stat-matches").textContent = String(
-      s.matches,
-    ).padStart(2, "0");
-    document.querySelector("#stat-wins").textContent = String(s.wins).padStart(
+    document.querySelector("#stat-matches").textContent = String(s.matches).padStart(
       2,
       "0",
     );
+    document.querySelector("#stat-wins").textContent = String(s.wins).padStart(2, "0");
   }
 }

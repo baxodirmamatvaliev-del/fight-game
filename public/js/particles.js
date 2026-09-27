@@ -77,7 +77,11 @@ export class Particles {
     for (const label of this.labels) {
       ctx.globalAlpha = Math.min(1, label.life / 0.2);
       const y = label.y - (this.reduced ? 0 : (0.85 - label.life) * 26);
-      const title = label.blocked ? "BLOK" : label.combo > 1 ? `${label.combo} ZARBA` : "ZARBA";
+      const title = label.blocked
+        ? "BLOK"
+        : label.combo > 1
+          ? `${label.combo} ZARBA`
+          : "ZARBA";
       ctx.font = "700 23px Barlow, sans-serif";
       ctx.fillStyle = label.blocked ? "#a7cbd8" : "#e4c58d";
       ctx.strokeText(title, label.x, y);
@@ -93,10 +97,7 @@ export class Particles {
   offset() {
     return this.reduced
       ? [0, 0]
-      : [
-          (Math.random() - 0.5) * this.shake,
-          (Math.random() - 0.5) * this.shake,
-        ];
+      : [(Math.random() - 0.5) * this.shake, (Math.random() - 0.5) * this.shake];
   }
   clear() {
     this.items = [];
@@ -112,22 +113,44 @@ export function drawProjectiles(ctx, bolts, time) {
     ctx.scale(bolt.direction, 1);
     ctx.globalCompositeOperation = "lighter";
     if (bolt.element === "fire") {
-      ctx.shadowColor = "#ff742b"; ctx.shadowBlur = 24;
+      ctx.shadowColor = "#ff742b";
+      ctx.shadowBlur = 24;
       for (let i = 0; i < 5; i++) {
         ctx.fillStyle = i % 2 ? "#ffbd49" : "#f06427";
         ctx.beginPath();
-        ctx.ellipse(-i * 13, Math.sin(time * 25 + i) * 5, 20 - i * 2, 13 - i, 0, 0, Math.PI * 2);
+        ctx.ellipse(
+          -i * 13,
+          Math.sin(time * 25 + i) * 5,
+          20 - i * 2,
+          13 - i,
+          0,
+          0,
+          Math.PI * 2,
+        );
         ctx.fill();
       }
     }
     if (bolt.element === "ice") {
       ctx.fillStyle = "#c1f1ff";
-      ctx.shadowColor = "#74cfff"; ctx.shadowBlur = 18;
-      ctx.beginPath(); ctx.moveTo(28,0); ctx.lineTo(-5,-17); ctx.lineTo(-23,-5);
-      ctx.lineTo(-18,12); ctx.lineTo(-2,18); ctx.closePath(); ctx.fill();
-      ctx.strokeStyle = "#ffffff"; ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.moveTo(-18,-6); ctx.lineTo(22,0); ctx.lineTo(-2,16); ctx.stroke();
-      ctx.restore(); continue;
+      ctx.shadowColor = "#74cfff";
+      ctx.shadowBlur = 18;
+      ctx.beginPath();
+      ctx.moveTo(28, 0);
+      ctx.lineTo(-5, -17);
+      ctx.lineTo(-23, -5);
+      ctx.lineTo(-18, 12);
+      ctx.lineTo(-2, 18);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(-18, -6);
+      ctx.lineTo(22, 0);
+      ctx.lineTo(-2, 16);
+      ctx.stroke();
+      ctx.restore();
+      continue;
     }
     const g = ctx.createLinearGradient(-65, 0, 20, 0);
     g.addColorStop(0, bolt.color + "00");

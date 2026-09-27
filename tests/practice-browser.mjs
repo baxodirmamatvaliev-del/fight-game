@@ -27,16 +27,12 @@ try {
   await page.locator("#start-button").click();
   await page.locator("#guide-practice").click();
   await page.waitForFunction(
-    () =>
-      neonClash.state?.training !== null &&
-      neonClash.options.mode === "practice",
+    () => neonClash.state?.training !== null && neonClash.options.mode === "practice",
   );
   assert.equal(await page.locator("#training-panel").isVisible(), true);
   assert.equal(await page.locator(".hud-timer").textContent(), "∞");
   const initialTimer = await page.evaluate(() => neonClash.state.remaining),
-    initialHealth = await page.evaluate(
-      () => neonClash.state.fighters[0].health,
-    );
+    initialHealth = await page.evaluate(() => neonClash.state.fighters[0].health);
   for (const [key, ms] of [
     ["a", 220],
     ["d", 700],
@@ -52,24 +48,16 @@ try {
     await page.keyboard.up(key);
     await page.waitForTimeout(650);
   }
-  assert.equal(
-    await page.evaluate(() => neonClash.state.training.completed.length),
-    7,
-  );
+  assert.equal(await page.evaluate(() => neonClash.state.training.completed.length), 7);
   assert.equal(await page.locator(".training-step.done").count(), 7);
-  assert.equal(
-    await page.evaluate(() => neonClash.state.remaining),
-    initialTimer,
-  );
+  assert.equal(await page.evaluate(() => neonClash.state.remaining), initialTimer);
   assert.equal(
     await page.evaluate(() => neonClash.state.fighters[0].health),
     initialHealth,
   );
   await page.keyboard.down("d");
   await page.waitForFunction(
-    () =>
-      Math.abs(neonClash.state.fighters[1].x - neonClash.state.fighters[0].x) <
-      95,
+    () => Math.abs(neonClash.state.fighters[1].x - neonClash.state.fighters[0].x) < 95,
   );
   await page.keyboard.up("d");
   await page.keyboard.press("j");
@@ -80,17 +68,11 @@ try {
     fullPage: true,
   });
   await page.locator("#training-reset").click();
-  assert.equal(
-    await page.evaluate(() => neonClash.state.training.completed.length),
-    0,
-  );
+  assert.equal(await page.evaluate(() => neonClash.state.training.completed.length), 0);
   assert.equal(await page.locator("#stat-matches").textContent(), "00");
   await page.locator("#training-fight").click();
   assert.equal(await page.evaluate(() => neonClash.options.mode), "cpu");
-  assert.equal(
-    await page.locator("#guide-dialog").evaluate((d) => d.open),
-    true,
-  );
+  assert.equal(await page.locator("#guide-dialog").evaluate((d) => d.open), true);
   assert.equal(await page.locator("#training-panel").isVisible(), false);
   await page.locator("#guide-start").click();
   await page.waitForFunction(() => neonClash.state?.phase === "fight");
@@ -105,9 +87,7 @@ try {
   await phone.locator("#guide-start").tap();
   assert.equal(await phone.locator("#touch-controls").isVisible(), true);
   assert.equal(
-    await phone.evaluate(
-      () => document.documentElement.scrollWidth <= innerWidth,
-    ),
+    await phone.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
     true,
   );
   await phone.screenshot({

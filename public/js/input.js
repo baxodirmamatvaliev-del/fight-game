@@ -35,11 +35,7 @@ export class Input {
     this.padPause = false;
     window.addEventListener("keydown", (e) => {
       if (!this.enabled || document.querySelector("dialog[open]")) return;
-      if (
-        ["INPUT", "SELECT", "TEXTAREA"].includes(
-          document.activeElement?.tagName,
-        )
-      )
+      if (["INPUT", "SELECT", "TEXTAREA"].includes(document.activeElement?.tagName))
         return;
       if (e.code === "Escape" || e.code === "KeyP") {
         e.preventDefault();
@@ -72,9 +68,7 @@ export class Input {
     this.touch.clear();
   }
   read() {
-    const output = this.keyboard.map(
-      (s, i) => new Set([...s, ...this.pending[i]]),
-    );
+    const output = this.keyboard.map((s, i) => new Set([...s, ...this.pending[i]]));
     this.pending.forEach((s) => s.clear());
     this.touch.forEach((a) => output[0].add(a));
     const pads = Array.from(navigator.getGamepads?.() || [])

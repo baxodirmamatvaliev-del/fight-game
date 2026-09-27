@@ -13,21 +13,20 @@
     />
     <title>NEON CLASH — Own the night.</title>
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="./styles.css" />
-    <link rel="stylesheet" href="./hud.css" />
-    <link rel="stylesheet" href="./responsive.css" />
-    <link rel="stylesheet" href="./touch.css" />
-    <link rel="stylesheet" href="./screens.css" />
-    <link rel="stylesheet" href="./refinement.css" />
-    <link rel="stylesheet" href="./training.css" />
-    <link rel="stylesheet" href="./combat-theme.css" />
-    <link rel="stylesheet" href="./tournament.css" />
+    <link rel="stylesheet" href="./css/styles.css" />
+    <link rel="stylesheet" href="./css/hud.css" />
+    <link rel="stylesheet" href="./css/responsive.css" />
+    <link rel="stylesheet" href="./css/touch.css" />
+    <link rel="stylesheet" href="./css/screens.css" />
+    <link rel="stylesheet" href="./css/refinement.css" />
+    <link rel="stylesheet" href="./css/training.css" />
+    <link rel="stylesheet" href="./css/combat-theme.css" />
+    <link rel="stylesheet" href="./css/tournament.css" />
   </head>
   <body>
     <header class="topbar">
       <a class="brand" href="./" aria-label="Neon Clash bosh sahifa"
-        ><span class="brand-mark">N<span>↯</span></span> NEON<span
-          class="brand-light"
+        ><span class="brand-mark">N<span>↯</span></span> NEON<span class="brand-light"
           >CLASH</span
         ><span class="edition">ARCADE / 01</span></a
       >
@@ -50,9 +49,7 @@
     <main>
       <section class="intro">
         <div>
-          <p class="eyebrow">
-            <span class="live-dot"></span> YAKKAMA-YAKKA JANG
-          </p>
+          <p class="eyebrow"><span class="live-dot"></span> YAKKAMA-YAKKA JANG</p>
           <h1>JANGGA <span>TAYYORMISIZ?</span></h1>
           <p class="intro-copy">
             Avval qahramonni tanlang. Muz yoki olov bilan jangga kiring.
@@ -124,19 +121,17 @@
             ⛶
           </button>
           <div id="fight-quick-controls" class="fight-quick-controls" hidden>
-            <span><kbd>A</kbd><kbd>D</kbd> Yurish</span
-            ><span><kbd>W</kbd> Sakrash</span><span><kbd>↓</kbd> Himoya</span
-            ><span><kbd>←</kbd> Musht</span><span><kbd>→</kbd> Tepik</span
-            ><span><kbd>↑</kbd> Maxsus</span><span><kbd>P</kbd> Pauza</span>
+            <span><kbd>A</kbd><kbd>D</kbd> Yurish</span><span><kbd>W</kbd> Sakrash</span
+            ><span><kbd>↓</kbd> Himoya</span><span><kbd>←</kbd> Musht</span
+            ><span><kbd>→</kbd> Tepik</span><span><kbd>↑</kbd> Maxsus</span
+            ><span><kbd>P</kbd> Pauza</span>
           </div>
           <div id="pause-screen" class="screen-overlay" hidden>
             <p class="eyebrow">TAKE A BREATH</p>
             <h2>PAUZA.</h2>
             <button id="resume-button" class="primary-button">
               DAVOM ETISH <span>→</span></button
-            ><button id="quit-button" class="secondary-button">
-              BOSH MENYU
-            </button>
+            ><button id="quit-button" class="secondary-button">BOSH MENYU</button>
           </div>
           <div id="result-screen" class="screen-overlay" hidden>
             <p id="result-kicker" class="eyebrow">THE NIGHT IS YOURS</p>
@@ -144,15 +139,19 @@
             <p id="result-detail"></p>
             <button id="rematch-button" class="primary-button">
               YANA JANG <span>↗</span></button
-            ><button id="menu-button" class="secondary-button">
-              BOSH MENYU
-            </button>
+            ><button id="menu-button" class="secondary-button">BOSH MENYU</button>
           </div>
         </div>
         <aside class="combat-controls" aria-label="O‘yin tugmalari">
-          <div class="combat-controls-title"><strong>BOSHQARUV</strong><span>Har bir zarba uchun tugmani qayta bosing · P / Esc — pauza</span></div>
+          <div class="combat-controls-title">
+            <strong>BOSHQARUV</strong
+            ><span>Har bir zarba uchun tugmani qayta bosing · P / Esc — pauza</span>
+          </div>
           <div id="arena-controls"></div>
-          <p class="combat-touch-note">Telefonda pastdagi CHAP, O‘NG, SAKRASH va zarba tugmalarini bosing. Yurish va zarbani birga bosish mumkin.</p>
+          <p class="combat-touch-note">
+            Telefonda pastdagi CHAP, O‘NG, SAKRASH va zarba tugmalarini bosing. Yurish
+            va zarbani birga bosish mumkin.
+          </p>
         </aside>
         <div
           id="touch-controls"
@@ -161,8 +160,7 @@
           aria-label="Mobil boshqaruv"
         >
           <div class="touch-move">
-            <button data-action="left" aria-label="Chapga">
-              ←<small>CHAP</small></button
+            <button data-action="left" aria-label="Chapga">←<small>CHAP</small></button
             ><button data-action="jump" aria-label="Sakrash">
               ↑<small>SAKRASH</small></button
             ><button data-action="right" aria-label="O‘ngga">
@@ -181,8 +179,7 @@
             ><span class="keycap">A</span><span class="keycap">D</span> YURISH
             <span class="keycap">W</span> SAKRASH</span
           ><span
-            ><span class="keycap">←</span> MUSHT
-            <span class="keycap">→</span> TEPIK
+            ><span class="keycap">←</span> MUSHT <span class="keycap">→</span> TEPIK
             <span class="keycap">↑</span> MAXSUS
             <span class="keycap">↓</span> HIMOYA</span
           ><button id="controls-button">BARCHA TUGMALAR ↗</button>
@@ -209,14 +206,11 @@
           </button>
         </div>
         <p class="training-note">
-          Raqib hujum qilmaydi va joni tiklanadi. Mashq natijalari jang
-          statistikasiga qo‘shilmaydi.
+          Raqib hujum qilmaydi va joni tiklanadi. Mashq natijalari jang statistikasiga
+          qo‘shilmaydi.
         </p>
       </section>
-      <section
-        class="controls-panel"
-        aria-label="Harakatlar va ularning tugmalari"
-      >
+      <section class="controls-panel" aria-label="Harakatlar va ularning tugmalari">
         <div class="controls-heading">
           <div>
             <p class="eyebrow">BOSHQARUV</p>
@@ -229,21 +223,36 @@
         <div id="visible-controls"></div>
         <p id="controls-tip" class="controls-tip">
           <strong>G‘alaba:</strong> 2 raund yuting.
-          <strong>Maxsus zarba:</strong> kamida 35 energiya. Har bir zarba uchun
-          tugmani qayta bosing. <strong>P / Esc:</strong> pauza.
+          <strong>Maxsus zarba:</strong> kamida 35 energiya. Har bir zarba uchun tugmani
+          qayta bosing. <strong>P / Esc:</strong> pauza.
         </p>
         <p class="controls-mobile-note">
-          Telefonda arenaning pastidagi tugmalarni bosing. Yurish va zarbani bir
-          vaqtda bosish mumkin.
+          Telefonda arenaning pastidagi tugmalarni bosing. Yurish va zarbani bir vaqtda
+          bosish mumkin.
         </p>
       </section>
       <section id="setup" class="setup-grid" aria-label="O‘yinni sozlash">
         <div class="selection-banner">
           <canvas id="selected-portrait" aria-hidden="true"></canvas>
-          <div class="selection-info"><p class="eyebrow">QAHRAMONINGIZ</p><h2 id="selected-fighter-name"></h2><p id="selected-fighter-detail"></p>
-            <div class="selection-stats"><label>TEZLIK <meter id="selection-speed" min="0" max="5"></meter></label><label>KUCH <meter id="selection-power" min="0" max="5"></meter></label></div>
+          <div class="selection-info">
+            <p class="eyebrow">QAHRAMONINGIZ</p>
+            <h2 id="selected-fighter-name"></h2>
+            <p id="selected-fighter-detail"></p>
+            <div class="selection-stats">
+              <label>TEZLIK <meter id="selection-speed" min="0" max="5"></meter></label
+              ><label>KUCH <meter id="selection-power" min="0" max="5"></meter></label>
+            </div>
           </div>
-          <div class="selection-actions"><button id="selection-start" class="primary-button" disabled>JANGGA KIRISH →</button><button id="share-button" class="secondary-button">DO‘STLARGA ULASHISH ↗</button><p id="share-status" role="status">Bepul · Akkauntsiz · Telefon va kompyuter</p></div>
+          <div class="selection-actions">
+            <button id="selection-start" class="primary-button" disabled>
+              JANGGA KIRISH →</button
+            ><button id="share-button" class="secondary-button">
+              DO‘STLARGA ULASHISH ↗
+            </button>
+            <p id="share-status" role="status">
+              Bepul · Akkauntsiz · Telefon va kompyuter
+            </p>
+          </div>
         </div>
         <div class="setup-panel">
           <div class="section-label">
@@ -268,8 +277,7 @@
             class="practice-mode-button"
             aria-pressed="false"
           >
-            <strong>MASHQ REJIMI</strong
-            ><span>TUGMALARNI AMALDA O‘RGANING →</span>
+            <strong>MASHQ REJIMI</strong><span>TUGMALARNI AMALDA O‘RGANING →</span>
           </button>
           <div class="difficulty-row">
             <label for="difficulty">QIYINLIK</label
@@ -294,27 +302,15 @@
             <h2>ARENA</h2>
           </div>
           <div class="arena-options" id="arena-options">
-            <button
-              data-arena="city"
-              class="arena-choice selected"
-              aria-pressed="true"
-            >
+            <button data-arena="city" class="arena-choice selected" aria-pressed="true">
               <span class="arena-thumb city-thumb"></span
               ><span>Tungi zavod<small>SANOAT ARENASI</small></span
               ><span class="choice-dot"></span></button
-            ><button
-              data-arena="temple"
-              class="arena-choice"
-              aria-pressed="false"
-            >
+            ><button data-arena="temple" class="arena-choice" aria-pressed="false">
               <span class="arena-thumb temple-thumb"></span
               ><span>Qizil pech<small>ISSIQ SEKTOR</small></span
               ><span class="choice-dot"></span></button
-            ><button
-              data-arena="void"
-              class="arena-choice"
-              aria-pressed="false"
-            >
+            ><button data-arena="void" class="arena-choice" aria-pressed="false">
               <span class="arena-thumb void-thumb"></span
               ><span>Sovuq sektor<small>TUNGI SMENA</small></span
               ><span class="choice-dot"></span>
@@ -338,14 +334,12 @@
       ><span>MADE FOR THE LOVE OF THE GAME <span class="lime">↗</span></span>
     </footer>
     <dialog id="guide-dialog" class="guide-dialog">
-      <button id="guide-cancel" class="close-dialog" aria-label="Orqaga">
-        ×
-      </button>
+      <button id="guide-cancel" class="close-dialog" aria-label="Orqaga">×</button>
       <p class="eyebrow">JANGDAN OLDIN</p>
       <h2>BOSHQARUVNI BILIB OLING</h2>
       <p class="guide-intro">
-        Quyidagi tugmalar bilan jangchingizni boshqarasiz. Tayyor bo‘lsangiz,
-        pastdagi tugmani bosing.
+        Quyidagi tugmalar bilan jangchingizni boshqarasiz. Tayyor bo‘lsangiz, pastdagi
+        tugmani bosing.
       </p>
       <div id="guide-controls"></div>
       <p id="guide-mobile" class="guide-mobile" hidden>
@@ -358,9 +352,8 @@
         ><span><b>P / ESC</b> pauza qilish uchun</span>
       </div>
       <p class="help-note">
-        Zarba tugmasini ushlab turmang — har bir zarba uchun qayta bosing.
-        Gamepad ham qo‘llanadi: A sakrash, X musht, Y tepik, B maxsus, LB
-        himoya.
+        Zarba tugmasini ushlab turmang — har bir zarba uchun qayta bosing. Gamepad ham
+        qo‘llanadi: A sakrash, X musht, Y tepik, B maxsus, LB himoya.
       </p>
       <button id="guide-start" class="primary-button">
         TUSHUNDIM — JANGGA KIRISH <span>→</span>
@@ -394,15 +387,15 @@
         </div>
       </div>
       <p class="help-note">
-        2 raund yutgan jangchi g‘olib. Maxsus zarba uchun 35 energiya kerak.
-        Zarba berish va himoyalanish energiya yig‘adi. Har bir zarba uchun
-        tugmani qayta bosing.
+        2 raund yutgan jangchi g‘olib. Maxsus zarba uchun 35 energiya kerak. Zarba
+        berish va himoyalanish energiya yig‘adi. Har bir zarba uchun tugmani qayta
+        bosing.
       </p>
       <p class="help-note">
-        P / Esc — pauza · F — to‘liq ekran. Gamepad: strelkalar / chap stik —
-        yurish, A — sakrash, X — musht, Y — tepik, B — maxsus, LB — himoya,
-        Start — pauza. Mobil: ekrandagi tugmalar. Ikki kishilik rejim uchun
-        klaviatura yoki ikkinchi gamepad kerak.
+        P / Esc — pauza · F — to‘liq ekran. Gamepad: strelkalar / chap stik — yurish, A
+        — sakrash, X — musht, Y — tepik, B — maxsus, LB — himoya, Start — pauza. Mobil:
+        ekrandagi tugmalar. Ikki kishilik rejim uchun klaviatura yoki ikkinchi gamepad
+        kerak.
       </p>
     </dialog>
     <dialog id="settings-dialog">

@@ -43,8 +43,7 @@ function building(ctx, x, y, w, h, color, seed, lights) {
   for (let row = 0; row < h / 18 - 1; row++)
     for (let col = 0; col < w / 14 - 1; col++) {
       const value = rand(seed + row * 23 + col * 3);
-      ctx.fillStyle =
-        value > 0.74 ? lights : value > 0.38 ? "#434361" : "#1b2236";
+      ctx.fillStyle = value > 0.74 ? lights : value > 0.38 ? "#434361" : "#1b2236";
       ctx.globalAlpha = value > 0.74 ? 0.6 : 1;
       ctx.fillRect(x + 8 + col * 14, y + 11 + row * 18, 5, 8);
     }
@@ -140,10 +139,7 @@ function temple(ctx, t) {
     for (let x = 0; x <= W; x += 40)
       ctx.lineTo(
         x,
-        335 +
-          layer * 25 -
-          Math.sin(x * 0.012 + layer) * 50 -
-          rand(x + layer * 44) * 40,
+        335 + layer * 25 - Math.sin(x * 0.012 + layer) * 50 - rand(x + layer * 44) * 40,
       );
     ctx.lineTo(W, 535);
     ctx.lineTo(0, 535);
@@ -295,8 +291,7 @@ export function drawArena(ctx, kind, t, reduced = false) {
   ctx.save();
   ctx.globalAlpha = 0.08;
   ctx.fillStyle = p[2];
-  for (const x of [70, 210, 940, 1050])
-    ctx.fillRect(x, FLOOR + 10, 32, H - FLOOR);
+  for (const x of [70, 210, 940, 1050]) ctx.fillRect(x, FLOOR + 10, 32, H - FLOOR);
   ctx.restore();
   const shade = ctx.createRadialGradient(600, 340, 180, 600, 330, 740);
   shade.addColorStop(0, "#00000000");

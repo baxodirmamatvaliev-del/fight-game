@@ -69,16 +69,11 @@ export const spriteReady = Promise.all(
               frames,
               scale: 282 / (frames[0].bottom - frames[0].top),
             });
-          window.dispatchEvent(
-            new CustomEvent("fighter-art-ready", { detail: kind }),
-          );
+          window.dispatchEvent(new CustomEvent("fighter-art-ready", { detail: kind }));
           resolve();
         };
         image.onerror = () => resolve(); // Procedural renderer remains available offline.
-        image.src = new URL(
-          `../assets/${kind}-poses.png`,
-          import.meta.url,
-        ).href;
+        image.src = new URL(`../assets/${kind}-poses.png`, import.meta.url).href;
       }),
   ),
 );
@@ -120,7 +115,8 @@ export function drawSprite(ctx, f, time, scale = 1, portrait = false) {
     croppedH = bounds.bottom - bounds.top + 1;
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = "high";
-  if (f.stun > .24) ctx.filter = "sepia(.6) hue-rotate(145deg) saturate(1.8) brightness(1.3)";
+  if (f.stun > 0.24)
+    ctx.filter = "sepia(.6) hue-rotate(145deg) saturate(1.8) brightness(1.3)";
   ctx.drawImage(
     atlas.image,
     (frame % 4) * atlas.w + bounds.left,

@@ -1,4 +1,5 @@
 """Serve the built Python-powered arcade game on http://localhost:8000."""
+
 import argparse
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -9,7 +10,12 @@ ROOT = Path(__file__).resolve().parent
 
 
 class Handler(SimpleHTTPRequestHandler):
-    extensions_map = {**SimpleHTTPRequestHandler.extensions_map, ".wasm": "application/wasm", ".mjs": "text/javascript", ".py": "text/plain"}
+    extensions_map = {
+        **SimpleHTTPRequestHandler.extensions_map,
+        ".wasm": "application/wasm",
+        ".mjs": "text/javascript",
+        ".py": "text/plain",
+    }
 
     def end_headers(self):
         self.send_header("X-Content-Type-Options", "nosniff")
@@ -28,7 +34,9 @@ def main():
     directory = ROOT / "dist"
     if not (directory / "index.html").exists():
         parser.error("Build missing. Run npm install && npm run build first.")
-    server = ThreadingHTTPServer((args.host, args.port), partial(Handler, directory=str(directory)))
+    server = ThreadingHTTPServer(
+        (args.host, args.port), partial(Handler, directory=str(directory))
+    )
     print(f"NEON CLASH → http://{args.host}:{args.port}", flush=True)
     try:
         server.serve_forever()

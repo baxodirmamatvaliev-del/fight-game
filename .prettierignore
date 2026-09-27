@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.venv/
+test-results/
+playwright-report/
+public/vendor/
+public/assets/
+public/fonts/
+public/PYODIDE-LICENSE.txt
+package-lock.json
+*.tar.gz

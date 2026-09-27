@@ -32,7 +32,7 @@ class Fighter:
             if command in pressed:
                 if command != "special" or self.energy >= 35:
                     self.buffered = command
-                    self.buffer_time = .18
+                    self.buffer_time = 0.18
                 break
         self.energy = min(100, self.energy + dt * 4)
         self.stun = max(0, self.stun - dt)
@@ -64,7 +64,9 @@ class Fighter:
                     self.buffered = None
                     self.buffer_time = 0
                 for action in ("special", "kick", "punch"):
-                    if action == self.buffered and (action != "special" or self.energy >= 35):
+                    if action == self.buffered and (
+                        action != "special" or self.energy >= 35
+                    ):
                         self.action = action
                         self.buffered = None
                         self.buffer_time = 0
@@ -80,4 +82,19 @@ class Fighter:
         self.x = max(65, min(WIDTH - 65, self.x))
 
     def snapshot(self):
-        return {key: getattr(self, key) for key in ("kind", "player", "x", "y", "facing", "health", "energy", "action", "action_time", "combo", "stun")}
+        return {
+            key: getattr(self, key)
+            for key in (
+                "kind",
+                "player",
+                "x",
+                "y",
+                "facing",
+                "health",
+                "energy",
+                "action",
+                "action_time",
+                "combo",
+                "stun",
+            )
+        }

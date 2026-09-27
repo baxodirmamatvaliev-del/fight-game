@@ -13,7 +13,7 @@ export class PythonEngine {
     this.fallback = new FallbackEngine();
     this.backend = "lightweight";
     onProgress("O‘yin tayyor. Python fonda yuklanmoqda…");
-    this.loading = this.loadPython().catch(error => {
+    this.loading = this.loadPython().catch((error) => {
       console.warn("Python unavailable; lightweight gameplay remains ready", error);
     });
     return this;
@@ -21,11 +21,8 @@ export class PythonEngine {
   async loadPython() {
     const sources = await Promise.all(
       modules.map(async (name) => {
-        const response = await fetch(
-          new URL(`../python/${name}.py`, import.meta.url),
-        );
-        if (!response.ok)
-          throw new Error(`Python module ${name}: ${response.status}`);
+        const response = await fetch(new URL(`../python/${name}.py`, import.meta.url));
+        if (!response.ok) throw new Error(`Python module ${name}: ${response.status}`);
         return [name, await response.text()];
       }),
     );

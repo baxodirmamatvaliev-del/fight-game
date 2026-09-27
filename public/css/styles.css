@@ -3,28 +3,28 @@
   font-style: normal;
   font-weight: 600 800;
   font-display: swap;
-  src: url("./fonts/barlow-800.ttf") format("truetype");
+  src: url("../fonts/barlow-800.ttf") format("truetype");
 }
 @font-face {
   font-family: "Barlow Condensed";
   font-style: normal;
   font-weight: 900;
   font-display: swap;
-  src: url("./fonts/barlow-900.ttf") format("truetype");
+  src: url("../fonts/barlow-900.ttf") format("truetype");
 }
 @font-face {
   font-family: "DM Sans";
   font-style: normal;
   font-weight: 400 500;
   font-display: swap;
-  src: url("./fonts/dm-sans-400.ttf") format("truetype");
+  src: url("../fonts/dm-sans-400.ttf") format("truetype");
 }
 @font-face {
   font-family: "DM Sans";
   font-style: normal;
   font-weight: 600 800;
   font-display: swap;
-  src: url("./fonts/dm-sans-700.ttf") format("truetype");
+  src: url("../fonts/dm-sans-700.ttf") format("truetype");
 }
 :root {
   --bg: #101211;

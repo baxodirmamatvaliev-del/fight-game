@@ -11,12 +11,16 @@
     "package": "node scripts/package.mjs",
     "test:practice": "node tests/practice-browser.mjs",
     "test:fallback": "node tests/fallback.mjs",
-    "test:redesign": "node tests/redesign-browser.mjs"
+    "test:redesign": "node tests/redesign-browser.mjs",
+    "format": "prettier --write . && node scripts/format-python.mjs",
+    "format:check": "prettier --check . && node scripts/format-python.mjs --check",
+    "check": "npm run format:check && npm test && npm run test:fallback && npm run build"
   },
   "dependencies": {
     "pyodide": "0.27.7"
   },
   "devDependencies": {
-    "playwright": "1.63.0"
+    "playwright": "1.63.0",
+    "prettier": "3.8.1"
   }
 }

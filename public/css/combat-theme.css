@@ -1,0 +1,141 @@
+:root {
+  --bg: #0c0d10;
+  --panel: #181a1f;
+  --line: #383b43;
+  --lime: #c4ac83;
+}
+body {
+  background: radial-gradient(ellipse at 50% 0, #282127, #0c0d10 65%);
+}
+.brand-mark {
+  background: #b3a18a;
+}
+.intro h1 {
+  letter-spacing: 1px;
+}
+.intro h1 span {
+  color: #c8c4bd;
+}
+.game-logo {
+  color: #e0ddd6;
+  font-size: clamp(46px, 7vw, 96px);
+  letter-spacing: 5px;
+}
+.game-logo > span {
+  color: #c0a795;
+}
+.primary-button {
+  background: linear-gradient(120deg, #a33836, #652328);
+  border-color: #c1645c;
+  color: #fff1e9;
+}
+.primary-button:hover:not(:disabled) {
+  background: #963430;
+  box-shadow: 0 4px 24px #a3383630;
+}
+.arena-shell {
+  border-color: #5b5150;
+  box-shadow: 0 18px 65px #0006;
+}
+.arena-topline,
+.arena-bottomline {
+  background: #17181c;
+}
+.fighter-card.selected {
+  border-color: #ac6256;
+  background: linear-gradient(130deg, #372626, #17191e);
+}
+.segmented .selected {
+  background: #3c2729;
+  color: #f1c2af;
+}
+.combat-controls {
+  padding: 18px 22px;
+  background: #14161b;
+  border-top: 1px solid #514346;
+}
+.combat-controls-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.combat-controls-title strong {
+  font: 700 20px var(--display);
+  letter-spacing: 1px;
+  color: #eee5db;
+}
+.combat-controls-title > span {
+  font-size: 12px;
+  color: #c0b7b4;
+}
+.combat-controls .control-player h3 {
+  margin: 14px 0 10px;
+}
+.combat-controls .control-item {
+  padding: 10px 8px;
+  background: #202329;
+}
+.combat-controls .control-item kbd {
+  font-size: 21px;
+}
+.combat-controls .control-item span {
+  font-size: 12px;
+}
+.combat-controls .control-item.active {
+  border-color: #d68472;
+  background: #452b2b;
+}
+.combat-touch-note {
+  display: none;
+  line-height: 1.7;
+  margin: 12px 0 0;
+  color: #dad1c9;
+}
+.fight-quick-controls {
+  display: none !important;
+}
+@media (max-width: 720px) {
+  .combat-controls {
+    padding: 14px 12px;
+  }
+  .combat-controls-title {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .combat-controls-title > span {
+    font-size: 11px;
+    line-height: 1.6;
+  }
+  .combat-controls .control-keys {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .combat-controls .control-item span {
+    font-size: 11px;
+  }
+  .game-logo {
+    font-size: clamp(44px, 10vw, 72px);
+    letter-spacing: 2px;
+  }
+}
+@media (pointer: coarse) {
+  #arena-controls {
+    display: none;
+  }
+  .combat-touch-note {
+    display: block;
+  }
+}
+.arena-shell:fullscreen .combat-controls {
+  flex-shrink: 0;
+  padding: 8px 16px;
+}
+.arena-shell:fullscreen .combat-controls-title {
+  display: none;
+}
+.arena-shell:fullscreen .control-player h3 {
+  margin: 4px 0;
+}
+.arena-shell:fullscreen .control-item {
+  padding: 4px;
+}

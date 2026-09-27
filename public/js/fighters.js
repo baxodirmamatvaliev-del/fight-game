@@ -1,12 +1,30 @@
 import { drawSprite } from "./sprites.js";
 export const fighters = {
   subzero: {
-    name: "SUB-ZERO", title: "MUZ JANGCHISI", color: "#83daff", dark: "#153352", skin: "#b69b86",
-    speed: 4, power: 3, moveSpeed: 300, damageScale: 1, element: "ice", special: "Muz zarbasi",
+    name: "SUB-ZERO",
+    title: "MUZ JANGCHISI",
+    color: "#83daff",
+    dark: "#153352",
+    skin: "#b69b86",
+    speed: 4,
+    power: 3,
+    moveSpeed: 300,
+    damageScale: 1,
+    element: "ice",
+    special: "Muz zarbasi",
   },
   scorpion: {
-    name: "SCORPION", title: "OLOV NINJASI", color: "#ffb443", dark: "#4c3218", skin: "#b78a63",
-    speed: 3, power: 5, moveSpeed: 285, damageScale: 1.1, element: "fire", special: "Olov zarbasi",
+    name: "SCORPION",
+    title: "OLOV NINJASI",
+    color: "#ffb443",
+    dark: "#4c3218",
+    skin: "#b78a63",
+    speed: 3,
+    power: 5,
+    moveSpeed: 285,
+    damageScale: 1.1,
+    element: "fire",
+    special: "Olov zarbasi",
   },
   volt: {
     name: "VOLT",
@@ -16,7 +34,8 @@ export const fighters = {
     skin: "#af8061",
     speed: 4,
     power: 3,
-    moveSpeed: 305, damageScale: 1,
+    moveSpeed: 305,
+    damageScale: 1,
   },
   ember: {
     name: "EMBER",
@@ -26,7 +45,8 @@ export const fighters = {
     skin: "#be8968",
     speed: 3,
     power: 5,
-    moveSpeed: 275, damageScale: 1.12,
+    moveSpeed: 275,
+    damageScale: 1.12,
   },
   ghost: {
     name: "GHOST",
@@ -36,7 +56,8 @@ export const fighters = {
     skin: "#b59d8c",
     speed: 5,
     power: 2,
-    moveSpeed: 330, damageScale: .9,
+    moveSpeed: 330,
+    damageScale: 0.9,
   },
 };
 function shape(ctx, points, fill, stroke = "#111519", width = 1.2) {
@@ -111,14 +132,7 @@ function segment(ctx, a, b, width, color, light) {
 }
 function arm(ctx, shoulder, elbow, hand, def, back = false) {
   const skin = back ? "#705642" : def.skin;
-  segment(
-    ctx,
-    shoulder,
-    elbow,
-    back ? 24 : 28,
-    skin,
-    back ? "#947257" : "#d8ac84",
-  );
+  segment(ctx, shoulder, elbow, back ? 24 : 28, skin, back ? "#947257" : "#d8ac84");
   segment(ctx, elbow, hand, back ? 18 : 21, skin, back ? "#947257" : "#cfa37e");
   const d = [hand[0] - elbow[0], hand[1] - elbow[1]],
     len = Math.hypot(...d) || 1;
@@ -149,14 +163,7 @@ function arm(ctx, shoulder, elbow, hand, def, back = false) {
 function leg(ctx, hip, knee, foot, def, back = false) {
   const dark = back ? "#161d25" : def.dark;
   segment(ctx, hip, knee, 32, dark, back ? "#26303a" : "#58616a");
-  segment(
-    ctx,
-    knee,
-    [foot[0], foot[1] - 12],
-    27,
-    dark,
-    back ? "#26303a" : "#49535e",
-  );
+  segment(ctx, knee, [foot[0], foot[1] - 12], 27, dark, back ? "#26303a" : "#49535e");
   stroke(
     ctx,
     [

@@ -30,8 +30,7 @@ export class Controls {
         .querySelectorAll(`[data-key-code="${e.code}"]`)
         .forEach((el) => el.classList.add("active"));
       const action = actions.concat(second).find((a) => a[1] === e.code);
-      if (action)
-        document.querySelector("#move-feedback").textContent = action[2];
+      if (action) document.querySelector("#move-feedback").textContent = action[2];
     });
     window.addEventListener("keyup", (e) =>
       document
@@ -64,16 +63,11 @@ export class Controls {
       options.mode === "practice"
         ? "MASHQNI BOSHLASH <span>→</span>"
         : "TUSHUNDIM — JANGGA KIRISH <span>→</span>";
-    document.querySelector("#guide-practice").hidden =
-      options.mode === "practice";
+    document.querySelector("#guide-practice").hidden = options.mode === "practice";
     this.mode = options.mode;
-    document.querySelector("#visible-controls").innerHTML = this.markup(
-      options.mode,
-    );
+    document.querySelector("#visible-controls").innerHTML = this.markup(options.mode);
     document.querySelector("#arena-controls").innerHTML = this.markup(options.mode);
-    document.querySelector("#guide-controls").innerHTML = this.markup(
-      options.mode,
-    );
+    document.querySelector("#guide-controls").innerHTML = this.markup(options.mode);
     document.querySelector("#guide-mobile").hidden = !this.coarse;
   }
   guide(options) {

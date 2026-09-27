@@ -31,14 +31,7 @@ export class Audio {
     this.muted = muted;
     this.setVolume(this.volume);
   }
-  tone(
-    frequency,
-    duration = 0.1,
-    type = "sine",
-    gain = 0.12,
-    slide = null,
-    when = 0,
-  ) {
+  tone(frequency, duration = 0.1, type = "sine", gain = 0.12, slide = null, when = 0) {
     if (!this.ctx) return;
     const t = this.ctx.currentTime + when;
     const o = this.ctx.createOscillator(),
@@ -46,10 +39,7 @@ export class Audio {
     o.type = type;
     o.frequency.setValueAtTime(frequency, t);
     if (slide)
-      o.frequency.exponentialRampToValueAtTime(
-        Math.max(20, slide),
-        t + duration,
-      );
+      o.frequency.exponentialRampToValueAtTime(Math.max(20, slide), t + duration);
     g.gain.setValueAtTime(0.001, t);
     g.gain.exponentialRampToValueAtTime(gain, t + 0.006);
     g.gain.exponentialRampToValueAtTime(0.001, t + duration);
@@ -95,8 +85,8 @@ export class Audio {
     }
     if (type === "special") {
       if (event.color === "#83daff") {
-        this.tone(900, .32, "triangle", .08, 240);
-        this.noise(.24, .13, 2800);
+        this.tone(900, 0.32, "triangle", 0.08, 240);
+        this.noise(0.24, 0.13, 2800);
         return;
       }
       this.tone(160, 0.4, "sawtooth", 0.09, 960);

@@ -21,7 +21,6 @@ Use case: stylized-concept. Asset type: transparent PNG sprite atlas for a reali
 
 Use case: background-extraction. Edit target: supplied fighting-game sprite atlas. Remove ONLY the gray/brown studio background completely, make it genuinely transparent alpha. Keep exactly the same eight fighters in precisely the same 4-column 2-row positions, same image dimensions and poses, every limb, detail, colors, costume and ice/fire effect. No new shadow, no background, no checkerboard pixels. Every empty area between characters must have alpha zero. Preserve sharp realistic character edges. Output transparent PNG.
 
-
 Generated using the built-in imagegen tool, not the API/CLI fallback.
 
 ## Saved assets

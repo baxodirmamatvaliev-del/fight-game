@@ -5,8 +5,7 @@ export function setupTouch(input) {
     (event) => {
       if (event.pointerType === "touch") {
         document.documentElement.classList.add("touch-device");
-        if (input.enabled)
-          document.querySelector("#touch-controls").hidden = false;
+        if (input.enabled) document.querySelector("#touch-controls").hidden = false;
       }
     },
     { passive: true },

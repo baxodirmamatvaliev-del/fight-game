@@ -19,9 +19,7 @@ export class Screens {
       navigator.maxTouchPoints > 0 ||
       document.documentElement.classList.contains("touch-device")
     );
-    document
-      .querySelectorAll(".arena-corner")
-      .forEach((el) => (el.hidden = true));
+    document.querySelectorAll(".arena-corner").forEach((el) => (el.hidden = true));
   }
   hideOverlays() {
     $("#pause-screen").hidden = true;
@@ -37,9 +35,7 @@ export class Screens {
     $("#pause-button").hidden = true;
     $("#fight-quick-controls").hidden = true;
     $("#touch-controls").hidden = true;
-    document
-      .querySelectorAll(".arena-corner")
-      .forEach((el) => (el.hidden = false));
+    document.querySelectorAll(".arena-corner").forEach((el) => (el.hidden = false));
   }
   result(state, options) {
     const winner = fighters[state.fighters[state.winner].kind];
@@ -48,9 +44,7 @@ export class Screens {
     $("#fight-quick-controls").hidden = true;
     $("#touch-controls").hidden = true;
     $("#result-kicker").textContent =
-      state.winner === 0
-        ? "THE NIGHT IS YOURS"
-        : "ANOTHER FIGHT. ANOTHER CHANCE.";
+      state.winner === 0 ? "THE NIGHT IS YOURS" : "ANOTHER FIGHT. ANOTHER CHANCE.";
     $("#result-title").textContent =
       options.mode === "local"
         ? winner.name + " YUTDI!"

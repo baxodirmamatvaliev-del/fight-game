@@ -31,21 +31,15 @@ export class HUD {
       const health = el.querySelector(".health-fill");
       health.style.transform = `scaleX(${f.health / 100})`;
       health.classList.toggle("critical", f.health < 25);
-      el.querySelector(".energy-fill").style.transform =
-        `scaleX(${f.energy / 100})`;
-      el.querySelector(".energy-track").classList.toggle(
-        "charged",
-        f.energy >= 35,
-      );
+      el.querySelector(".energy-fill").style.transform = `scaleX(${f.energy / 100})`;
+      el.querySelector(".energy-track").classList.toggle("charged", f.energy >= 35);
       el.querySelectorAll(".round-dots i").forEach((dot, j) =>
         dot.classList.toggle("won", state.wins[i] > j),
       );
       el.querySelector(".combo-label").textContent =
         f.combo >= 2 ? `${f.combo} HIT COMBO` : "";
       el.querySelector(".energy-label").textContent =
-        f.energy >= 35
-          ? "SPECIAL READY"
-          : `${Math.floor(f.energy)} / 35 ENERGY`;
+        f.energy >= 35 ? "SPECIAL READY" : `${Math.floor(f.energy)} / 35 ENERGY`;
     });
     this.element.querySelector(".hud-round").textContent =
       options.mode === "practice" ? "MASHQ" : `ROUND ${state.round}`;

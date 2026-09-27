@@ -138,7 +138,7 @@
 .city-thumb,
 .temple-thumb,
 .void-thumb {
-  background-image: url("./assets/foundry-arena.png");
+  background-image: url("../assets/foundry-arena.png");
   background-size: cover;
 }
 .temple-thumb {

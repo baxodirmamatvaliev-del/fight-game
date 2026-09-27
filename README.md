@@ -17,16 +17,16 @@ Open **http://localhost:8000**. The first load starts a bundled Python WebAssemb
 
 ## Controls
 
-| Action | Player 1 | Player 2 |
-| --- | --- | --- |
-| Move | A / D | Numpad 4 / 6 |
-| Jump | W | Numpad 8 |
-| Block | Down arrow / S | Numpad 5 |
-| Punch | Left arrow / J | 1 |
-| Kick | Right arrow / K | 2 |
-| Special | Up arrow / L | 3 |
-| Pause | P / Escape | P / Escape |
-| Fullscreen | F | F |
+| Action     | Player 1        | Player 2     |
+| ---------- | --------------- | ------------ |
+| Move       | A / D           | Numpad 4 / 6 |
+| Jump       | W               | Numpad 8     |
+| Block      | Down arrow / S  | Numpad 5     |
+| Punch      | Left arrow / J  | 1            |
+| Kick       | Right arrow / K | 2            |
+| Special    | Up arrow / L    | 3            |
+| Pause      | P / Escape      | P / Escape   |
+| Fullscreen | F               | F            |
 
 Each attack needs a new press. Win two rounds to win the match. Rounds last 60 seconds. A special costs 35 energy; energy recharges slowly and builds through hits and blocks. Blocking reduces frontal damage but does not protect the back. Jump over projectiles to avoid them.
 
@@ -58,13 +58,18 @@ public/
   python/       Python gameplay modules
   js/           Browser rendering, audio and UI
   fonts/        Bundled open-license fonts
-  *.css         Arcade UI styles
+  css/          UI styles and theme layers
+  assets/       Generated fighter and arena images
 scripts/        Build and deployment packaging
 tests/          Python and real-browser checks
 serve.py        Local Python HTTP server
 ```
 
 ## Verify and build
+
+See [docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md) for module responsibilities,
+stylesheet order and formatting setup. Run `npm run format` to format all maintained
+source files, or `npm run check` for formatting, gameplay tests and a fresh build.
 
 ```bash
 npm test
