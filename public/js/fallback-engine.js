@@ -4,6 +4,22 @@ import { fighters } from "./fighters.js";
 const floor = 535,
   clamp = (n, a, b) => Math.max(a, Math.min(b, n));
 const attacks = {
+  xpower: {
+    duration: 1.25,
+    active: 0.38,
+    end: 0.65,
+    reach: 190,
+    damage: 32,
+    knock: 95,
+  },
+  finisher: {
+    duration: 1.6,
+    active: 0.7,
+    end: 0.95,
+    reach: 185,
+    damage: 25,
+    knock: 130,
+  },
   punch: { duration: 0.32, active: 0.1, end: 0.21, reach: 103, damage: 7, knock: 24 },
   kick: { duration: 0.51, active: 0.18, end: 0.32, reach: 151, damage: 12, knock: 48 },
   special: { duration: 0.62, active: 0.21, end: 0.28 },
@@ -51,6 +67,8 @@ export class FallbackEngine {
       previous: new Set(),
       buffered: null,
       buffer_time: 0,
+      attack_serial: 0,
+      recoil: 0,
     }));
   }
   update(f, dt, keys, target) {
@@ -58,9 +76,14 @@ export class FallbackEngine {
     f.previous = keys;
     f.buffer_time = Math.max(0, f.buffer_time - dt);
     if (!f.buffer_time) f.buffered = null;
-    for (const command of ["special", "kick", "punch", "jump"])
+    const costs = { special: 35, xpower: 100, finisher: 50 };
+    for (const command of ["finisher", "xpower", "special", "kick", "punch", "jump"])
       if (pressed.has(command)) {
-        if (command !== "special" || f.energy >= 35) {
+        if (
+          f.energy >= (costs[command] || 0) &&
+          (command !== "finisher" ||
+            (target.health <= 20 && Math.abs(target.x - f.x) <= 185))
+        ) {
           f.buffered = command;
           f.buffer_time = 0.18;
         }
@@ -72,6 +95,15 @@ export class FallbackEngine {
     if (!f.combo_time) f.combo = 0;
     if (attacks[f.action]) {
       f.action_time += dt;
+      if (
+        f.hit_done &&
+        f.action === "punch" &&
+        f.buffered === "kick" &&
+        f.action_time >= 0.2
+      )
+        f.action = "idle";
+    }
+    if (attacks[f.action]) {
       if (f.action_time >= attacks[f.action].duration) f.action = "idle";
     } else f.facing = target.x >= f.x ? 1 : -1;
     const grounded = f.y >= floor;
@@ -90,19 +122,27 @@ export class FallbackEngine {
           f.buffered = null;
           f.buffer_time = 0;
         }
-        if (attacks[f.buffered] && (f.buffered !== "special" || f.energy >= 35)) {
+        if (
+          attacks[f.buffered] &&
+          f.energy >= (costs[f.buffered] || 0) &&
+          (f.buffered !== "finisher" ||
+            (target.health <= 20 && Math.abs(target.x - f.x) <= 185))
+        ) {
           f.action = f.buffered;
           f.buffered = null;
           f.buffer_time = 0;
           f.action_time = 0;
           f.hit_done = false;
-          if (f.action === "special") f.energy -= 35;
+          f.attack_serial++;
+          f.energy -= costs[f.action] || 0;
         }
       }
     }
     f.vy += 1900 * dt;
     f.y = Math.min(floor, f.y + f.vy * dt);
     if (f.y >= floor) f.vy = 0;
+    f.x += f.recoil * dt;
+    f.recoil *= Math.max(0, 1 - dt * 12);
     f.x = clamp(f.x, 65, 1135);
   }
   damage(a, b, amount, knock, special = false) {
@@ -110,7 +150,7 @@ export class FallbackEngine {
     const dealt = amount * (fighters[a.kind].damageScale || 1) * (blocked ? 0.12 : 1);
     const damage = Math.min(b.health, dealt);
     b.health = Math.max(0, b.health - dealt);
-    b.x = clamp(b.x + knock * (b.x >= a.x ? 1 : -1) * (blocked ? 0.35 : 1), 65, 1135);
+    b.recoil = knock * (b.x >= a.x ? 1 : -1) * (blocked ? 0.35 : 1) * 12;
     b.energy = Math.min(100, b.energy + (blocked ? 7 : 5));
     a.energy = Math.min(100, a.energy + (blocked ? 3 : 8));
     if (!blocked) {
@@ -129,6 +169,7 @@ export class FallbackEngine {
       combo: a.combo,
       damage: Math.round(damage * 100) / 100,
       player: a.player,
+      move: a.action,
     });
   }
   cpu(dt) {
@@ -146,6 +187,10 @@ export class FallbackEngine {
       this.projectiles.some((p) => !p.owner && Math.abs(p.x - b.x) < 250);
     this.cpuKeys = [];
     if (threat && Math.random() < aggression) this.cpuKeys = ["block"];
+    else if (distance <= 185 && a.health <= 20 && b.energy >= 50)
+      this.cpuKeys = ["finisher"];
+    else if (distance <= 175 && b.energy >= 100 && Math.random() < aggression)
+      this.cpuKeys = ["xpower"];
     else if (distance > 125) {
       this.cpuKeys = [a.x > b.x ? "right" : "left"];
       if (b.energy >= 35 && Math.random() < 0.3) this.cpuKeys.push("special");
@@ -223,7 +268,13 @@ export class FallbackEngine {
         const dx = (target.x - f.x) * f.facing;
         if (dx >= 0 && dx <= attack.reach && Math.abs(f.y - target.y) < 95) {
           f.hit_done = true;
-          this.damage(f, target, attack.damage, attack.knock);
+          this.damage(
+            f,
+            target,
+            attack.damage,
+            attack.knock,
+            ["xpower", "finisher"].includes(f.action),
+          );
         }
       }
     }

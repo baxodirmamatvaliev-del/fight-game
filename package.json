@@ -13,6 +13,7 @@
     "test:fallback": "node tests/fallback.mjs",
     "test:redesign": "node tests/redesign-browser.mjs",
     "test:landscape": "node tests/landscape-browser.mjs",
+    "test:powers": "node tests/powers-browser.mjs",
     "format": "prettier --write . && node scripts/format-python.mjs",
     "format:check": "prettier --check . && node scripts/format-python.mjs --check",
     "check": "npm run format:check && npm test && npm run test:fallback && npm run build"

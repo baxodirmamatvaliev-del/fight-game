@@ -43,6 +43,7 @@ let state = null,
   last = 0,
   visualTime = 0,
   hitStop = 0;
+const activePower = new Map();
 const options = {
   p1: prefs.p1,
   p2: prefs.p2,
@@ -243,6 +244,12 @@ function menu() {
   $("#start-button").focus({ preventScroll: true });
 }
 function processEvents() {
+  state.fighters.forEach((f, i) => {
+    const id = `${state.round}:${f.attack_serial}:${f.action}`;
+    if (["xpower", "finisher"].includes(f.action) && activePower.get(i) !== id)
+      audio.play("power");
+    activePower.set(i, id);
+  });
   for (const event of state.events) {
     audio.play(event.type, event);
     if (["hit", "block", "special"].includes(event.type)) particles.burst(event);
@@ -286,7 +293,29 @@ function frame(timestamp) {
     ctx.save();
     const [sx, sy] = particles.offset();
     ctx.translate(sx, sy);
+    const ultimate = state?.fighters.find((f) =>
+      ["xpower", "finisher"].includes(f.action),
+    );
+    ctx.save();
+    if (ultimate && !particles.reduced) {
+      const zoom =
+        1 +
+        0.1 *
+          Math.sin(
+            Math.min(
+              1,
+              ultimate.action_time / (ultimate.action === "finisher" ? 1.6 : 1.25),
+            ) * Math.PI,
+          );
+      ctx.translate(600, 360);
+      ctx.scale(zoom, zoom);
+      ctx.translate(-600, -360);
+    }
     drawArena(ctx, options.arena, visualTime, reduced.matches);
+    if (ultimate) {
+      ctx.fillStyle = "#08061088";
+      ctx.fillRect(0, 0, 1200, 640);
+    }
     if (state) {
       const presented =
         paused || orientationBlocked || hitStop > 0
@@ -321,6 +350,7 @@ function frame(timestamp) {
       for (const f of preview) drawFighter(ctx, f, visualTime, 1.22);
     }
     particles.draw(ctx);
+    ctx.restore();
     ctx.restore();
   } catch (error) {
     ctx.restore();

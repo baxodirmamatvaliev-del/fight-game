@@ -17,6 +17,7 @@ export class Particles {
         blocked: event.type === "block",
         combo: event.combo || 1,
         damage: Number(event.damage || 0),
+        move: event.move,
       });
     }
     if (this.reduced) return;
@@ -79,9 +80,13 @@ export class Particles {
       const y = label.y - (this.reduced ? 0 : (0.85 - label.life) * 26);
       const title = label.blocked
         ? "BLOK"
-        : label.combo > 1
-          ? `${label.combo} ZARBA`
-          : "ZARBA";
+        : label.move === "xpower"
+          ? "X-KUCH"
+          : label.move === "finisher"
+            ? "YAKUN"
+            : label.combo > 1
+              ? `${label.combo} ZARBA`
+              : "ZARBA";
       ctx.font = "700 23px Barlow, sans-serif";
       ctx.fillStyle = label.blocked ? "#a7cbd8" : "#e4c58d";
       ctx.strokeText(title, label.x, y);

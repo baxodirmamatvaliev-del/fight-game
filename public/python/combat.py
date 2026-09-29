@@ -9,9 +9,7 @@ def damage(attacker, defender, amount, knock, events, special=False):
     actual_damage = min(defender.health, dealt)
     defender.health = max(0, defender.health - dealt)
     direction = 1 if defender.x >= attacker.x else -1
-    defender.x = max(
-        65, min(WIDTH - 65, defender.x + knock * direction * (0.35 if blocked else 1))
-    )
+    defender.recoil = knock * direction * (0.35 if blocked else 1) * 12
     defender.energy = min(100, defender.energy + (7 if blocked else 5))
     attacker.energy = min(100, attacker.energy + (3 if blocked else 8))
     if not blocked:
@@ -34,6 +32,7 @@ def damage(attacker, defender, amount, knock, events, special=False):
             "damage": round(actual_damage, 2),
             "player": attacker.player,
             "element": attacker.stats.get("element", "energy"),
+            "move": attacker.action,
         }
     )
 
@@ -46,7 +45,14 @@ def melee(attacker, defender, events):
         dx = (defender.x - attacker.x) * attacker.facing
         if 0 <= dx <= attack["reach"] and abs(attacker.y - defender.y) < 95:
             attacker.hit_done = True
-            damage(attacker, defender, attack["damage"], attack["knock"], events)
+            damage(
+                attacker,
+                defender,
+                attack["damage"],
+                attack["knock"],
+                events,
+                attacker.action in ("xpower", "finisher"),
+            )
 
 
 def separate(a, b):

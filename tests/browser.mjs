@@ -45,7 +45,7 @@ try {
   await page.locator('[data-fighter="volt"]').click();
   await page.locator("#start-button").click();
   assert.equal(await page.locator("#guide-dialog").evaluate((d) => d.open), true);
-  assert.equal(await page.locator("#guide-controls .control-item").count(), 14);
+  assert.equal(await page.locator("#guide-controls .control-item").count(), 18);
   await page.screenshot({ path: "test-results/controls-guide.png" });
   await page.locator("#guide-start").click();
   await page.waitForFunction(() => neonClash.state?.phase === "fight");

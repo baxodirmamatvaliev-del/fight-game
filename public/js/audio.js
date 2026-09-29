@@ -73,6 +73,11 @@ export class Audio {
     n.stop(t + duration);
   }
   play(type, event = {}) {
+    if (type === "power") {
+      this.tone(65, 0.65, "sawtooth", 0.08, 220);
+      this.tone(42, 0.8, "sine", 0.22, 28);
+      this.noise(0.4, 0.12, 600);
+    }
     if (type === "hit") {
       const heavy = event.special || event.damage >= 10;
       this.tone(heavy ? 82 : 135, heavy ? 0.28 : 0.16, "sine", 0.34, 28);

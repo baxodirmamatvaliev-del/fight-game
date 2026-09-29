@@ -50,7 +50,11 @@ export class HUD {
       el.querySelector(".combo-label").textContent =
         f.combo >= 2 ? `${f.combo} HIT COMBO` : "";
       el.querySelector(".energy-label").textContent =
-        f.energy >= 35 ? "SPECIAL READY" : `${Math.floor(f.energy)} / 35 ENERGY`;
+        f.energy >= 100
+          ? "X-KUCH TAYYOR · X"
+          : f.energy >= 35
+            ? `MAXSUS TAYYOR · X ${Math.floor(f.energy)}%`
+            : `${Math.floor(f.energy)} / 35 ENERGY`;
     });
     this.element.querySelector(".hud-round").textContent =
       options.mode === "practice" ? "MASHQ" : `ROUND ${state.round}`;
@@ -59,6 +63,26 @@ export class HUD {
         ? "∞"
         : String(Math.ceil(state.remaining)).padStart(2, "0");
     const a = this.announcement;
+    const [player, opponent] = state.fighters;
+    for (const action of ["xpower", "finisher"]) {
+      const button = document.querySelector(`[data-action="${action}"]`);
+      const ready =
+        action === "xpower"
+          ? player.energy >= 100
+          : player.energy >= 50 &&
+            opponent.health <= 20 &&
+            Math.abs(player.x - opponent.x) <= 185;
+      button?.classList.toggle("unavailable", !ready);
+      button?.classList.toggle("power-ready", ready);
+      button?.setAttribute(
+        "aria-label",
+        action === "xpower"
+          ? `X-kuch: ${Math.floor(player.energy)} / 100 energiya`
+          : ready
+            ? "Yakunlovchi hujum tayyor"
+            : "Yakun: 50 energiya, yaqin raqib 20 HP yoki kam",
+      );
+    }
     a.className = "announcement";
     if (state.phase === "countdown") {
       a.innerHTML =
@@ -67,7 +91,23 @@ export class HUD {
           : '<span class="lime">FIGHT!</span>';
     } else if (state.phase === "round_over") {
       const tie = state.round_winner === null;
-      a.innerHTML = `<small>${tie ? "DRAW" : fighters[state.fighters[state.round_winner].kind].name + " WINS THE ROUND"}</small>${tie ? "DURANG" : Math.min(...state.fighters.map((f) => f.health)) <= 0 ? "K.O." : "TIME UP"}`;
+      const finish =
+        !tie &&
+        state.fighters[state.round_winner].action === "finisher" &&
+        Math.min(...state.fighters.map((f) => f.health)) <= 0;
+      a.innerHTML = `<small>${tie ? "DRAW" : fighters[state.fighters[state.round_winner].kind].name + " WINS THE ROUND"}</small>${tie ? "DURANG" : finish ? "FATALITY" : Math.min(...state.fighters.map((f) => f.health)) <= 0 ? "K.O." : "TIME UP"}`;
+    } else if (state.fighters.some((f) => ["xpower", "finisher"].includes(f.action))) {
+      const active = state.fighters.find((f) =>
+        ["xpower", "finisher"].includes(f.action),
+      );
+      a.innerHTML = `<small>${fighters[active.kind].name}</small>${active.action === "finisher" ? "YAKUNLOVCHI ZARBA" : "X-KUCH"}`;
+    } else if (
+      opponent.health <= 20 &&
+      state.phase === "fight" &&
+      options.mode !== "practice"
+    ) {
+      a.innerHTML =
+        "<small>YAQINLASHING · 50 ENERGIYA · V / YAKUN</small>YAKUNLASH IMKONI";
     } else a.textContent = "";
   }
 }

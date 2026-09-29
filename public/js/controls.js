@@ -6,6 +6,8 @@ const actions = [
   ["←", "ArrowLeft", "Musht · J ham"],
   ["→", "ArrowRight", "Tepik · K ham"],
   ["↑", "ArrowUp", "Maxsus · L ham"],
+  ["X", "KeyX", "X-kuch · 100 energiya"],
+  ["V", "KeyV", "Yakun · 50 energiya, raqib ≤20 HP, yaqin"],
 ];
 const second = [
   ["Num 4", "Numpad4", "Chapga yurish"],
@@ -15,6 +17,8 @@ const second = [
   ["1", "Digit1", "Musht"],
   ["2", "Digit2", "Tepik"],
   ["3", "Digit3", "Maxsus zarba"],
+  ["4", "Digit4", "X-kuch · 100 energiya"],
+  ["5", "Digit5", "Yakunlovchi zarba"],
 ];
 function row(keys, title) {
   return `<div class="control-player"><h3>${title}</h3><div class="control-keys">${keys.map(([key, code, label]) => `<div class="control-item" data-key-code="${code}"><kbd>${key}</kbd><span>${label}</span></div>`).join("")}</div></div>`;

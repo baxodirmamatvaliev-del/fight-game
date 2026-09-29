@@ -49,6 +49,22 @@ FIGHTERS = {
     },
 }
 ATTACKS = {
+    "xpower": {
+        "duration": 1.25,
+        "active": 0.38,
+        "end": 0.65,
+        "reach": 190,
+        "damage": 32,
+        "knock": 95,
+    },
+    "finisher": {
+        "duration": 1.6,
+        "active": 0.7,
+        "end": 0.95,
+        "reach": 185,
+        "damage": 25,
+        "knock": 130,
+    },
     "punch": {
         "duration": 0.32,
         "active": 0.10,

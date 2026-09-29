@@ -1,5 +1,18 @@
 # NEON CLASH
 
+Combat now uses an articulated, textured 2D rig: separate shoulder, elbow, hip,
+knee and foot motion, distance-based steps, wind-up/contact/recovery and gradual
+knockback. This remains a 2D browser game, not a commercial 3D motion-capture engine.
+
+- **X / X-KUCH:** 100 energy, 32 base damage, 190-unit reach; blockable and interruptible.
+- **V / YAKUN:** 50 energy, opponent at 20 HP or less within 185 units. A successful
+  knockout displays FATALITY; the finisher has a cinematic camera and elemental effect.
+- A landed punch can cancel into a kick after contact. Alternating punches switch arms.
+- Mobile has dedicated X-KUCH and YAKUN buttons with availability indicators.
+- Player two uses **4 / 5** for these powers. Gamepads use RB / RT.
+
+Run `npm run test:powers` for real touch-input finisher and rig coverage.
+
 A browser fighting-game fan prototype with five playable fighters, including newly generated Sub-Zero and Scorpion art. Select a hero before entering the arena; share the public URL using the Share button. This is not an official Mortal Kombat game and does not contain the full Mortal Kombat roster or commercial animations.
 
 Python powers combat when its bundled WebAssembly runtime is available. A lightweight JavaScript equivalent makes the game immediately playable when downloads are slow, blocked or unsupported; the backend never changes mid-match. Large mobile buttons support simultaneous movement and attacks.

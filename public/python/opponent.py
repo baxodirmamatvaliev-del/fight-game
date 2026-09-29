@@ -17,13 +17,23 @@ class Opponent:
         distance = abs(target.x - fighter.x)
         toward = "right" if target.x > fighter.x else "left"
         self.keys = []
-        threat = target.action in ("punch", "kick") and distance < 160
+        threat = (
+            target.action in ("punch", "kick", "xpower", "finisher") and distance < 190
+        )
         threat |= any(
             b["owner"] != fighter.player and abs(b["x"] - fighter.x) < 250
             for b in bolts
         )
         if threat and self.rng.random() < self.rules["aggression"]:
             self.keys = ["block"]
+        elif distance <= 185 and target.health <= 20 and fighter.energy >= 50:
+            self.keys = ["finisher"]
+        elif (
+            distance <= 175
+            and fighter.energy >= 100
+            and self.rng.random() < self.rules["aggression"]
+        ):
+            self.keys = ["xpower"]
         elif distance > 125:
             self.keys = [toward]
             if fighter.energy >= 35 and self.rng.random() < 0.3:

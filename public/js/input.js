@@ -7,6 +7,8 @@ const maps = [
     KeyJ: "punch",
     KeyK: "kick",
     KeyL: "special",
+    KeyX: "xpower",
+    KeyV: "finisher",
     ArrowLeft: "punch",
     ArrowRight: "kick",
     ArrowUp: "special",
@@ -20,6 +22,8 @@ const maps = [
     Digit1: "punch",
     Digit2: "kick",
     Digit3: "special",
+    Digit4: "xpower",
+    Digit5: "finisher",
     Numpad1: "punch",
     Numpad2: "kick",
     Numpad3: "special",
@@ -86,6 +90,8 @@ export class Input {
         [3, "kick"],
         [1, "special"],
         [4, "block"],
+        [5, "xpower"],
+        [7, "finisher"],
         [12, "jump"],
       ])
         if (p.buttons[index]?.pressed) s.add(action);

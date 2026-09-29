@@ -1,4 +1,5 @@
-import { drawSprite } from "./sprites.js";
+import { drawSprite, drawRigSprite } from "./sprites.js";
+import { fightingPose } from "./rig.js";
 export const fighters = {
   subzero: {
     name: "SUB-ZERO",
@@ -283,7 +284,7 @@ function head(ctx, def) {
   ctx.beginPath();
   ctx.ellipse(-12, -250, 4, 7, 0, 0, 7);
   ctx.fill();
-  if (ghost) {
+  if (ghost || def.name === "SUB-ZERO" || def.name === "SCORPION") {
     shape(
       ctx,
       [
@@ -293,7 +294,7 @@ function head(ctx, def) {
         [6, -230],
         [-7, -235],
       ],
-      "#242c33",
+      def.dark,
     );
     stroke(
       ctx,
@@ -301,7 +302,7 @@ function head(ctx, def) {
         [-5, -241],
         [16, -239],
       ],
-      "#61727c",
+      def.color,
       1,
     );
   }
@@ -339,68 +340,13 @@ function head(ctx, def) {
     );
 }
 export function drawFighter(ctx, f, time, scale = 1, portrait = false) {
-  if (drawSprite(ctx, f, time, scale, portrait)) return;
+  if (portrait && drawSprite(ctx, f, time, scale, portrait)) return;
   const def = fighters[f.kind] || fighters.volt,
-    action = f.action,
-    grounded = f.y >= 534;
-  const walking = action === "walk" && grounded,
-    stride = walking ? Math.sin(time * 15) : 0,
-    bob = grounded ? Math.sin(time * 3) * 1.6 : 0;
-  let lean = 0,
-    hand = [55, -193],
-    elbow = [39, -174],
-    rearHand = [22, -208],
-    rearElbow = [-24, -183],
-    knee = [28, -59],
-    foot = [42, 0],
-    rearKnee = [-28, -57],
-    rearFoot = [-38, 0];
-  if (walking) {
-    foot = [35 + stride * 24, 0];
-    rearFoot = [-33 - stride * 24, 0];
-    knee = [19 + stride * 15, -62];
-    rearKnee = [-21 - stride * 15, -60];
-    hand = [54 - stride * 8, -194];
-    lean = 4;
-  }
-  if (!grounded) {
-    knee = [45, -85];
-    foot = [32, -40];
-    rearKnee = [-37, -88];
-    rearFoot = [-25, -52];
-    lean = -7;
-  }
-  if (action === "punch") {
-    const p = Math.sin(Math.min(1, f.action_time / 0.32) * Math.PI);
-    hand = [55 + p * 58, -199 - p * 9];
-    elbow = [39 + p * 30, -174 - p * 28];
-    lean = p * 13;
-  }
-  if (action === "kick") {
-    const p = Math.sin(Math.min(1, f.action_time / 0.51) * Math.PI);
-    knee = [28 + p * 50, -59 - p * 65];
-    foot = [42 + p * 97, -p * 135];
-    hand = [35, -211];
-    lean = -p * 15;
-  }
-  if (action === "special") {
-    hand = [71, -171];
-    elbow = [36, -184];
-    rearHand = [48, -185];
-    lean = 8;
-  }
-  if (action === "block") {
-    hand = [31, -241];
-    elbow = [44, -204];
-    rearHand = [17, -238];
-    rearElbow = [-6, -206];
-    lean = -9;
-  }
-  if (action === "hurt") {
-    hand = [49, -166];
-    rearHand = [-25, -182];
-    lean = -18;
-  }
+    action = f.action;
+  const articulated = fightingPose(f, time);
+  if (!portrait && drawRigSprite(ctx, f, articulated, time, scale)) return;
+  const { lean, hand, elbow, rearHand, rearElbow, knee, foot, rearKnee, rearFoot } =
+    articulated;
   ctx.save();
   ctx.translate(f.x, f.y);
   ctx.scale(scale, scale);
@@ -411,14 +357,17 @@ export function drawFighter(ctx, f, time, scale = 1, portrait = false) {
     ctx.fill();
   }
   ctx.scale(f.facing || 1, 1);
-  ctx.translate(0, bob);
+  ctx.translate(0, articulated.bob);
   if (action === "ko") {
-    ctx.translate(-32, -16);
-    ctx.rotate(-1.42);
+    ctx.translate(-32 * articulated.fall, -16 * articulated.fall);
+    ctx.rotate(-1.42 * articulated.fall);
   }
   leg(ctx, [-12, -113], rearKnee, rearFoot, def, true);
   ctx.save();
   ctx.translate(lean, -2);
+  ctx.translate(0, -115);
+  ctx.rotate(articulated.tilt);
+  ctx.translate(0, 115);
   arm(ctx, [-24, -210], rearElbow, rearHand, def, true);
   const torso = shade(
     ctx,
@@ -551,6 +500,49 @@ export function drawFighter(ctx, f, time, scale = 1, portrait = false) {
     );
   }
   head(ctx, def);
+  if (f.kind === "subzero" || f.kind === "scorpion") {
+    for (const side of [-1, 1]) {
+      shape(
+        ctx,
+        [
+          [side * 12, -219],
+          [side * 29, -212],
+          [side * 19, -157],
+          [side * 6, -150],
+        ],
+        def.color + "bb",
+      );
+      stroke(
+        ctx,
+        [
+          [side * 20, -212],
+          [side * 12, -159],
+        ],
+        "#efe1bf66",
+        2,
+      );
+    }
+    shape(
+      ctx,
+      [
+        [-15, -116],
+        [17, -116],
+        [22, -65],
+        [4, -50],
+        [-18, -67],
+      ],
+      def.dark,
+    );
+    stroke(
+      ctx,
+      [
+        [0, -112],
+        [3, -62],
+      ],
+      def.color,
+      4,
+    );
+  }
   arm(ctx, [24, -211], elbow, hand, def);
   stroke(
     ctx,
@@ -561,13 +553,19 @@ export function drawFighter(ctx, f, time, scale = 1, portrait = false) {
     def.color,
     2,
   );
-  if (action === "special") {
+  if (["special", "xpower", "finisher"].includes(action)) {
     ctx.save();
     ctx.shadowColor = def.color;
     ctx.shadowBlur = 25;
     ctx.fillStyle = def.color + "aa";
     ctx.beginPath();
-    ctx.arc(88, -167, 13 + Math.sin(time * 30) * 3, 0, 7);
+    ctx.arc(
+      hand[0],
+      hand[1],
+      (action === "special" ? 13 : 24) + Math.sin(time * 30) * 3,
+      0,
+      7,
+    );
     ctx.fill();
     ctx.restore();
   }

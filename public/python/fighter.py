@@ -21,6 +21,8 @@ class Fighter:
         self.previous = set()
         self.buffered = None
         self.buffer_time = 0
+        self.attack_serial = 0
+        self.recoil = 0
 
     def update(self, dt, keys, opponent):
         pressed = keys - self.previous
@@ -28,9 +30,13 @@ class Fighter:
         self.buffer_time = max(0, self.buffer_time - dt)
         if not self.buffer_time:
             self.buffered = None
-        for command in ("special", "kick", "punch", "jump"):
+        costs = {"special": 35, "xpower": 100, "finisher": 50}
+        for command in ("finisher", "xpower", "special", "kick", "punch", "jump"):
             if command in pressed:
-                if command != "special" or self.energy >= 35:
+                if self.energy >= costs.get(command, 0) and (
+                    command != "finisher"
+                    or (opponent.health <= 20 and abs(opponent.x - self.x) <= 185)
+                ):
                     self.buffered = command
                     self.buffer_time = 0.18
                 break
@@ -41,6 +47,14 @@ class Fighter:
             self.combo = 0
         if self.action in ATTACKS:
             self.action_time += dt
+            if (
+                self.hit_done
+                and self.action == "punch"
+                and self.buffered == "kick"
+                and self.action_time >= 0.2
+            ):
+                self.action = "idle"
+        if self.action in ATTACKS:
             if self.action_time >= ATTACKS[self.action]["duration"]:
                 self.action = "idle"
         else:
@@ -63,22 +77,32 @@ class Fighter:
                     self.vy = -780
                     self.buffered = None
                     self.buffer_time = 0
-                for action in ("special", "kick", "punch"):
-                    if action == self.buffered and (
-                        action != "special" or self.energy >= 35
+                for action in ("finisher", "xpower", "special", "kick", "punch"):
+                    if (
+                        action == self.buffered
+                        and self.energy >= costs.get(action, 0)
+                        and (
+                            action != "finisher"
+                            or (
+                                opponent.health <= 20
+                                and abs(opponent.x - self.x) <= 185
+                            )
+                        )
                     ):
                         self.action = action
                         self.buffered = None
                         self.buffer_time = 0
                         self.action_time = 0
                         self.hit_done = False
-                        if action == "special":
-                            self.energy -= 35
+                        self.attack_serial += 1
+                        self.energy -= costs.get(action, 0)
                         break
         self.vy += GRAVITY * dt
         self.y = min(FLOOR, self.y + self.vy * dt)
         if self.y >= FLOOR:
             self.vy = 0
+        self.x += self.recoil * dt
+        self.recoil *= max(0, 1 - dt * 12)
         self.x = max(65, min(WIDTH - 65, self.x))
 
     def snapshot(self):
@@ -96,5 +120,6 @@ class Fighter:
                 "action_time",
                 "combo",
                 "stun",
+                "attack_serial",
             )
         }

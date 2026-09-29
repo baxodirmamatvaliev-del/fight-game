@@ -15,6 +15,53 @@ from config import FLOOR
 
 
 class GameplayTests(unittest.TestCase):
+    def test_xpower_cost_damage_block_and_no_repeat(self):
+        a, b = self.pair()
+        b.x = a.x + 100
+        a.update(1 / 60, {"xpower"}, b)
+        self.assertNotEqual(a.action, "xpower")
+        a.update(1 / 60, set(), b)
+        a.energy = 100
+        a.update(1 / 60, {"xpower"}, b)
+        self.assertEqual(a.action, "xpower")
+        self.assertEqual(a.energy, 0)
+        a.action_time = 0.45
+        events = []
+        melee(a, b, events)
+        self.assertEqual(b.health, 68)
+        melee(a, b, events)
+        self.assertEqual(len(events), 1)
+        self.assertEqual(events[0]["move"], "xpower")
+        self.assertGreater(b.recoil, 0)
+        a.hit_done = False
+        b.health = 100
+        b.action = "block"
+        melee(a, b, events)
+        self.assertGreater(b.health, 95)
+
+    def test_finisher_requires_energy_low_health_and_range(self):
+        for health, energy, distance, permitted in [
+            (100, 100, 100, False),
+            (15, 49, 100, False),
+            (15, 100, 400, False),
+            (15, 50, 100, True),
+        ]:
+            a, b = self.pair()
+            a.energy, b.health, b.x = energy, health, a.x + distance
+            a.update(1 / 60, {"finisher"}, b)
+            self.assertEqual(a.action == "finisher", permitted)
+            if permitted:
+                a.action_time = 0.8
+                melee(a, b, [])
+                self.assertEqual(b.health, 0)
+
+    def test_landed_punch_can_chain_to_kick(self):
+        a, b = self.pair()
+        b.x = a.x + 90
+        a.action, a.action_time, a.hit_done = "punch", 0.21, True
+        a.update(1 / 60, {"kick"}, b)
+        self.assertEqual(a.action, "kick")
+
     def test_new_heroes_and_ice_special(self):
         match = Match(p1="subzero", p2="scorpion", mode="local")
         self.assertEqual(match.kinds, ["subzero", "scorpion"])

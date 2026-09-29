@@ -37,6 +37,29 @@ const held = new FallbackEngine();
 held.start({ p1: "subzero", p2: "scorpion", mode: "practice" });
 for (let i = 0; i < 100; i++) held.tick(1 / 60, [["punch"], []]);
 assert.equal(held.players[0].action, "idle");
+for (const [action, health, energy, distance, allowed] of [
+  ["xpower", 100, 35, 100, false],
+  ["xpower", 100, 100, 100, true],
+  ["finisher", 100, 100, 100, false],
+  ["finisher", 15, 49, 100, false],
+  ["finisher", 15, 100, 400, false],
+  ["finisher", 15, 50, 100, true],
+]) {
+  const power = new FallbackEngine();
+  power.start({ p1: "volt", p2: "ember", mode: "local" });
+  power.phase = "fight";
+  const [a, b] = power.players;
+  a.energy = energy;
+  b.health = health;
+  b.x = a.x + distance;
+  power.tick(1 / 60, [[action], []]);
+  assert.equal(a.action === action, allowed);
+  if (allowed) {
+    assert.ok(a.energy < 1);
+    for (let i = 0; i < 65; i++) power.tick(1 / 60, [[], []]);
+    assert.equal(b.health, action === "finisher" ? 0 : 68);
+  }
+}
 console.log(
   "PASS: all fighters, lightweight physics, damage, practice, rounds, ice stun and held-input safety.",
 );

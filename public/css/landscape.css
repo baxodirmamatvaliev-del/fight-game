@@ -248,6 +248,27 @@
   background: #ccaa65 !important;
   color: #12161a;
 }
+.mobile-battle .touch-actions [data-action="xpower"],
+.mobile-battle .touch-actions [data-action="finisher"] {
+  width: 58px;
+  height: 44px;
+  border-radius: 13px;
+  bottom: 0;
+  right: 140px;
+  font-size: 9px;
+  background: #292340c9;
+}
+.mobile-battle .touch-actions [data-action="finisher"] {
+  right: 207px;
+  background: #572722c9;
+}
+.touch-actions button.unavailable {
+  opacity: 0.42;
+}
+.touch-actions button.power-ready {
+  border-color: #ffe0a0;
+  box-shadow: 0 0 15px #ffc66c75;
+}
 .mobile-battle .hud {
   inset: max(10px, env(safe-area-inset-top)) max(26px, env(safe-area-inset-right)) auto
     max(26px, env(safe-area-inset-left));
@@ -270,7 +291,7 @@
   font-size: 8px;
 }
 .mobile-battle .combo-label {
-  top: 66px;
+  top: 80px;
   font-size: 18px;
 }
 .mobile-battle .energy-label {

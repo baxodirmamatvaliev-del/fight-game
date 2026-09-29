@@ -84,6 +84,11 @@ try {
     );
   }
   await page.waitForTimeout(750);
+  await page.locator('[data-action="xpower"]').tap();
+  await page.waitForFunction(() => neonClash.state.fighters[0].action === "xpower");
+  assert.equal(await page.locator('[data-action="finisher"]').isVisible(), true);
+  await page.screenshot({ path: "test-results/mobile-xpower.png" });
+  await page.waitForTimeout(1450);
   await page.screenshot({ path: "test-results/landscape-forest.png" });
   await page.setViewportSize({ width: 390, height: 844 });
   await page.waitForFunction(() => neonClash.orientationBlocked);
