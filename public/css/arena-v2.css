@@ -1,0 +1,264 @@
+/* One clear entry screen; the fight occupies the screen after starting. */
+body {
+  background: #080c10;
+}
+body:not(.in-match) {
+  background:
+    linear-gradient(100deg, #080b10f5, #080b10b8),
+    url("../assets/living-forest.png") center/cover fixed;
+}
+.intro {
+  padding: 26px 0 18px;
+  align-items: center;
+}
+.intro h1 {
+  font-size: clamp(32px, 4.5vw, 62px);
+  line-height: 1.02;
+}
+.intro-copy {
+  font-size: 15px;
+  max-width: 620px;
+  line-height: 1.7;
+}
+.intro-aside,
+.bottom-strip,
+.controls-panel {
+  display: none;
+}
+body:not(.in-match) #arena {
+  display: none;
+}
+#setup {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+#setup > .setup-panel:nth-child(2) {
+  grid-column: 1/-1;
+  order: 0;
+}
+#setup .selection-banner {
+  grid-column: 1/-1;
+  order: 1;
+  min-height: 0;
+  padding: 18px 24px;
+  background: #0b121aec;
+  border: 1px solid #b89c66;
+}
+#selected-portrait {
+  width: 100px;
+  height: 96px;
+}
+.selection-stats {
+  display: none;
+}
+.selection-info h2 {
+  font-size: 30px;
+}
+.selection-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  min-width: 370px;
+}
+#selection-start {
+  grid-column: 1/-1;
+  min-height: 54px;
+  background: linear-gradient(110deg, #dfb75a, #f5d893);
+  color: #17120a;
+  font-size: 19px;
+}
+#share-button,
+#sound-check {
+  min-height: 36px;
+  font-size: 10px;
+  padding: 8px;
+}
+#share-status,
+#graphics-status {
+  margin: 0;
+  font-size: 10px;
+  color: #b9c4ce;
+}
+.fighter-options {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+.fighter-card {
+  min-height: 180px;
+  border: 1px solid #4a514f;
+  background: linear-gradient(160deg, #202d37, #11151b);
+  transition:
+    border-color 0.2s,
+    transform 0.2s;
+}
+.fighter-card.selected {
+  border: 2px solid #f1c96e;
+  transform: translateY(-4px);
+  box-shadow: 0 7px 28px #d0a34126;
+}
+.fighter-card canvas {
+  height: 138px;
+  object-fit: contain;
+}
+.fighter-label strong {
+  font-size: 24px;
+}
+.setup-panel {
+  order: 2;
+  padding: 18px;
+  background: #101820dc;
+  border: 1px solid #ffffff17;
+}
+.section-label {
+  margin-bottom: 12px;
+}
+.section-label h2 {
+  font-size: 16px;
+}
+.arena-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.arena-choice {
+  min-height: 57px;
+}
+.arena-thumb {
+  width: 56px;
+  height: 40px;
+}
+.arena-choice small {
+  display: none;
+}
+.in-match .combat-controls,
+.in-match .arena-bottomline {
+  display: none !important;
+}
+.in-match .arena-shell {
+  max-width: 1440px;
+  margin: 8px auto;
+  border-color: #726247;
+}
+.in-match main {
+  padding-top: 0;
+}
+.in-match .stage {
+  aspect-ratio: 15/8;
+  max-height: calc(100dvh - 105px);
+}
+.in-match #game {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+.arena-sound {
+  position: absolute;
+  top: 82px;
+  left: 58px;
+  z-index: 8;
+  background: #101721c9;
+  border: 1px solid #aa9876;
+  border-radius: 6px;
+  width: 38px;
+  height: 36px;
+  padding: 0;
+  cursor: pointer;
+}
+.fight-quick-controls {
+  display: flex !important;
+  gap: 14px;
+  justify-content: center;
+  position: absolute;
+  bottom: 5px;
+  left: 10px;
+  right: 10px;
+  font-size: 10px;
+  padding: 7px;
+  background: #0b1119b8;
+  pointer-events: none;
+}
+.fight-quick-controls[hidden] {
+  display: none !important;
+}
+.mobile-battle .fight-quick-controls {
+  display: none !important;
+}
+.mobile-battle .stage {
+  max-height: none;
+}
+.mobile-battle .arena-sound {
+  left: max(60px, env(safe-area-inset-left));
+}
+@media (max-width: 700px) {
+  .topbar {
+    height: 62px;
+    padding: 0 16px;
+  }
+  .topbar nav {
+    display: none;
+  }
+  main {
+    padding: 0 14px;
+  }
+  .intro {
+    padding: 20px 0 10px;
+  }
+  #setup {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .fighter-options {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 5px;
+  }
+  .fighter-card {
+    min-height: 100px;
+  }
+  .fighter-card canvas {
+    height: 70px;
+  }
+  .fighter-label strong {
+    font-size: 12px;
+  }
+  .fighter-label small {
+    display: none;
+  }
+  .setup-panel {
+    padding: 12px;
+  }
+  .section-label h2 {
+    font-size: 13px;
+  }
+  #setup .selection-banner {
+    position: sticky;
+    bottom: 8px;
+    z-index: 10;
+    padding: 12px;
+    display: block;
+  }
+  #selected-portrait,
+  .selection-info {
+    display: none;
+  }
+  .selection-actions {
+    min-width: 0;
+    width: 100%;
+  }
+  #setup > .setup-panel:nth-child(2) {
+    grid-column: 1;
+  }
+  .arena-options {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .arena-choice {
+    display: flex;
+    flex-direction: column;
+    font-size: 9px;
+    padding: 4px;
+  }
+  .arena-choice .choice-dot {
+    display: none;
+  }
+}

@@ -24,7 +24,7 @@ try {
     null,
     { timeout: 90000 },
   );
-  await page.locator("#start-button").click();
+  await page.locator("#selection-start").click();
   await page.locator("#guide-practice").click();
   await page.waitForFunction(
     () => neonClash.state?.training !== null && neonClash.options.mode === "practice",
@@ -86,7 +86,7 @@ try {
   await phone.goto(url);
   await phone.waitForFunction(() => neonClash?.ready, null, { timeout: 90000 });
   await phone.locator('[data-mode="practice"]').tap();
-  await phone.locator("#start-button").tap();
+  await phone.locator("#selection-start").tap();
   await phone.locator("#guide-start").tap();
   assert.equal(await phone.locator("#touch-controls").isVisible(), true);
   assert.equal(

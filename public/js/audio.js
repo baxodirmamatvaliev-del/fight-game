@@ -6,6 +6,19 @@ export class Audio {
     this.muted = false;
     this.musicEnabled = true;
     this.music = null;
+    this.voices = [];
+    this.voiceCount = 0;
+    this.samples = Promise.all(
+      ["1yell1", "1yell2", "1yell6", "2yell1", "2yell3", "2yell10"].map(
+        async (name) => {
+          const response = await fetch(
+            new URL(`../assets/audio/${name}.wav`, import.meta.url),
+          );
+          if (!response.ok) throw new Error(`Voice sample ${name}`);
+          return response.arrayBuffer();
+        },
+      ),
+    ).catch(() => []);
   }
   async unlock() {
     if (!this.ctx) {
@@ -14,9 +27,44 @@ export class Audio {
       this.ctx = new Constructor();
       this.master = this.ctx.createGain();
       this.master.gain.value = this.muted ? 0 : this.volume;
-      this.master.connect(this.ctx.destination);
+      const limiter = this.ctx.createDynamicsCompressor();
+      limiter.threshold.value = -12;
+      limiter.ratio.value = 5;
+      this.analyser = this.ctx.createAnalyser();
+      this.analyser.fftSize = 256;
+      this.master.connect(limiter);
+      limiter.connect(this.analyser);
+      this.analyser.connect(this.ctx.destination);
+      this.decoding = this.samples
+        .then((samples) =>
+          Promise.all(samples.map((data) => this.ctx.decodeAudioData(data))),
+        )
+        .then((buffers) => {
+          this.voices = buffers;
+        })
+        .catch(() => {});
     }
     if (this.ctx.state === "suspended") await this.ctx.resume();
+    await this.decoding;
+  }
+  voice(player = 0, heavy = false) {
+    if (!this.ctx || !this.voices.length) return;
+    const buffer = this.voices[(player ? 3 : 0) + (this.voiceCount++ % 3)];
+    const samples = buffer.getChannelData(0);
+    let start = 0;
+    while (start < samples.length && Math.abs(samples[start]) < 0.035) start++;
+    const offset = Math.max(0, start / buffer.sampleRate - 0.025);
+    const source = this.ctx.createBufferSource(),
+      gain = this.ctx.createGain();
+    source.buffer = buffer;
+    source.playbackRate.value = (player ? 0.91 : 1.04) + (Math.random() - 0.5) * 0.08;
+    const duration = Math.min(heavy ? 0.85 : 0.55, buffer.duration - offset);
+    if (duration <= 0) return;
+    gain.gain.setValueAtTime(0.9, this.ctx.currentTime);
+    gain.gain.setTargetAtTime(0.001, this.ctx.currentTime + duration - 0.1, 0.035);
+    source.connect(gain);
+    gain.connect(this.master);
+    source.start(0, offset, duration);
   }
   setVolume(value) {
     this.volume = value;
@@ -80,6 +128,7 @@ export class Audio {
     }
     if (type === "hit") {
       const heavy = event.special || event.damage >= 10;
+      this.voice(1 - (event.player || 0), heavy);
       this.tone(heavy ? 82 : 135, heavy ? 0.28 : 0.16, "sine", 0.34, 28);
       this.noise(heavy ? 0.18 : 0.095, 0.24, heavy ? 180 : 650);
       this.noise(0.045, 0.13, 2200);
@@ -104,6 +153,7 @@ export class Audio {
       this.tone(116, 0.45, "triangle", 0.08, 58, 0.1);
     }
     if (type === "ko") {
+      this.voice(1 - (event.player || 0), true);
       this.tone(80, 0.65, "sine", 0.3, 25);
       this.noise(0.4, 0.2, 100);
     }

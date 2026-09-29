@@ -31,7 +31,7 @@ try {
   );
   assert.equal(await page.locator("#visible-controls .control-item").count(), 7);
   await page.screenshot({ path: "test-results/public-lobby.png", fullPage: true });
-  await page.locator("#start-button").click();
+  await page.locator("#selection-start").click();
   assert.equal(await page.locator("#guide-dialog").evaluate((d) => d.open), true);
   await page.locator("#guide-start").click();
   await page.waitForFunction(() => neonClash.state?.phase === "fight", null, {

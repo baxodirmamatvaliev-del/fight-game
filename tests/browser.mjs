@@ -43,7 +43,7 @@ try {
   await page.locator("#settings-dialog .close-dialog").click();
   await page.locator('[data-mode="local"]').click();
   await page.locator('[data-fighter="volt"]').click();
-  await page.locator("#start-button").click();
+  await page.locator("#selection-start").click();
   assert.equal(await page.locator("#guide-dialog").evaluate((d) => d.open), true);
   assert.equal(await page.locator("#guide-controls .control-item").count(), 18);
   await page.screenshot({ path: "test-results/controls-guide.png" });
@@ -112,7 +112,7 @@ try {
   assert.equal(await page.evaluate(() => neonClash.state.wins.join(",")), "0,0");
   await page.locator("#pause-button").click();
   await page.locator("#quit-button").click();
-  assert.equal(await page.locator("#lobby").isVisible(), true);
+  assert.equal(await page.locator("#setup").isVisible(), true);
   await page.reload();
   await page.waitForFunction(() => neonClash.ready, { timeout: 90000 });
   assert.equal(await page.evaluate(() => neonClash.options.mode), "local");
@@ -131,7 +131,7 @@ try {
     "Mobile layout must not overflow",
   );
   await phone.screenshot({ path: "test-results/mobile-lobby.png" });
-  await phone.locator("#start-button").tap();
+  await phone.locator("#selection-start").tap();
   assert.equal(await phone.locator("#guide-dialog").evaluate((d) => d.open), true);
   await phone.locator("#guide-start").tap();
   await phone.waitForFunction(() => neonClash.state?.phase === "fight");

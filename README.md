@@ -1,8 +1,15 @@
 # NEON CLASH
 
-Combat now uses an articulated, textured 2D rig: separate shoulder, elbow, hip,
-knee and foot motion, distance-based steps, wind-up/contact/recovery and gradual
-knockback. This remains a 2D browser game, not a commercial 3D motion-capture engine.
+Combat now renders continuous skinned 3D fighters with Three.js: blended walking
+and idle animation, two-bone arm/leg IK, attack wind-up/contact/recovery and recoil.
+Five fighters currently share one armored model with different palettes; selection
+portraits remain 2D. This is a browser prototype, not the commercial Mortal Kombat
+engine or its character models. Devices without WebGL use a sprite fallback.
+
+Hits play decoded human grunt recordings alongside impact effects. Use the entry
+screen's sound test to enable audio. The simplified entry leads from fighter
+selection to combat; mobile uses landscape controls with simultaneous touch input.
+Run `npm run test:3d` for visible model, audio decoding and audible-output checks.
 
 - **X / X-KUCH:** 100 energy, 32 base damage, 190-unit reach; blockable and interruptible.
 - **V / YAKUN:** 50 energy, opponent at 20 HP or less within 185 units. A successful

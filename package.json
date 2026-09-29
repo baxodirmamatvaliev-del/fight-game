@@ -14,12 +14,14 @@
     "test:redesign": "node tests/redesign-browser.mjs",
     "test:landscape": "node tests/landscape-browser.mjs",
     "test:powers": "node tests/powers-browser.mjs",
+    "test:3d": "node tests/3d-browser.mjs",
     "format": "prettier --write . && node scripts/format-python.mjs",
     "format:check": "prettier --check . && node scripts/format-python.mjs --check",
     "check": "npm run format:check && npm test && npm run test:fallback && npm run build"
   },
   "dependencies": {
-    "pyodide": "0.27.7"
+    "pyodide": "0.27.7",
+    "three": "0.180.0"
   },
   "devDependencies": {
     "playwright": "1.63.0",

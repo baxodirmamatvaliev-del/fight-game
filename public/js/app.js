@@ -3,7 +3,7 @@ import { drawArena, arenaNames } from "./arena.js";
 import { drawFighter } from "./fighters.js";
 import { Particles, drawProjectiles } from "./particles.js";
 import { Input } from "./input.js";
-import { Audio } from "./audio.js";
+import { Audio } from "./audio.js?v=voices-1";
 import { Music } from "./music.js";
 import { HUD } from "./hud.js";
 import { Storage } from "./storage.js";
@@ -11,9 +11,10 @@ import { setupMenu } from "./menu.js";
 import { setupTouch } from "./touch.js";
 import { Screens } from "./screens.js";
 import { Controls } from "./controls.js";
-import { loadedSprites } from "./sprites.js";
+import { loadedSprites, drawSprite } from "./sprites.js";
 import { Training } from "./training.js";
 import { MobileArena } from "./mobile-arena.js";
+import { Fighters3D } from "./fighters-3d.js";
 import { interpolateFighters } from "./motion.js";
 
 const $ = (selector) => document.querySelector(selector);
@@ -22,6 +23,13 @@ const canvas = $("#game"),
 const store = new Storage(),
   prefs = store.preferences();
 const audio = new Audio();
+const fighters3D = new Fighters3D();
+const graphicsReady = fighters3D.load();
+graphicsReady.then(() => {
+  $("#graphics-status").textContent = fighters3D.ready
+    ? "3D JANG · YANGI VERSIYA"
+    : "3D ishlamadi. Chrome / Safari’da qayta oching.";
+});
 audio.setVolume(prefs.volume);
 audio.setMuted(prefs.muted);
 audio.musicEnabled = prefs.music;
@@ -109,6 +117,11 @@ function updateSoundButton() {
     : "◖♪ <span>SOUND ON</span>";
   button.setAttribute("aria-pressed", String(audio.muted));
   button.setAttribute("aria-label", audio.muted ? "Ovozni yoqish" : "Ovozni o‘chirish");
+  $("#arena-sound").textContent = audio.muted || audio.volume === 0 ? "🔇" : "🔊";
+  $("#arena-sound").setAttribute(
+    "aria-label",
+    audio.muted ? "Ovozni yoqish" : "Ovozni o‘chirish",
+  );
 }
 setupMenu({
   options,
@@ -146,10 +159,25 @@ updateSoundButton();
 store.renderStats();
 $("#sound-button").addEventListener("click", async () => {
   await audio.unlock();
-  audio.setMuted(!audio.muted);
+  if (audio.volume === 0) {
+    audio.setVolume(0.8);
+    audio.setMuted(false);
+    $("#volume").value = 80;
+  } else audio.setMuted(!audio.muted);
   updateSoundButton();
   savePreferences();
   if (!paused) music.start();
+});
+$("#arena-sound").addEventListener("click", () => $("#sound-button").click());
+$("#sound-check").addEventListener("click", async () => {
+  await audio.unlock();
+  audio.setMuted(false);
+  if (audio.volume < 0.3) audio.setVolume(0.8);
+  $("#volume").value = Math.round(audio.volume * 100);
+  audio.play("hit", { damage: 12, player: 0 });
+  updateSoundButton();
+  savePreferences();
+  $("#sound-check").textContent = "🔊 OVOZ YOQILDI";
 });
 $("#fullscreen-button").addEventListener("click", fullscreen);
 $("#start-button").addEventListener("click", () => controls.guide(options));
@@ -200,6 +228,7 @@ async function start() {
   } catch (error) {
     console.warn("Audio unavailable", error);
   }
+  await graphicsReady;
   state = engine.start(options);
   previousFighters = null;
   running = true;
@@ -325,8 +354,9 @@ function frame(timestamp) {
               state.fighters,
               Math.min(1, accumulator * 60),
             );
-      for (const f of [...presented].sort((a, b) => a.y - b.y))
-        drawFighter(ctx, f, visualTime);
+      if (!fighters3D.render(ctx, presented, visualTime))
+        for (const f of [...presented].sort((a, b) => a.y - b.y))
+          drawSprite(ctx, f, visualTime) || drawFighter(ctx, f, visualTime);
       drawProjectiles(ctx, state.projectiles, visualTime);
     } else {
       const preview = [
@@ -347,7 +377,9 @@ function frame(timestamp) {
           action_time: 0,
         },
       ];
-      for (const f of preview) drawFighter(ctx, f, visualTime, 1.22);
+      if (!fighters3D.render(ctx, preview, visualTime))
+        for (const f of preview)
+          drawSprite(ctx, f, visualTime, 1.22) || drawFighter(ctx, f, visualTime, 1.22);
     }
     particles.draw(ctx);
     ctx.restore();
@@ -365,7 +397,8 @@ function frame(timestamp) {
 requestAnimationFrame(frame);
 engine
   .load((message) => ($("#load-status").textContent = message))
-  .then(() => {
+  .then(async () => {
+    await graphicsReady;
     ready = true;
     $("#start-button").disabled = false;
     $("#selection-start").disabled = false;
@@ -381,6 +414,23 @@ engine
   });
 // Read-only inspection hook for automated browser gameplay checks.
 globalThis.neonClash = {
+  get graphics() {
+    return {
+      ready: fighters3D.ready,
+      error: fighters3D.error,
+      actors: fighters3D.actors.length,
+      details: fighters3D.ready ? fighters3D.inspect() : null,
+    };
+  },
+  get voices() {
+    return { loaded: audio.voices.length, played: audio.voiceCount };
+  },
+  get audioLevel() {
+    if (!audio.analyser) return 0;
+    const data = new Uint8Array(audio.analyser.fftSize);
+    audio.analyser.getByteTimeDomainData(data);
+    return Math.max(...data.map((n) => Math.abs(n - 128)));
+  },
   get orientationBlocked() {
     return orientationBlocked;
   },
