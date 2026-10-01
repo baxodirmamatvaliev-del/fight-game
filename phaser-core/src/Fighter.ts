@@ -56,7 +56,8 @@ export class Fighter {
   step(input: FightInput, opponentX: number) {
     if (this.machine.state === "ko") return;
     if (this.comboDisplay > 0) this.comboDisplay--;
-    const special = this.motion.sample(input, this.facing);
+    const motionSpecial = this.motion.sample(input, this.facing);
+    const special = motionSpecial || input.special === true;
     this.machine.tick();
     if (this.machine.state === "knockdown" || this.machine.state === "getup") {
       this.x = Math.max(24, Math.min(config.width - 24, this.x + this.vx / config.fps));

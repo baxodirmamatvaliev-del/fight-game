@@ -268,6 +268,9 @@ export class MenuUI {
     return this.reduced;
   }
   private animate = (time: number) => {
+    this.raf = requestAnimationFrame(this.animate);
+    if (document.hidden || time - this.lastPaint < 100) return;
+    this.lastPaint = time;
     const frame = this.reduced ? 0 : Math.floor(time / 120) % 8;
     this.root.querySelectorAll<HTMLCanvasElement>("canvas").forEach((canvas) => {
       const index =
@@ -298,8 +301,8 @@ export class MenuUI {
       ctx.globalAlpha = 1;
       ctx.globalCompositeOperation = "source-over";
     });
-    this.raf = requestAnimationFrame(this.animate);
   };
+  private lastPaint = -100;
   destroy() {
     if (this.timer) clearTimeout(this.timer);
     cancelAnimationFrame(this.raf);

@@ -7,6 +7,8 @@ import { createPlaceholderSheet, SpriteFighter } from "./SpriteFighter";
 import { AudioManager } from "./AudioManager";
 import { MenuUI } from "./ui/MenuUI";
 import { roster, type Mode } from "./ui/roster";
+import { TouchControls } from "./TouchControls";
+import { SparkPool } from "./SparkPool";
 
 class FightScene extends Phaser.Scene {
   world = new FightWorld();
@@ -19,7 +21,8 @@ class FightScene extends Phaser.Scene {
   focused = true;
   views!: [SpriteFighter, SpriteFighter];
   effects!: Phaser.GameObjects.Graphics;
-  sparks: { x: number; y: number; age: number; blocked: boolean }[] = [];
+  sparks = new SparkPool();
+  touch!: TouchControls;
   slowRemaining = 0;
   endFrame = 0;
   meterText!: Phaser.GameObjects.Text;
@@ -38,7 +41,7 @@ class FightScene extends Phaser.Scene {
     this.audio.reset();
     this.controls.clear();
     this.accumulator = 0;
-    this.sparks = [];
+    this.sparks.clear();
     this.endFrame = 0;
     this.slowRemaining = 0;
     this.cameras.main.shakeEffect.reset();
@@ -50,6 +53,15 @@ class FightScene extends Phaser.Scene {
     }
   }
   create() {
+    // Mobile viewport changes can arrive after Phaser's window resize event.
+    const parent = document.getElementById("game")!;
+    const resize = new ResizeObserver(() => {
+      const bounds = parent.getBoundingClientRect();
+      if (bounds.width > 0 && bounds.height > 0)
+        this.scale.setParentSize(bounds.width, bounds.height);
+    });
+    resize.observe(parent);
+    this.events.once("shutdown", () => resize.disconnect());
     this.audio = new AudioManager();
     if (!this.testArena) this.audio.deferRound();
     this.soundLabel = this.add
@@ -67,6 +79,7 @@ class FightScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setDepth(5);
     this.controls = new InputManager();
+    this.touch = new TouchControls();
     this.graphics = this.add.graphics();
     createPlaceholderSheet(this);
     this.views = [new SpriteFighter(this, 0x70dfd2), new SpriteFighter(this, 0xffc780)];
@@ -117,6 +130,7 @@ class FightScene extends Phaser.Scene {
           this.controls.enabled = !paused;
           this.accumulator = 0;
           this.controls.clear();
+          this.touch.setActive(!paused);
         },
         volume: (value) => this.audio.setVolume(value),
         mute: (value) => this.audio.setMuted(value),
@@ -128,8 +142,14 @@ class FightScene extends Phaser.Scene {
     );
     if (this.testArena) this.menu.show("fight");
     this.events.once("shutdown", () => this.menu.destroy());
+    this.events.once("shutdown", () => this.touch.destroy());
   }
   update(_time: number, delta: number) {
+    if (this.touch.rotated && !this.menuPaused) {
+      this.accumulator = 0;
+      this.controls.clear();
+      return;
+    }
     if (this.menuPaused) {
       this.accumulator = 0;
       return;
@@ -143,7 +163,8 @@ class FightScene extends Phaser.Scene {
       this.audio.reset();
       this.controls.clear();
       this.accumulator = 0;
-      this.sparks = [];
+      this.sparks.clear();
+      this.touch.clear();
       this.slowRemaining = 0;
       this.endFrame = 0;
       this.cameras.main.shakeEffect.reset();
@@ -153,8 +174,7 @@ class FightScene extends Phaser.Scene {
     const dt = Math.min(delta, 100);
     const timeScale = this.slowRemaining > 0 ? 0.22 : 1;
     this.slowRemaining = Math.max(0, this.slowRemaining - dt);
-    for (const spark of this.sparks) spark.age += dt * timeScale;
-    this.sparks = this.sparks.filter((s) => s.age < 240);
+    this.sparks.update(dt * timeScale);
     if (this.world.result) this.endFrame += (dt * timeScale * 60) / 1000;
     this.accumulator += dt * timeScale;
     const step = 1000 / config.fps;
@@ -190,7 +210,21 @@ class FightScene extends Phaser.Scene {
             kick: Math.abs(distance) < 125 && this.world.ticks % 77 === 0,
           };
         }
-        this.world.step(this.controls.sample(), opponent);
+        const keyboard = this.controls.sample(),
+          touch = this.touch.sample();
+        this.world.step(
+          {
+            axis: touch.axis || keyboard.axis,
+            jump: touch.jump || keyboard.jump,
+            crouch: touch.crouch || keyboard.crouch,
+            block: touch.block || keyboard.block,
+            punch: touch.punch || keyboard.punch,
+            kick: touch.kick || keyboard.kick,
+            special: touch.special,
+            super: touch.super || keyboard.super,
+          },
+          opponent,
+        );
         if (this.mode === "training" && !this.testArena) {
           this.world.remaining = config.roundFrames;
           if (this.world.dummy.health === 0) {
@@ -209,7 +243,7 @@ class FightScene extends Phaser.Scene {
         }
       for (const event of this.world.events) {
         this.audio.impact(event.attack, event.blocked, event.victim);
-        this.sparks.push({ ...event, age: 0 });
+        this.sparks.spawn(event);
         if (!this.menu?.reduceMotion)
           this.cameras.main.shake(
             event.final ? 250 : 90,
@@ -243,6 +277,7 @@ class FightScene extends Phaser.Scene {
     }
   }
   draw() {
+    this.touch.setMeter(this.world.player.meter);
     this.soundLabel.setText(
       this.audio.muted
         ? "SOUND OFF · TAP"
@@ -271,7 +306,8 @@ class FightScene extends Phaser.Scene {
     this.views[0].render(w.player, w.result, this.endFrame);
     this.views[1].render(w.dummy, w.result, this.endFrame);
     this.effects.clear();
-    for (const spark of this.sparks) {
+    for (const spark of this.sparks.items) {
+      if (!spark.active) continue;
       const p = spark.age / 240;
       this.effects.lineStyle(3 * (1 - p), spark.blocked ? 0x89caff : 0xffe4a1, 1 - p);
       for (let i = 0; i < 10; i++) {

@@ -6,6 +6,7 @@ export interface FightInput {
   punch: boolean;
   kick: boolean;
   super?: boolean;
+  special?: boolean;
 }
 export const neutral = (): FightInput => ({
   axis: 0,

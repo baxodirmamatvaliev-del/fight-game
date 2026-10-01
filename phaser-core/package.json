@@ -8,7 +8,8 @@
     "build": "tsc --noEmit && vite build",
     "test": "node --import tsx --test tests/engine.test.ts",
     "test:browser": "node tests/browser.mjs",
-    "test:menus": "node tests/menus.mjs"
+    "test:menus": "node tests/menus.mjs",
+    "test:touch": "node tests/touch.mjs"
   },
   "dependencies": {
     "phaser": "^3.90.0"

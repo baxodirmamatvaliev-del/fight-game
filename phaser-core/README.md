@@ -12,7 +12,8 @@ selects it and the explicit confirmation button locks it in.
 Escape or the pause button opens Resume, Move List, Settings, Restart and Main Menu.
 Settings persist master volume, mute and reduced motion. P2 uses arrows, N punch,
 M kick, / block and . super. Keyboard focus, touch feedback and narrow/landscape
-layouts are supported; mobile menus do not add touch controls to combat.
+layouts are supported. Landscape touch combat provides a left joystick and right
+attack buttons, with multi-touch and a portrait safety overlay.
 
 Run `npm run test:menus` with the dev server running. The old combat regression
 test uses the development-only `?arena=1` shortcut; production always shows menus.
@@ -33,7 +34,7 @@ Independent Phaser 3 + TypeScript + Vite project with cinematic menus and animat
 
 ## Animation and combat additions
 
-The generated sprite sheet has 14 rows, eight 192×160 frames per row: idle, walk,
+The generated sprite atlas has 14 clips with eight 192×160 frames each: idle, walk,
 jump, crouch, block, punch, kick, hit, knockdown, get-up, victory, death, special,
 super. Frames are baked once; gameplay displays discrete atlas frames rather than
 rotating limbs. Animation follows combat frames, including hitstop. Final KO slows
@@ -47,8 +48,8 @@ counts uninterrupted hitstun, not merely hits close together. Specials/supers kn
 down; 36-frame knockdown leads to 24-frame invulnerable get-up. R clears all effects.
 
 TODO(ART): replace `createPlaceholderSheet` in `src/SpriteFighter.ts` with a PNG
-loaded by Phaser's spritesheet loader. Keep the 192×160 cells, eight columns,
-listed row order and feet pivot (96,144), or update that module's metadata.
+loaded by Phaser's spritesheet loader. Keep the 192×160 cells, ten columns,
+listed clip order (eight consecutive frames per clip) and feet pivot (96,144), or update that module's metadata.
 Placeholder silhouettes are intentionally simple; replace with authored frames,
 then tune per-animation frame timing. Shadows and sparks are code-native effects.
 

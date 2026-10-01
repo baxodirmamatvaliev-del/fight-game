@@ -3,6 +3,27 @@ import assert from "node:assert/strict";
 import { FightWorld } from "../src/FightWorld.ts";
 import { neutral } from "../src/InputManager.ts";
 import { MotionInput } from "../src/MotionInput.ts";
+import { SparkPool } from "../src/SparkPool.ts";
+test("spark pool reuses objects, expires and clears without growth", () => {
+  const p = new SparkPool(3),
+    original = [...p.items];
+  for (let i = 0; i < 100; i++) p.spawn({ x: i, y: 1, blocked: false });
+  assert.equal(p.length, 3);
+  assert.equal(p.items.length, 3);
+  p.items.forEach((item, i) => assert.equal(item, original[i]));
+  p.update(240);
+  assert.equal(p.length, 0);
+  p.spawn({ x: 0, y: 0, blocked: true });
+  p.clear();
+  assert.equal(p.length, 0);
+});
+test("touch special follows the same attack rules as motion input", () => {
+  const w = close();
+  w.step({ ...neutral(), special: true });
+  assert.equal(w.player.attack, "special");
+  advance(w, 10);
+  assert.equal(w.dummy.health, 82);
+});
 test("special sequence respects facing, expiration and one-shot consumption", () => {
   for (const facing of [1, -1]) {
     const m = new MotionInput();

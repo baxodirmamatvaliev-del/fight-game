@@ -3,7 +3,7 @@ import type { Fighter } from "./Fighter";
 import { config } from "./config";
 
 // TODO(ART): Replace this generated 192x160 atlas with hand-drawn PNG frames.
-// Preserve the clip order, 8 frames per row, and feet pivot (96,144).
+// Preserve clip order, 8 frames per clip packed in 10 columns, feet pivot (96,144).
 // These are deliberately simple placeholder silhouettes, not production art.
 export const clips = [
   "idle",
@@ -29,16 +29,21 @@ const W = 192,
 export function createPlaceholderSheet(scene: Phaser.Scene) {
   if (scene.textures.exists("fighter-placeholder")) return;
   const canvas = document.createElement("canvas");
-  canvas.width = W * COUNT;
-  canvas.height = H * clips.length;
+  // 1920×1920 atlas stays under the 2048 texture limit of older phones.
+  const columns = 10;
+  canvas.width = W * columns;
+  canvas.height = H * Math.ceil((COUNT * clips.length) / columns);
   const c = canvas.getContext("2d")!;
   clips.forEach((clip, row) => {
     for (let frame = 0; frame < COUNT; frame++) {
+      const index = row * COUNT + frame,
+        x = (index % columns) * W,
+        y = Math.floor(index / columns) * H;
       c.save();
       c.beginPath();
-      c.rect(frame * W, row * H, W, H);
+      c.rect(x, y, W, H);
       c.clip();
-      c.translate(frame * W + 96, row * H + 144);
+      c.translate(x + 96, y + 144);
       const t = frame / (COUNT - 1),
         wave = Math.sin(t * Math.PI * 2);
       let head = [2, -100],
@@ -194,7 +199,14 @@ export function createPlaceholderSheet(scene: Phaser.Scene) {
   const texture = scene.textures.addCanvas("fighter-placeholder", canvas)!;
   clips.forEach((_clip, row) => {
     for (let f = 0; f < COUNT; f++)
-      texture.add(row * COUNT + f, 0, f * W, row * H, W, H);
+      texture.add(
+        row * COUNT + f,
+        0,
+        ((row * COUNT + f) % columns) * W,
+        Math.floor((row * COUNT + f) / columns) * H,
+        W,
+        H,
+      );
   });
 }
 
